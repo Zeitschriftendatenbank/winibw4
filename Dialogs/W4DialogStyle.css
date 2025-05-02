@@ -1,0 +1,45 @@
+body {
+     background-color: #cbc6c4;
+}
+
+select {
+    font-size: 15px;
+}
+
+th {
+    font-family: Arial;
+    font-style: normal;
+    color: #000000;
+    font-size: 15px;
+}
+
+td {
+    font-family: Arial;
+    font-style: normal;
+    color: #000000;
+    font-size: 15px;
+}
+
+button {
+    width: 120px;
+    height: 25px;    
+}
+
+input[type=checkbox] {
+    width: 15px;
+    height: 15px;
+}
+
+input[type=text] {
+    font-size: 15px;
+    height: 20px;
+}
+input[type=radio] {
+	width: 1em;
+	height: 1em;
+	margin-left: 1em;
+}
+.boxRight {
+	margin-top: 1em;
+	text-align: right;
+}

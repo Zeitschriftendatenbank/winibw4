@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Suche und Ersetze in einem Set</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="./W4DialogStyleKxp.css">
+	<script src="./W4DialogFunctions.js"></script>
+	<script src="./kxp_suche_ersetze_dialog.js"></script>
+	<script type="text/javascript">setTimeout(function () { onLoad(); }, 5);</script>
+	<style>
+		.text1 {
+			width: 20em;
+		}
+		.text2 {
+			width: 16em;
+		}
+		.text3 {
+			width: 25em;
+		}
+		.tabcontent {
+			height: 15em;
+		}
+	</style>
+</head>
+<body>
+	<div class="tab">
+		<button class="tablinks" id="idButtonTabEins" onclick="openTab(event, 'idTabEins')">Suchen und Ersetzen</button>
+		<button class="tablinks" id="idButtonTabZwei" onclick="openTab(event, 'idTabZwei')">Ergänzen von Feldern</button>
+		<button class="tablinks" id="idButtonTabDrei" onclick="openTab(event, 'idTabDrei')">Löschen von Feldern</button>
+	</div>
+		<form onsubmit="window.submitDialog();">
+		<div class="tabcontent" id="idTabEins">
+			<fieldset>
+				<legend>Was soll gesucht und ersetzt werden?</legend>
+				<table>
+					<tr>
+						<td>Suche Text:</td>
+						<td><input class="text1" id="idSuche" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+					<tr>
+						<td>Ersetze durch:</td>
+						<td><input class="text1" id="idErsetze" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+					<tr>
+						<td>Suche in Feld:</td>
+						<td><input class="text1" id="idFeldErstes" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+					 <tr>
+						<td>bis Feld</td>
+						<td><input class="text1" id="idFeldLetztes" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+				</table>
+				<br/>
+			</fieldset>
+		</div>
+		<div class="tabcontent" id="idTabZwei">
+			<fieldset>
+				<legend>Ergänzen von Feldern</legend>
+				<table>
+					<tr>
+						<td>Wenn in Feld ...</td>
+						<td>dieser Text vorkommt ...</td>
+					</tr>
+					<tr>
+						<td><input class="text2" id="idWennFeld" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+						<td><input class="text2" id="idWennText" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+					<tr>
+						<td>dann ergänze Feld ...</td>
+						<td>mit diesem Text ...</td>
+					</tr>
+					<tr>
+						<td><input class="text2" id="idDannFeld" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+						<td><input class="text2" id="idDannText" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+				</table>
+				<br/>
+			</fieldset>
+
+		</div>
+		<div class="tabcontent" id="idTabDrei">
+			<fieldset>
+				<legend>Löschen von Feldern</legend>
+				<table>
+					<tr>
+						<td>Lösche Feld ...</td>
+						<td>wenn dieser Text vorkommt ...</td>
+					</tr>
+					<tr>
+						<td><input class="text2" id="idLoescheFeld" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+						<td><input class="text2" id="idLoescheText" onchange="bContentsChanged=true;" onkeypress="this.style.backgroundColor = 'white'"></td>
+					</tr>
+				</table>
+				<br/>
+			</fieldset>
+		</div>
+			<fieldset>
+				<legend>Einschränken der Suche</legend>
+				<input type="checkbox" id="idCheckboxWord" /><label>wortweise</label><br>
+				<input type="checkbox" id="idCheckboxCaseSensitive" /><label>Klein- / Großschreibung beachten?</label>
+			</fieldset>
+			<br>
+		<div class="boxRight">
+			<text id="idHinweisSetsize"></text>
+			<button hidden class="button" type="button" onclick="meinTest0();">Test</button>
+			<button class="button" type="button" onclick="allesZuruecksetzen();">Felder zurücksetzen</button>
+			<button class="buttonBig" type="button" onclick="starteAktion();" id="idButtonStart"><b>Start</b></button>
+			<button hidden class="button" type="button" onclick="onCancel();">Abbrechen</button>
+		</div>
+		<fieldset id="idErgebnis" hidden>
+			<legend>Ergebnis:</legend>
+			<!--<label>Pfad der Fehlerdatei:</label>-->
+			<output class="text3" id="idPfad"></p>
+		</fieldset>
+	</form>
+</body>
+</html>
