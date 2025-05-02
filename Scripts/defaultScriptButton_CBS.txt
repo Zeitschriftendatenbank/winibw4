@@ -1,0 +1,1 @@
+zdb_merkeZDB() QQ 1 QQ ZDB-ID kopieren QQ Kopiert die ZDB-ID des aktuellen Titels

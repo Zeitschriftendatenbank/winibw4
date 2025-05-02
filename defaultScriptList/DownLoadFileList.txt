@@ -1,0 +1,1 @@
+source=defaultScriptList.txt, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptList.txt
