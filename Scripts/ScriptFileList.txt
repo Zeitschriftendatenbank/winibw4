@@ -1,7 +1,7 @@
-//zdb_isil.js
-//zdb_scripte_feld7120.js
-//zdb_scripte_public.js
-//zdb_set.js
+zdb_isil.js
+zdb_scripte_feld7120.js
+zdb_scripte_public.js
+zdb_set.js
 zdb_helper.js
-//zdb_titelkopie.js
-//zdb_ezb.js
+zdb_titelkopie.js
+zdb_ezb.js
