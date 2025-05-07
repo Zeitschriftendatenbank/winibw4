@@ -2,29 +2,12 @@ source=/SyntaxColorPrefs/syntaxColor_Prefs.txt, destination=%APPDATA%\OCLC\WinIB
 
 source=/datenmasken_zdb/maske01.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske01.txt
 source=/datenmasken_zdb/maske03.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske03.txt
-source=/datenmasken_zdb/maske05.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske05.txt
 source=/datenmasken_zdb/maskeAdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAdxz.txt
-source=/datenmasken_zdb/maskeTbkurz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTbkurz.txt
-source=/datenmasken_zdb/maskeTcx.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTcx.txt
-source=/datenmasken_zdb/maskeTg.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTg.txt
-source=/datenmasken_zdb/maskeTn.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTn.txt
-source=/datenmasken_zdb/maskeTp.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTp.txt
-source=/datenmasken_zdb/maskeTu.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTu.txt
 source=/datenmasken_zdb/maske02.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske02.txt
-source=/datenmasken_zdb/maske04.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske04.txt
-source=/datenmasken_zdb/maske06.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske06.txt
 source=/datenmasken_zdb/maskeOdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeOdxz.txt
-source=/datenmasken_zdb/maskeTb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTb.txt
-source=/datenmasken_zdb/maskeTf.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTf.txt
-source=/datenmasken_zdb/maskeTndiss.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTndiss.txt
-source=/datenmasken_zdb/maskeTpdiss.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTpdiss.txt
-source=/datenmasken_zdb/maskeTs.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeTs.txt
 source=/exemplarmasken_zdb/exmuster_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\exemplarmasken_zdb\exmuster_zdb.txt
 
 source=/ttlFiles/csvDefinition.txt, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\csvDefinition.txt
-source=/ttlFiles/gnd_title.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\gnd_title.ttl
-source=/ttlFiles/relaCodes4xx.txt, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\relaCodes4xx.txt
-source=/ttlFiles/relaCodes5xx.txt, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\relaCodes5xx.txt
 source=/ttlFiles/zdb_titeldatenkopie_digi.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie_digi.ttl
 source=/ttlFiles/zdb_titeldatenkopie_parallel.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie_parallel.ttl
 source=/ttlFiles/zdb_titeldatenkopie.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie.ttl
@@ -36,5 +19,5 @@ source=/Dialogs/ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDBStyl
 source=/Dialogs/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\zdb_verlauf.gif
 source=/Dialogs/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogBibliothekDefinieren.html
 source=/Dialogs/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogDigitalisierungConfig.html
-source=/Dialogs/kxp_suche_ersetze_dialog.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\kxp_suche_ersetze_dialog.html
-source=/Dialogs/kxp_suche_ersetze_dialog.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\kxp_suche_ersetze_dialog.js
+//source=/Dialogs/kxp_suche_ersetze_dialog.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\kxp_suche_ersetze_dialog.html
+//source=/Dialogs/kxp_suche_ersetze_dialog.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\kxp_suche_ersetze_dialog.js

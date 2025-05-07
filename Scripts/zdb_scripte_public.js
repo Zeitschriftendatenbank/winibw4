@@ -109,7 +109,8 @@ function __zdbExemplarNummern() {
 }
 
 function __zdbEXXX() {
-    var record;
+    var record,
+        num;
     if(__zdbCheckScreen(['MT'])){
         application.activeWindow.title.selectAll();
         record = application.activeWindow.title.selection;

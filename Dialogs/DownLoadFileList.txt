@@ -1,5 +1,5 @@
-source=W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogFunctions.js
-source=W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyle.css
+//source=W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogFunctions.js
+//source=W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyle.css
 source=ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDBStyle.css
 source=zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\zdb_verlauf.gif
 source=ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogBibliothekDefinieren.html

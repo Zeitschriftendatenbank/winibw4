@@ -28,6 +28,7 @@ function __feld7120(displayError,write,direct) {
     fehlerin7120 = "";
     var inhalt8032;
     var feldnummer;
+    var feld8032;
     if(false == direct) // lese aktuelles Feld
     {
         feldnummer = application.activeWindow.title.tag;
@@ -329,7 +330,7 @@ function __Ziffer7120(feld) {
     var falschezeichen = "";
     var zeich = "";
     var ziffern7120 = "";
-    for (i = 0; i < feld.length; i++) {
+    for (var i = 0; i < feld.length; i++) {
 
         zeich = feld.substring(i, i + 1);
 

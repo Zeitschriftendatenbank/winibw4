@@ -42,8 +42,8 @@ SET.prototype = {
             this.current_ex = this.next_ex;
             if (this.current_ex < this.alleExe.length) {
                 //this.exNum = this.alleExe[this.current_ex].substring(3, 5),
-                this.exNum = this.alleExe[this.current_ex],
-                    ex = this.edit('e' + this.exNum);
+                this.exNum = this.alleExe[this.current_ex];
+                var ex = this.edit('e' + this.exNum);
                 
                 this.next_ex += 1;
                 if (!this.test_eigene(ex, this.eigeneBibliothek)) {
@@ -57,7 +57,7 @@ SET.prototype = {
     test_eigene:
         function (ex, eigeneBibliothek) {
             this.eigeneBibliothek = eigeneBibliothek;
-            var kat, i;
+            var kat, i, regex;
             switch (this.format) {
             case 'd':
                 kat = '4800';

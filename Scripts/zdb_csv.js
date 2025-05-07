@@ -390,7 +390,7 @@ CSV.prototype =
 
     __csvToArray:
         function (strData, delimit) {
-            delimiter = delimit || this.delimiter;
+            var delimiter = delimit || this.delimiter;
             // in case last character of line is not the delimiter
             if (strData.substring(strData.length) != delimiter) {
                 strData = strData + delimiter;
