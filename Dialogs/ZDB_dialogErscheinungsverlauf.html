@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Erscheinungsverlauf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
+    <script src="./W4DialogFunctions.js"></script>
+    <script src="./ZDB_DialogFunctions.js"></script>
+    <style>
+        /* Basic styles to mimic XUL layout */
+        body {
+            font-family: sans-serif;
+            margin: 1em;
+        }
+        .dialog {
+            border: 1px solid #ccc;
+            padding: 1em;
+            min-width: 55em;
+            max-height: 55em;
+            overflow-y: auto;
+        }
+        .vbox, .hbox {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1em;
+        }
+        .hbox {
+            flex-direction: row;
+            align-items: center;
+            gap: 1em;
+        }
+        .separator {
+            border-top: 1px solid #ccc;
+            margin: 0.5em 0;
+        }
+        .caption {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+        .container {
+            overflow: auto;
+            flex: 1;
+            border: 1px solid #ddd;
+            padding: 0.5em;
+            margin-bottom: 1em;
+        }
+        label {
+            white-space: nowrap;
+        }
+        input[type="text"] {
+            width: 5em;
+        }
+        select {
+            width: 5em;
+        }
+        .button-box {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="Erscheinungsverlauf">
+        <div id="ZDB_Erscheinungsverlauf" class="dialog">
+            <!-- Layout the dialog controls -->
+            <div id="protob" class="vbox" style="display:none;">
+                <hr class="separator" />
+                <div class="bd" style="font-weight:bold;"></div>
+                <hr class="separator" />
+                <div class="hbox">
+                    <div class="hbox">
+                        <label>Bandzählung:</label>
+                        <input type="text" class="bb" value="" />
+                    </div>
+                    <div class="hbox">
+                        <label>Jahr:</label>
+                        <input type="text" class="bj" value="" />
+                    </div>
+                    <div class="hbox">
+                        <label>Heft:</label>
+                        <input type="text" class="bh" value="" />
+                    </div>
+                    <div class="hbox">
+                        <label>Monat:</label>
+                        <select class="bm">
+                            <option value="" selected></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="hbox">
+                        <label>Tag:</label>
+                        <select class="bt">
+                            <option value="" selected></option>
+                            <!-- Options 1 through 31 -->
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="protoe" class="vbox" style="display:none;">
+                <hr class="separator" />
+                <div class="ed" style="font-weight:bold;"></div>
+                <hr class="separator" />
+                <div class="hbox">
+                    <div class="hbox">
+                        <label>Bandzählung:</label>
+                        <input type="text" class="eb" value="" />
+                    </div>
+                    <div class="hbox">
+                        <label>Jahr:</label>
+                        <input type="text" class="ej" value="" />
+                    </div>
+                    <div class="hbox">
+                        <label>Heft:</label>
+                        <input type="text" class="eh" value="" />
+                    </div>
+                    <div class="hbox">
+                        <label>Monat:</label>
+                        <select class="em">
+                            <option value="" selected></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="hbox">
+                        <label>Tag:</label>
+                        <select class="et">
+                            <option value="" selected></option>
+                            <!-- Options 1 through 31 -->
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container" class="container"></div>
+
+            <hr class="separator" />
+            <div style="text-align:right;">
+                <label for="lfd" style="font-weight:bold;">laufend</label>
+                <input type="checkbox" id="lfd" value="false">
+            </div>
+
+            <div class="button-box">
+                <button type="button" onclick="add(1);">weitere Gruppe hinzufügen</button>
+            </div>
+
+            <!-- Accept/Cancel Buttons -->
+            <div class="button-box">
+                <button type="button" onclick="if(onAccept()){alert('Accepted');}">Accept</button>
+                <button type="button" onclick="if(onCancel()){alert('Canceled');}">Cancel</button>
+            </div>
+        </div>
+    </form>
+        <script type="application/javascript">
+        var groupcount = 0;
+        var count = 0;
+        var groups;
+
+        function onLoad() {
+            var groups_serialized = runScript('__zdb_parse4024()');
+            alert('serialized: ' + groups_serialized)
+            groups = __zdb_deserialize_recursive(groups_serialized);
+            alert(groups[0]);
+            if (groups === null || groups === undefined) {
+                groups = [];
+            }
+            alert('groups length:' + groups.length);
+            groupcount = groups.length;
+            if (groupcount === 0) {
+                add(1);
+            } else {
+                add(groupcount);
+                insert();
+            }
+            return true;
+        }
+
+        function onAccept() {
+            runScript_afterCloseDialog('__zdb_paste4024');
+        }
+
+        function onCancel() {
+            return true;
+        }
+
+        function insert() {
+            var gint;
+            for (var g in groups) {
+                for (var i in groups[g]) {
+                    gint = parseInt(g, 10) + 1;
+                    alert(gint);
+                    document.getElementById(i + "" + gint).value = groups[g][i];
+                }
+            }
+            return true;
+        }
+
+        function add(howmany) {
+            var protob = document.getElementById('protob');
+            var protoe = document.getElementById('protoe');
+            var beginClone, endClone;
+            var container = document.getElementById('container');
+            for (var x = 1; x <= howmany; x++) {
+                count++;
+                // Create group container
+                var groupbox = document.createElement('div');
+                groupbox.setAttribute('id', 'g' + count);
+                groupbox.style.border = "1px solid #aaa";
+                groupbox.style.padding = "0.5em";
+                groupbox.style.marginBottom = "1em";
+
+                var caption = document.createElement('div');
+                caption.setAttribute('class', 'caption');
+                caption.textContent = count + '. Gruppe';
+                groupbox.appendChild(caption);
+                container.appendChild(groupbox);
+
+                beginClone = protob.cloneNode(true);
+                beginClone.setAttribute('id', 'b' + count);
+                beginClone.style.display = "block";
+                groupbox.appendChild(beginClone);
+
+                // Set IDs on individual input elements in the beginning block.
+                var bdElems = beginClone.querySelectorAll('.bd, .bb, .bj, .bh, .bm, .bt');
+                for (var i = 0; i < bdElems.length; i++) {
+                    var el = bdElems[i];
+                    var className = el.getAttribute('class');
+                    el.setAttribute('id', className + count);
+                    if (className === "bd") {
+                        el.textContent = "Beginn";
+                    }
+                }
+
+                endClone = protoe.cloneNode(true);
+                endClone.setAttribute('id', 'e' + count);
+                endClone.style.display = "block";
+                groupbox.appendChild(endClone);
+
+                // Set IDs on individual input elements in the end block.
+                var edElems = endClone.querySelectorAll('.ed, .eb, .ej, .eh, .em, .et');
+                for (var i = 0; i < edElems.length; i++) {
+                    var el = edElems[i];
+                    var className = el.getAttribute('class');
+                    el.setAttribute('id', className + count);
+                    if (className === "ed") {
+                        el.textContent = "Ende";
+                    }
+                }
+            }
+            // Set focus to first group's bb textbox
+            var firstBB = document.getElementById('bb1');
+            if (firstBB) firstBB.focus();
+            return true;
+        }
+        // Initialize the dialog on page load
+        //document.addEventListener("DOMContentLoaded", onLoad);
+        onLoad();
+        // ]]>
+    </script>
+</body>
+</html>

@@ -45,19 +45,6 @@ function zdb_MerkeIDN(){
     application.activeWindow.clipboard = idn_formatiert;
 }
 
-function zdb_BibliothekDefinieren(){
-    showDialog('ProfD\\Dialogs\\ZDB_dialogBibliothekDefinieren.html');
-}
-
-function zdb_DigiConfig(){
-    showDialog('ProfD\\Dialogs\\ZDB_dialogDigitalisierungConfig.html', 100,100,400,500);
-}
-
-function zdb_Erscheinungsverlauf(){
-    if(!__zdbCheckScreen(['MT','IT'],'Erscheinungsverlauf')) return;
-    showDialog('ProfD\\Dialogs\\ZDB_Erscheinungsverlauf.html', null);
-}
-
 function zdb_idListe() {
     var set = new SET(),
         t,
@@ -149,13 +136,6 @@ function zdb_MailboxsatzAnlegen(){
     application.activeWindow.title.startOfBuffer(false);
     application.activeWindow.title.lineDown(2, false);
     application.activeWindow.title.charRight(5, false);
-}
-
-function zdb_AutomatischeSuchBox(){
-    if(false == __zdbCheckScreen(['MT','IT','IE'],'AutomatischeSuchBox')) return false;
-    anfangsfenster = application.activeWindow.windowID; // globale Variable, die vom Skript HoleIDN verwendet wird
-    showDialog('ProfD\\Dialogs\\ZDB_AutomatischeSuchBox.html');
-    return true;
 }
 
 function zdb_HoleIDN(){

@@ -12,6 +12,7 @@ source=/ttlFiles/zdb_titeldatenkopie_digi.ttl, destination=%APPDATA%\OCLC\WinIBW
 source=/ttlFiles/zdb_titeldatenkopie_parallel.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie_parallel.ttl
 source=/ttlFiles/zdb_titeldatenkopie.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie.ttl
 
+source=/Dialogs/ZDB_DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_DialogFunctions.js
 source=/Dialogs/W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogFunctions.js
 source=/Dialogs/W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyle.css
 source=/Dialogs/W4DialogStyleKxp.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyleKxp.css
@@ -19,5 +20,6 @@ source=/Dialogs/ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDBStyl
 source=/Dialogs/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\zdb_verlauf.gif
 source=/Dialogs/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogBibliothekDefinieren.html
 source=/Dialogs/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogDigitalisierungConfig.html
-//source=/Dialogs/kxp_suche_ersetze_dialog.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\kxp_suche_ersetze_dialog.html
-//source=/Dialogs/kxp_suche_ersetze_dialog.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\kxp_suche_ersetze_dialog.js
+source=/Dialogs/ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogErscheinungsverlauf.html
+
+source=/default_prefs/defaultScriptMenus.xml, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptMenus.xml
