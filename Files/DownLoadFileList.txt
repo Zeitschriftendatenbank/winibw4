@@ -21,5 +21,3 @@ source=/Dialogs/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\zdb_
 source=/Dialogs/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogBibliothekDefinieren.html
 source=/Dialogs/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogDigitalisierungConfig.html
 source=/Dialogs/ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogErscheinungsverlauf.html
-
-source=/default_prefs/defaultScriptMenus.xml, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptMenus.xml
