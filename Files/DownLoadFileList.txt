@@ -1,23 +1,22 @@
-source=/SyntaxColorPrefs/syntaxColor_Prefs.txt, destination=%APPDATA%\OCLC\WinIBW4\SyntaxColorPrefs\syntaxColor_Prefs.txt
-
-source=/datenmasken_zdb/maske01.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske01.txt
-source=/datenmasken_zdb/maske03.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske03.txt
-source=/datenmasken_zdb/maskeAdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAdxz.txt
-source=/datenmasken_zdb/maske02.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske02.txt
-source=/datenmasken_zdb/maskeOdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeOdxz.txt
+source=/datenmasken_zdb/maskeAbxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAbxz_zdb.txt
+source=/datenmasken_zdb/maskeObxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeObxz_zdb.txt
+source=/datenmasken_zdb/maskeAbxzTr_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAbxzTr_zdb.txt
+source=/datenmasken_zdb/maskeAdxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAdxz_zdb.txt
+source=/datenmasken_zdb/maskeOdxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeOdxz_zdb.txt
 source=/exemplarmasken_zdb/exmuster_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\exemplarmasken_zdb\exmuster_zdb.txt
 
-source=/ttlFiles/csvDefinition.txt, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\csvDefinition.txt
-source=/ttlFiles/zdb_titeldatenkopie_digi.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie_digi.ttl
-source=/ttlFiles/zdb_titeldatenkopie_parallel.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie_parallel.ttl
-source=/ttlFiles/zdb_titeldatenkopie.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles\zdb_titeldatenkopie.ttl
+source=/ttlFiles_zdb/csvDefinition.txt, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\csvDefinition.txt
+source=/ttlFiles_zdb/zdb_titeldatenkopie_digi.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\zdb_titeldatenkopie_digi.ttl
+source=/ttlFiles_zdb/zdb_titeldatenkopie_parallel.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\zdb_titeldatenkopie_parallel.ttl
+source=/ttlFiles_zdb/zdb_titeldatenkopie.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\zdb_titeldatenkopie.ttl
 
-source=/Dialogs/ZDB_DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_DialogFunctions.js
-source=/Dialogs/W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogFunctions.js
-source=/Dialogs/W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyle.css
-source=/Dialogs/W4DialogStyleKxp.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyleKxp.css
-source=/Dialogs/ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDBStyle.css
-source=/Dialogs/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\zdb_verlauf.gif
-source=/Dialogs/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogBibliothekDefinieren.html
-source=/Dialogs/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogDigitalisierungConfig.html
-source=/Dialogs/ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogErscheinungsverlauf.html
+source=/Dialogs_zdb/ZDB_DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_DialogFunctions.js
+source=/Dialogs_zdb/W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\W4DialogFunctions.js
+source=/Dialogs_zdb/W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\W4DialogStyle.css
+source=/Dialogs_zdb/W4DialogStyleKxp.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\W4DialogStyleKxp.css
+source=/Dialogs_zdb/ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDBStyle.css
+source=/Dialogs_zdb/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\zdb_verlauf.gif
+source=/Dialogs_zdb/ZDB_dialogCsvImportTemplate.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogCsvImportTemplate.html
+source=/Dialogs_zdb/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogBibliothekDefinieren.html
+source=/Dialogs_zdb/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogDigitalisierungConfig.html
+source=/Dialogs_zdb/ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogErscheinungsverlauf.html

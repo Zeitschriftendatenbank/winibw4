@@ -17,8 +17,13 @@ function CSV() {
     this.isOpen = false;
     this.csvFilename = false;
     this.logger;
+    this.delimiter = ";";
+    this.endLine = false;
+    this.startLine;
+    this.endLine;
 
-    if ((application.activeWindow.getVariable("scr") == "") || ("#7A#8A#FI#".indexOf(application.activeWindow.getVariable("scr")) < 0)) {
+    if ((activeWindow.getVariable("scr") == "") || ("#7A#8A#FI#".indexOf(activeWindow.getVariable("scr")) < 0)) {
+
         throw ("Sie müssen sich eingeloggt haben um mit diesem Skript arbeiten zu können.");
     }
 }
@@ -66,13 +71,19 @@ CSV.prototype =
             // for each line of the csv file
             var row = 0;
 
-            while ((aLine = this.csv.readLine()) != null) {
+            for (aLine = ""; !this.csv.isEOF();) {
+                aLine = this.csv.readLine();
                 row += 1;
-                if (row > this.endLine) {
-                    break;
+                if (this.endLine) {
+                    //alert('end: ' + this.endLine);
+                    if (row > parseInt(this.endLine)) {
+                        break;
+                    }
                 }
+                //alert(row + " >= " + theStart + " == " + aLine);
                 // when aLine is empty memory error occours
                 if (row >= theStart && aLine != "") {
+
                     // call CSVToArray() function
 
                     this.lineArray = this.__csvToArray(aLine);
@@ -85,16 +96,16 @@ CSV.prototype =
                         this.callback();
                         continue;
                     }
-                    application.activeWindow.setVariable("P3GPP", "");
+                    activeWindow.setVariable("P3GPP", "");
 
                     // search for zdb-id
-                    application.activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key], false);
+                    activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key], false);
 
-                    idn = application.activeWindow.getVariable("P3GPP");
+                    idn = activeWindow.getVariable("P3GPP");
                     cbsMessage = this.__csvGetMessages();
 
                     if ("" == idn || cbsMessage) {
-                        this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + " " + cbsMessage + ';' + application.activeWindow.status);
+                        this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + " " + cbsMessage + ';' + activeWindow.status);
                     }
                     else {
                         this.callback();
@@ -113,46 +124,46 @@ CSV.prototype =
             var dateString = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear().toString().substr(-2) + ' ' + d.getHours() + ':' + d.getMinutes() + ':';
             var seconds = d.getSeconds();
             seconds = seconds <= 9 ? '0' + seconds : seconds;
-            this.logger.log(dateString + seconds + ';' + application.activeWindow.getVariable("P3GPP") + ';' + this.line[this.id_key] + ';' + message);
+            this.logger.log(dateString + seconds + ';' + activeWindow.getVariable("P3GPP") + ';' + this.line[this.id_key] + ';' + message);
         },
     __csvSaveBuffer:
         function (save, message) {
             message = "\"" + message + "\"";
             var cbsMessage;
-            if (application.activeWindow.status == "OK" && save == true) {
-                application.activeWindow.simulateIBWKey("FR");
+            if (activeWindow.status == "OK" && save == true) {
+                activeWindow.simulateIBWKey("FR");
                 cbsMessage = this.__csvGetMessages();
                 if (cbsMessage) message = message + ";" + cbsMessage;
-                if (application.activeWindow.getVariable("scr") != "8A") {
+                if (activeWindow.getVariable("scr") != "8A") {
                     //	return undone but write error to a log file
-                    this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status + ";" + message);
-                    application.activeWindow.simulateIBWKey("FE");
+                    this.__csvLOG("Datensatz kann nicht gespeichert werden;" + activeWindow.status + ";" + message);
+                    activeWindow.simulateIBWKey("FE");
                     return false;
                 }
                 else {
-                    this.__csvLOG("Datensatz wurde gespeichert;" + application.activeWindow.status + ";" + message);
+                    this.__csvLOG("Datensatz wurde gespeichert;" + activeWindow.status + ";" + message);
                     return true;
                 }
             }
             else if (save == false) {
                 //	return undone but write error to a log file
-                this.__csvLOG("Datensatz wurde verlassen und nicht gespeichert;" + application.activeWindow.status + ";" + message);
-                application.activeWindow.simulateIBWKey("FE");
+                this.__csvLOG("Datensatz wurde verlassen und nicht gespeichert;" + activeWindow.status + ";" + message);
+                activeWindow.simulateIBWKey("FE");
                 return false;
             }
             else {
                 //	return undone but write error to a log file
-                this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status + ";" + message);
-                application.activeWindow.simulateIBWKey("FE");
+                this.__csvLOG("Datensatz kann nicht gespeichert werden;" + activeWindow.status + ";" + message);
+                activeWindow.simulateIBWKey("FE");
                 return false;
             }
         },
     __csvGetMessages:
         function () {
             var messageText = "";
-            if (application.activeWindow.messages.count > 0) {
-                for (var i = 0; i < application.activeWindow.messages.count; i++) {
-                    messageText += application.activeWindow.messages.item(i).text + ";";
+            if (activeWindow.messages.count > 0) {
+                for (var i = 0; i < activeWindow.messages.count; i++) {
+                    messageText += activeWindow.messages.item(i).text + ";";
                 }
             }
             else {
@@ -164,6 +175,9 @@ CSV.prototype =
         function (strData, delimit) {
             var delimiter = delimit || this.delimiter;
             // in case last character of line is not the delimiter
+            if (strData.length > 0 && strData.charAt(strData.length - 1) !== delimiter) {
+                strData = strData + delimiter;
+            }
             if (strData.substring(strData.length) != delimiter) {
                 strData = strData + delimiter;
             }

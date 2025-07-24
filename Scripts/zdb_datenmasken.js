@@ -1,26 +1,26 @@
-function zdb_Datenmaske1()
+function zdb_DatenmaskeAbxz()
 {
-    __DatenmaskeEinfuegen("maske01.txt");
+    __DatenmaskeEinfuegen("\\datenmasken_zdb\\maskeAbxz_zdb.txt");
 }
 
-function zdb_Datenmaske2()
+function zdb_DatenmaskeAbxzTr()
 {
-    __DatenmaskeEinfuegen("maske02.txt");
+    __DatenmaskeEinfuegen("\\datenmasken_zdb\\maskeAbxzTr_zdb.txt");
 }
 
-function zdb_Datenmaske3()
+function zdb_DatenmaskeObxz()
 {
-    __DatenmaskeEinfuegen("maske03.txt");
+    __DatenmaskeEinfuegen("\\datenmasken_zdb\\maskeObxz_zdb.txt");
 }
 
 function zdb_DatenmaskeAdxz()
 {
-    __DatenmaskeEinfuegen("maskeAdxz.txt");
+    __DatenmaskeEinfuegen("\\datenmasken_zdb\\maskeAdxz_zdb.txt");
 }
 
 function zdb_DatenmaskeOdxz()
 {
-    __DatenmaskeEinfuegen("maskeOdxz.txt");
+    __DatenmaskeEinfuegen("\\datenmasken_zdb\\maskeOdxz_zdb.txt");
 }
 
 /*function zdb_nutzerMaske() {

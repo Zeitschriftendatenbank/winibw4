@@ -1,8 +1,8 @@
-//source=W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogFunctions.js
-//source=W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\W4DialogStyle.css
 source=ZDB_DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_DialogFunctions.js
 source=ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDBStyle.css
 source=zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\zdb_verlauf.gif
+source=ZDB_dialogCsvImportTemplate.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogCsvImportTemplate.html
 source=ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogBibliothekDefinieren.html
 source=ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogDigitalisierungConfig.html
 source=ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogErscheinungsverlauf.html
+source=ZDB_dialogEZBAccountDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs\ZDB_dialogEZBAccountDefinieren.html

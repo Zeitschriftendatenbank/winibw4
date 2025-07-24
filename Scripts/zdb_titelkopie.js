@@ -1,6 +1,6 @@
 function __zdbNormdatenKopie(){
     // Titelkopie auf zdb_titeldatenkopie.ttl setzen
-    application.activeWindow.titleCopyFile = '%__APPDIR__%ttFiles\\gnd_title.ttl';
+    application.activeWindow.titleCopyFile = '%__APPDIR__%ttFiles_zdb\\gnd_title.ttl';
 
     application.overwriteMode = false;
     var idn = application.activeWindow.variable('P3GPP'),
@@ -29,7 +29,7 @@ function __zdbTiteldatenKopie(){
     var idn = application.activeWindow.variable('P3GPP');
     application.activeWindow.command('show d', false);
     // Titelkopie auf zdb_titeldatenkopie.ttl setzen
-    application.activeWindow.titleCopyFile = '%__APPDIR__%ttFiles\\zdb_titeldatenkopie.ttl';
+    application.activeWindow.titleCopyFile = '%__APPDIR__%ttFiles_zdb\\zdb_titeldatenkopie.ttl';
     application.activeWindow.copyTitle();
     application.activeWindow.command('ein t', false);
     application.activeWindow.title.insertText(" *** Titeldatenkopie *** \n");
@@ -150,7 +150,7 @@ function zdb_Digitalisierung() {
     var titlecopyfileStandard = application.getProfileString('winibw.filelocation', 'titlecopy', '');
     var idn = application.activeWindow.variable('P3GPP');
     var showComment = " *** Titeldatenkopie Digitalisierung *** \n"
-    if(!__zdbOnlineRessource('%__APPDIR__%ttFiles\\zdb_titeldatenkopie_digi.ttl',showComment,['ld','dm'],true)) return false;
+    if(!__zdbOnlineRessource('%__APPDIR__%ttFiles_zdb\\zdb_titeldatenkopie_digi.ttl',showComment,['ld','dm'],true)) return false;
 
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText("\n4256 Elektronische Reproduktion von!" + idn + "!\n");
@@ -175,7 +175,7 @@ function zdb_Parallelausgabe(){
     var titlecopyfileStandard = application.getProfileString('winibw.filelocation', 'titlecopy', '');
     var idn = application.activeWindow.variable('P3GPP');
     var showComment = " *** Titeldatenkopie Parallelausgabe *** \n";
-    if(!__zdbOnlineRessource('%__APPDIR__%ttFiles\\zdb_titeldatenkopie_parallel.ttl',showComment,[],false)) return false;
+    if(!__zdbOnlineRessource('%__APPDIR__%ttFiles_zdb\\zdb_titeldatenkopie_parallel.ttl',showComment,[],false)) return false;
 
     // Kategorie 4234: anlegen und mit Text '4243 Erscheint auch als$nDruckausgabe![...IDN...]!' befüllen
     application.activeWindow.title.endOfBuffer(false);
@@ -335,14 +335,14 @@ function __zdbOnlineRessource(copyFile, showComment, add0600, digi) {
         application.activeWindow.title.insertText("\n4237 "+application.getProfileString('zdb.userdata.digiconfig', '4237', ''));
     }
     // Kategorie 4212 mit neuem Vortext
-    if(_rec['046C'])
-    {
-        for(var c in _rec['046C'])
-        {
-            if(!_rec['046C'].hasOwnProperty(c)) {continue;}
-            application.activeWindow.title.insertText("\n4212 Abweichender Titel: "+_rec['046C'][c]['a'][0]);
+    if (_rec['046C'] && !__zdbIsRda()) {
+        __zdbDeleteField("4212");
+        for (var c in _rec['046C']) {
+            if (!_rec['046C'].hasOwnProperty(c)) { continue; }
+            application.activeWindow.title.insertText("\n4212 Abweichender Titel: " + _rec['046C'][c]['a'][0]);
         }
     }
+
     if(digi === true)
     {
         application.activeWindow.title.insertText("\n4233 "+application.getProfileString('zdb.userdata.digiconfig', '4233', ''));
@@ -412,6 +412,18 @@ function __zdbFeld424XSet(_felder424X)
     }
 }
 
+function __zdbIsRda() {
+    return ('rda' == _rec['010E'][0]['e'][0]) ? true : false;
+}
+
+function __zdbDeleteField(tag){
+    var y = 0;
+    while('' != application.activeWindow.title.findTag(tag,y, false, true, true))
+    {
+        application.activeWindow.title.deleteLine(1);
+        y++;
+    }
+}
 
 function __zdbFeld424XGet()
 {

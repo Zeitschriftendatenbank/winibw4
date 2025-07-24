@@ -5,7 +5,7 @@ if (Array.isArray == null) {
 }
 
 if (!Array.prototype.indexOf) {
-    Array.indexOf = function(searchElement, fromIndex) {
+    Array.indexOf = function (searchElement, fromIndex) {
         var k;
         if (this == null) {
             throw new TypeError('"this" is null or not defined');
@@ -30,150 +30,45 @@ if (!Array.prototype.indexOf) {
     };
 }
 
-function GetScriptEngineInfo(){
-   var s;
-   s = ""; // Build string with necessary info.
-   s += ScriptEngine() + " Version ";
-   s += ScriptEngineMajorVersion() + ".";
-   s += ScriptEngineMinorVersion() + ".";
-   s += ScriptEngineBuildVersion();
-   alert(s);
+function GetScriptEngineInfo() {
+    var s;
+    s = ""; // Build string with necessary info.
+    s += ScriptEngine() + " Version ";
+    s += ScriptEngineMajorVersion() + ".";
+    s += ScriptEngineMinorVersion() + ".";
+    s += ScriptEngineBuildVersion();
+    alert(s);
 }
 
 
 function zdb_AutomatischeSuchBox() {
     if (false == __zdbCheckScreen(['MT', 'IT', 'IE'], 'AutomatischeSuchBox')) return false;
     anfangsfenster = application.activeWindow.windowID; // globale Variable, die vom Skript HoleIDN verwendet wird
-    showDialog('ProfD\\Dialogs\\ZDB_AutomatischeSuchBox.html');
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_AutomatischeSuchBox.html');
     return true;
 }
 
 function zdb_BibliothekDefinieren() {
-    showDialog('ProfD\\Dialogs\\ZDB_dialogBibliothekDefinieren.html');
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogBibliothekDefinieren.html');
 }
 
 function zdb_DigiConfig() {
-    showDialog('ProfD\\Dialogs\\ZDB_dialogDigitalisierungConfig.html', 100, 100, 400, 500);
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogDigitalisierungConfig.html', 400, 100, 400, 500);
 }
 
 function zdb_Erscheinungsverlauf() {
-    showDialog('ProfD\\Dialogs\\ZDB_dialogErscheinungsverlauf.html', 100, 100, 400, 500);
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 400, 100, 600, 500);
 }
 
-
-
-function __zdb_parse4024() {
-    //alert('zdb_parse4024');
-    //__zeigeEigenschaften(o);
-    //alert('test serialize: ' + __zdb_serialize_recursive([{ bj: '1995' }]));
-    var feld4024, split4024, bb, bj, bh, bm, bt, eb, ej, eh, em, et, group, splitter;
-    var groups = [];
-    var getChained = function (chain, splitter, where) {
-        //alert('getChained: ' + chain);
-        var split;
-        if (splitter.test(chain)) {
-            split = chain.split('/');
-            return ('b' === where) ? split[0] : split[split.length - 1];
-        } else {
-            return chain;
-        }
-    }
-    if ("" !== (feld4024 = activeWindow.title.findTag('4024', 0, false, true, false))) {
-        if ("-" === feld4024.substr(feld4024.length - 1)) {
-            groups.push({lfd: '-'});
-        }
-        split4024 = feld4024.split('$0;');
-        splitter = /\$/;
-        for (var s in split4024) {
-            if(split4024.hasOwnProperty()) {
-                continue;
-            }
-            //alert('s '+ s);
-            group = {};
-            if (bb = split4024[s].match(/\$d([^\$]+)/)) {
-                group['bb'] = getChained(bb[1], splitter, 'b');
-            }
-            if (bj = split4024[s].match(/\$j([^\$]+)/)) {
-                group['bj'] = getChained(bj[1], splitter, 'b');
-            }
-            if (bh = split4024[s].match(/\$e([^\$]+)/)) {
-                group['bh'] = getChained(bh[1], splitter, 'b');
-            }
-            if (bm = split4024[s].match(/\$c([^\$]+)/)) {
-                group['bm'] = getChained(bm[1], splitter, 'b');
-            }
-            if (bt = split4024[s].match(/\$b([^\$]+)/)) {
-                group['bt'] = getChained(bt[1], splitter, 'b');
-            }
-            if (eb = split4024[s].match(/\$n([^\$]+)/)) {
-                group['eb'] = getChained(eb[1], splitter, 'e');
-            }
-            if (ej = split4024[s].match(/\$k([^\$]+)/)) {
-                group['ej'] = getChained(ej[1], splitter, 'e');
-                if (2 === group['ej'].length) {
-                    group['ej'] = ej[1].substr(0, 2) + group['ej'];
-                }
-            }
-            if (eh = split4024[s].match(/\$o([^\$]+)/)) {
-                group['eh'] = getChained(eh[1], splitter, 'e');
-            }
-            if (em = split4024[s].match(/\$m([^\$]+)/)) {
-                group['em'] = getChained(em[1], splitter, 'e');
-            }
-            if (et = split4024[s].match(/\$l([^\$]+)/)) {
-                group['et'] = getChained(et[1], splitter, 'e');
-            }
-            //__zeigeEigenschaften(group);
-            groups.push(group);
-        }
-    }
-    //activeWindow.clipboard = __zdb_serialize_recursive(groups);
-    utility.sentDataToDialog(__zdb_serialize_recursive(groups));
-}
-
-/**
- * Recursively serializes data (arrays, objects, or primitive types) into a string.
- * Arrays are joined with '@@@'. Objects are converted to key:::value pairs,
- * also joined with '@@@'.  Nested arrays and objects are recursively serialized.
- * Primitive types are converted to strings.  Avoids circular references.
- *
- * @param {any} data The data to serialize.
- * @param {Array} [seen=[]] An array to track visited objects to prevent circular references.
- * @returns {string} The serialized string representation of the data.
- */
-function __zdb_serialize_recursive(data, seen) {
-    seen = seen || [];
-
-    if (typeof data === 'object' && data !== null) {
-        if (Array.indexOf(data, seen) !== -1) {
-            return "[Circular Reference]"; // Prevent circular references
-        }
-        seen.push(data);
-    }
-
-    if (Array.isArray(data)) {
-        var serializedElements = [];
-        for (var i = 0; i < data.length; i++) {
-            serializedElements.push('A:' + __zdb_serialize_recursive(data[i], seen)); // Prefix 'A:' for arrays
-        }
-        return serializedElements.join('@@@');
-    } else if (typeof data === 'object' && data !== null) {
-        var result = [];
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                result.push('O:' + key + ':::' + __zdb_serialize_recursive(data[key], seen)); // Prefix 'O:' for objects
-            }
-        }
-        return result.join('@@@');
-    } else {
-        return 'P:' + String(data); // Prefix 'P:' for primitive types
-    }
+function __zdbGet4024() {
+    var feld4024 = application.activeWindow.title.findTag('4024', 0, false, true, false);
+    utility.sentDataToDialog(feld4024);
 }
 
 function __zdb_paste4024(o) {
-    __zeigeEigenschaften(o);
+    //__zeigeEigenschaften(o);
     var bb, bj, bh, bm, bt, eb, ej, eh, em, et, feld4024, _feld4024 = [];
-    for (var g = 1; g <= count; g++) {
+    for (var g = 0; g <= o.count; g++) {
         feld4024 = "";
         bb = "";
         bj = "";
@@ -185,34 +80,34 @@ function __zdb_paste4024(o) {
         eh = "";
         em = "";
         et = "";
-        if ("" !== (bb = document.getElementById('bb' + g).value)) {
+        if ("" !== (bb = o['bb' + g])) {
             feld4024 += "$d" + bb;
         }
-        if ("" !== (bh = document.getElementById('bh' + g).value)) {
+        if ("" !== (bh = o['bh' + g])) {
             feld4024 += "$e" + bh;
         }
-        if ("" !== (bt = document.getElementById('bt' + g).value)) {
+        if ("" !== (bt = o['bt' + g])) {
             feld4024 += "$b" + bt;
         }
-        if ("" !== (bm = document.getElementById('bm' + g).value)) {
+        if ("" !== (bm = o['bm' + g])) {
             feld4024 += "$c" + bm;
         }
-        if ("" !== (bj = document.getElementById('bj' + g).value)) {
+        if ("" !== (bj = o['bj' + g])) {
             feld4024 += "$j" + bj;
         }
-        if ("" !== (eb = document.getElementById('eb' + g).value)) {
+        if ("" !== (eb = o['eb' + g])) {
             feld4024 += "$n" + eb;
         }
-        if ("" !== (eh = document.getElementById('eh' + g).value)) {
+        if ("" !== (eh = o['eh' + g])) {
             feld4024 += "$o" + eh;
         }
-        if ("" !== (et = document.getElementById('et' + g).value)) {
+        if ("" !== (et = o['et' + g])) {
             feld4024 += "$l" + et;
         }
-        if ("" !== (em = document.getElementById('em' + g).value)) {
+        if ("" !== (em = o['em' + g])) {
             feld4024 += "$m" + em;
         }
-        if ("" !== (ej = document.getElementById('ej' + g).value)) {
+        if ("" !== (ej = o['ej' + g])) {
             feld4024 += "$k" + ej;
         }
         if ("" !== feld4024) _feld4024.push(feld4024);
@@ -227,7 +122,7 @@ function __zdb_paste4024(o) {
         titleField.insertText("\n");
     }
     titleField.insertText('4024 ' + _feld4024.join('$0;'));
-    if (document.getElementById('lfd').checked) {
+    if ('true' == o.lfd) {
         var ende = _feld4024[_feld4024.length - 1];
         if (ende.match(/\$o|\$l|\$m|\$n|\$k/)) {
             alert("Da ein Wert in der letzten Endgruppe vorhanden ist, wird die Angabe 'laufend' ignoriert.");
@@ -239,4 +134,112 @@ function __zdb_paste4024(o) {
         titleField.insertText("\n");
     }
     return true;
+}
+
+function zdb_csvImportTemplate() {
+    showDialog('H:\\WinIBW4\\Files\\Dialogs_zdb\\ZDB_dialogCsvImportTemplate.html', 400, 100, 500, 500);
+}
+
+function __getDatenmaskenPath() {
+    if (application.activeWindow.getVariable("system") != "ZENTRALKATALOG" && application.activeWindow.getVariable("system") != "ILTIS-APPROVAL") {
+        alert(application.activeWindow.getVariable("system"));
+        return "datenmasken_kxp";
+    }
+    return "datenmasken_zdb";
+}
+
+function __zdb_csvImportTemplate_load(dir) {
+    try {
+        var arNames = [];
+        var theDir = getSpecialDirectory("ProfD");
+        theDir.append(dir);
+        if (theDir.exists()) {
+            var theDirEnum = theDir.directoryEntries;
+            while (theDirEnum.hasMoreElements()) {
+                var theItem = theDirEnum.getNext();
+                if (theItem.isFile()) {
+                    var found,
+                        i;
+                    for (found = false, i = 0; (i < arNames.length) && !found; i++) {
+                        found = (arNames[i] == theItem.leafName);
+                    }
+                    if (!found) {
+                        arNames.push(theItem.leafName);
+                    }
+                }
+            }
+        }
+        return arNames.sort();
+    } catch (e) { alert('LoadFiles: ' + e.name + ': ' + e.message); }
+}
+
+function __zdb_csvImportTemplate_loadDatenmasken() {
+    utility.sentDataToDialog(__zdb_csvImportTemplate_load("datenmasken_eigene").join('@@@'));
+}
+function __zdb_csvImportTemplate_loadCsv() {
+    utility.sentDataToDialog(__zdb_csvImportTemplate_load('csv').join('@@@'));
+}
+
+function __zdb_csvImportTemplate_runImport(o) {
+    var theFileInput = utility.newFileInput(),
+        norm = '',
+        counter = 1,
+        header,
+        template,
+        csv = new CSV();
+
+    var paths = [
+        "\\datenmasken_eigene\\",
+        "\\datenmasken_kxp\\",
+        "\\datenmasken_zdb\\"
+    ];
+    var found = false;
+    for (var i = 0; i < paths.length; i++) {
+        if (theFileInput.openSpecial("ProfD", paths[i] + o.idFileListdatenmasken)) {
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        alert("Datei " + o.idFileListdatenmasken + " wurde nicht gefunden.");
+        return;
+    }
+    for (template = ""; !theFileInput.isEOF();) {
+        template += theFileInput.readLine() + "\n"
+    }
+    theFileInput.close();
+
+    var importer = function () {
+        var fillTemplate = function (template, line) {
+            //__zeigeEigenschaften(line);
+            for (var col in line) {
+                if (!line.hasOwnProperty(col)) continue;
+                if ('' == col) continue;
+                var re = new RegExp('\\{([^{]*?)@' + col.replace('$', '\\$') + '@([^{]*?)}|\\{' + col.replace('$', '\\$') + '}', "g");
+                if ('' == line[col]) {
+                    template = template.replace(re, "");
+                } else {
+                    template = template.replace(re, "$1" + line[col] + "$2");
+                }
+            }
+            return template;
+        };
+        activeWindow.command("e" + norm, false);
+        csv.line['##'] = counter++;
+        activeWindow.title.insertText(fillTemplate(template, csv.line));
+        if ('false' == o.idCheckboxTest) csv.__csvSaveBuffer(true, 'Importiere Template mit Zähler ' + counter);
+    };
+
+
+    csv.csvFilename = o.idFileListcsv;
+    csv.delimiter = ('t' == o.separator) ? "\t" : o.separator;
+    csv.startLine = o.start || 2;
+    if ('true' == o.idCheckboxTest) {
+        csv.endLine = csv.startLine;
+    }
+    norm = ('true' == o.idCheckboxNorm) ? ' n' : '';
+    counter = o.counter;
+    header = csv.__csvGetHeader();
+    csv.__csvSetProperties(importer, header, '', false, false, false, 'LOG_isil_import.txt');
+    csv.__csvAPI();
 }
