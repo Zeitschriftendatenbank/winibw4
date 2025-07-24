@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>Digitalisierung konfigurieren</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./W4DialogStyle.css" />
+    <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
+    <script src="./W4DialogFunctions.js"></script>
+    <script type="application/javascript">
+        var fields = ["1101", "2050", "2051", "4085", "4233", "4238a", "4238b", "4238c", "4238d", "4238e", "4238f", "4238g", "4238h", "4238m", "4238n"];
+
+        function loadConfig() {
+            for (var f in fields) {
+                document.getElementById(fields[f]).value = getProfileString("zdb.userdata.digiconfig", fields[f], "");
+            }
+        }
+
+        function saveConfig() {
+            if ("" == document.getElementById("1101").value) {
+                document.getElementById("1101").value = "cr";
+            }
+            if (!document.getElementById("4085").value.match(/^=u.*/)) {
+                document.getElementById("4085").value = "=u " + document.getElementById("4085").value;
+            }
+            for (var f in fields) {
+                writeProfileString("zdb.userdata.digiconfig", fields[f], document.getElementById(fields[f]).value);
+            }
+            closeDialog();
+        }
+        setTimeout(function () { loadConfig(); }, 100);
+    </script>
+</head>
+
+<body>
+    <p>
+        Bitte tragen Sie Ihre Angaben in die Felder ein und speichern Sie mit dem Knopf "OK". Die Inhalte werden
+        vom ZDB-Skripte "Digitalisierung" automatisch übernommen.
+    </p>
+    <form id="digitalisierungConfig">
+        <div class="m-4">
+            <label for="1101">1101:</label>
+        </div>
+        <input type="text" id="1101" name="1101" value="" size="70" />
+
+        <div class="m-4">
+            <label for="2050">2050:</label>
+        </div>
+        <input type="text" id="2050" name="2050" value="" size="70" />
+
+        <div class="m-4">
+            <label for="2051">2051:</label>
+        </div>
+        <input type="text" id="2051" name="2051" value="" size="70" />
+
+        <div class="m-4">
+            <label for="4085">4085:</label>
+        </div>
+        <input type="text" id="4085" name="4085" value="" size="70" />
+
+        <div class="m-4">
+            <label for="4233">4233:</label>
+        </div>
+        <input type="text" id="4233" name="4233" value="" size="70" />
+
+        <div class="m-4">
+            <label for="a">4238 $a: [Online-Ausgabe/CD-ROM-Ausgabe/Mikrofilm-Ausgabe]</label>
+        </div>
+        <input type="text" id="4238a" name="4238a" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $b: [Reproduktionsort]</label>
+        </div>
+        <input type="text" id="4238b" name="4238b" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $c: [Digitalisierende Institution]</label>
+        </div>
+        <input type="text" id="4238c" name="4238c" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $d: [Erscheinungsdaten der Reproduktion (nicht normiert)]</label>
+        </div>
+        <input type="text" id="4238d" name="4238d" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $e: [Umfangsangabe der Reproduktion]</label>
+        </div>
+        <input type="text" id="4238e" name="4238e" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $f: [Ungezählter Gesamttitel der Reproduktion]</label>
+        </div>
+        <input type="text" id="4238f" name="4238f" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $g: [Zählung der Reproduktion in Sortierform (JJJJ) - Anfang]</label>
+        </div>
+        <input type="text" id="4238g" name="4238g" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $h: [Zählung der Reproduktion in Sortierform (JJJJ) - Ende]</label>
+        </div>
+        <input type="text" id="4238h" name="4238h" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $m: [Zählung der reproduzierten Teile (Bände, Jahrgänge) in Vorlageform]</label>
+        </div>
+        <input type="text" id="4238m" name="4238m" value="" size="70" />
+
+
+        <div class="m-4">
+            <label for="a">4238 $n: [Fußnote zur Reproduktion]</label>
+        </div>
+        <input type="text" id="4238n" name="4238n" value="" size="70" />
+
+        <div style="margin-top:40px; margin-left: 220px">
+            <button type="button" onclick="saveConfig();">
+                <lang>IDS_OK</lang>
+            </button>
+            <button type="button" onclick="closeDialog();">
+                <lang>IDS_CLOSE</lang>
+            </button>
+
+
+    </form>
+</body>
+
+</html>

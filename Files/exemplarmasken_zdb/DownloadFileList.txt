@@ -1,0 +1,1 @@
+source=/exemplarmasken_zdb/exmuster_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\exemplarmasken_zdb\exmuster_zdb.txt
