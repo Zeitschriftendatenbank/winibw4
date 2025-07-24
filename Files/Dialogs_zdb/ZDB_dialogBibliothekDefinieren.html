@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -42,4 +43,50 @@
     </form>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothek definieren</title>
+    <link rel="stylesheet" type="text/css" href="./W4DialogStyle.css" />
+    <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
+    <script src="./W4DialogFunctions.js"></script>
+    <script type="application/javascript">
+        function getIdn() {
+            document.getElementById("idnInput").value = getProfileString("zdb.userdata", "eigeneBibliothek", "");
+            return true;
+        }
+        function saveIdn() {
+            var idn_input = document.getElementById("idnInput").value;
+            if (idn_input.match(/^(\d{8,9}[\d|x|X])$/gi)) {
+                writeProfileString("zdb.userdata", "eigeneBibliothek", idn_input);
+                closeDialog();
+            } else if (idn_input.length == 0) {
+                writeProfileString("zdb.userdata", "eigeneBibliothek", "");
+                closeDialog();
+            } else {
+                alert("Der eingegebene Wert kann keine IDN sein.")
+            }
+        }
+    </script>
+    <script type="text/javascript">setTimeout(function () { getIdn(); }, 100);</script>
+</head>
+
+<body>
+    <h2>Bibliothek definieren</h2>
+    <p>Bitte geben Sie die IDN des Bibliothekssatzes an.</p>
+    <p>Leere Eingabe und "OK" löscht die gespeicherte IDN.</p>
+
+    <form id="BibliothekDefinierenForm">
+        <label for="idnInput">IDN eingeben:</label>
+        <input type="text" id="idnInput" name="idnInput" size="40" />
+        <br>
+        <button type="submit" onclick="saveIdn();">OK</button>
+        <button type="button" onclick="closeDialog();">Abbrechen</button>
+    </form>
+</body>
+
+>>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 </html>

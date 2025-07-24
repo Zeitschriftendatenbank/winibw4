@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 source=/datenmasken_zdb/maske01.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske01.txt
 source=/datenmasken_zdb/maske03.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske03.txt
 source=/datenmasken_zdb/maske02.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske02.txt
 source=/datenmasken_zdb/maskeAdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAdxz.txt
+=======
+source=/datenmasken_zdb/maske01.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske01.txt
+source=/datenmasken_zdb/maske03.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske03.txt
+source=/datenmasken_zdb/maske02.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maske02.txt
+source=/datenmasken_zdb/maskeAdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAdxz.txt
+>>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 source=/datenmasken_zdb/maskeOdxz.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeOdxz.txt

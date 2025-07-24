@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 datenmasken_zdb
 Dialogs_zdb
 exemplarmasken_zdb
+=======
+datenmasken_zdb
+Dialogs_zdb
+exemplarmasken_zdb
+>>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 ttlFiles_zdb

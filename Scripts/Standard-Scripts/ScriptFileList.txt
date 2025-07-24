@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 standard_kill.js
 standard_searchReplace.js
 standard_addNumCode.js
@@ -9,3 +10,16 @@ standard_transliterate.js
 standard_gotoLine.js
 standard_moreUtility.js
 standard_utility.js
+=======
+standard_kill.js
+standard_searchReplace.js
+standard_addNumCode.js
+standard_LBS.js
+standard_tableFunctions.js
+standard_copy.js
+standard_linking.js
+standard_transliterate.js
+standard_gotoLine.js
+standard_moreUtility.js
+standard_utility.js
+>>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437

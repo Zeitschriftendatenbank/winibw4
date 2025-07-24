@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 source=/SyntaxColorPrefs/syntaxColor_Prefs.txt, destination=%APPDATA%\OCLC\WinIBW4\SyntaxColorPrefs\syntaxColor_Prefs.txt
+=======
+source=/SyntaxColorPrefs/syntaxColor_Prefs.txt, destination=%APPDATA%\OCLC\WinIBW4\SyntaxColorPrefs\syntaxColor_Prefs.txt
+>>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437

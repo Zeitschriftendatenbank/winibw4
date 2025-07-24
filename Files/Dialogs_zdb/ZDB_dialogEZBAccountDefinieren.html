@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -39,4 +40,47 @@
         <button type="button" onclick="closeDialog();">Abbrechen</button>
     </form>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EZB-Account definieren</title>
+    <link rel="stylesheet" type="text/css" href="./W4DialogStyle.css" />
+    <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
+    <script src="./W4DialogFunctions.js"></script>
+    <script type="application/javascript">
+        function getBibId() {
+            document.getElementById("ezbBibIdInput").value = getProfileString("zdb", "ezb.account", "");
+            return true;
+        }
+        function saveBibId() {
+            var bibid_input = document.getElementById("ezbBibIdInput").value;
+            if (bibid_input.length > 0) {
+                writeProfileString("zdb", "ezb.account", bibid_input);
+                closeDialog();
+            } else {
+                writeProfileString("zdb", "ezb.account", "");
+                closeDialog();
+            }
+        }
+    </script>
+    <script type="text/javascript">setTimeout(function () { getBibId(); }, 100);</script>
+</head>
+
+<body>
+    <h2>EZB-Account definieren</h2>
+    <p>Bitte geben Sie die BibID Ihres EZB-Accounts ein (Beispiel: ZBMED). Diese Angabe wird bei Verwendung des Skripts "ZDB_EZB" mit dem URL an die EZB übergeben.</p>
+    <p>Leere Eingabe und "OK" löscht die gespeicherte BibID.</p>
+
+    <form id="EZBAccountDefinierenForm">
+        <label for="ezbBibIdInput">BibID eingeben:</label>
+        <input type="text" id="ezbBibIdInput" name="ezbBibIdInput" size="40" />
+        <br>
+        <button type="submit" onclick="saveBibId();">OK</button>
+        <button type="button" onclick="closeDialog();">Abbrechen</button>
+    </form>
+</body>
+>>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 </html>
