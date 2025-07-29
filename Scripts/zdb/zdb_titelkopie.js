@@ -247,7 +247,7 @@ if (typeof digi === 'object') {
     }
 
     // Kategorie 4215,4225 ändern
-    var content,y;
+    var content, y;
     var fieldmap = {
         '4215': '4201 ',
         '4225': '4201 '
