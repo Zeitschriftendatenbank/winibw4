@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 source=/datenmasken_zdb/maskeAbxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAbxz_zdb.txt
 source=/datenmasken_zdb/maskeObxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeObxz_zdb.txt
 source=/datenmasken_zdb/maskeAbxzTr_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAbxzTr_zdb.txt
@@ -20,27 +19,4 @@ source=/Dialogs_zdb/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_
 source=/Dialogs_zdb/ZDB_dialogCsvImportTemplate.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogCsvImportTemplate.html
 source=/Dialogs_zdb/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogBibliothekDefinieren.html
 source=/Dialogs_zdb/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogDigitalisierungConfig.html
-=======
-source=/datenmasken_zdb/maskeAbxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAbxz_zdb.txt
-source=/datenmasken_zdb/maskeObxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeObxz_zdb.txt
-source=/datenmasken_zdb/maskeAbxzTr_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAbxzTr_zdb.txt
-source=/datenmasken_zdb/maskeAdxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeAdxz_zdb.txt
-source=/datenmasken_zdb/maskeOdxz_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\datenmasken_zdb\maskeOdxz_zdb.txt
-source=/exemplarmasken_zdb/exmuster_zdb.txt, destination=%APPDATA%\OCLC\WinIBW4\exemplarmasken_zdb\exmuster_zdb.txt
-
-source=/ttlFiles_zdb/csvDefinition.txt, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\csvDefinition.txt
-source=/ttlFiles_zdb/zdb_titeldatenkopie_digi.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\zdb_titeldatenkopie_digi.ttl
-source=/ttlFiles_zdb/zdb_titeldatenkopie_parallel.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\zdb_titeldatenkopie_parallel.ttl
-source=/ttlFiles_zdb/zdb_titeldatenkopie.ttl, destination=%APPDATA%\OCLC\WinIBW4\ttlFiles_zdb\zdb_titeldatenkopie.ttl
-
-source=/Dialogs_zdb/ZDB_DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_DialogFunctions.js
-source=/Dialogs_zdb/W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\W4DialogFunctions.js
-source=/Dialogs_zdb/W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\W4DialogStyle.css
-source=/Dialogs_zdb/W4DialogStyleKxp.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\W4DialogStyleKxp.css
-source=/Dialogs_zdb/ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDBStyle.css
-source=/Dialogs_zdb/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\zdb_verlauf.gif
-source=/Dialogs_zdb/ZDB_dialogCsvImportTemplate.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogCsvImportTemplate.html
-source=/Dialogs_zdb/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogBibliothekDefinieren.html
-source=/Dialogs_zdb/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogDigitalisierungConfig.html
->>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 source=/Dialogs_zdb/ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogErscheinungsverlauf.html

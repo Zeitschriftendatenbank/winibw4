@@ -1,8 +1,3 @@
-<<<<<<< HEAD
 Language
 SyntaxColorPrefs
-=======
-Language
-SyntaxColorPrefs
->>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 default_prefs

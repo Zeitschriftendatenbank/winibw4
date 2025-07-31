@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 source=defaultScriptList.txt, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptList.txt
 source=/default_prefs/defaultScriptMenus.xml, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptMenus.xml
-=======
-source=defaultScriptList.txt, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptList.txt
-source=/default_prefs/defaultScriptMenus.xml, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptMenus.xml
->>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
