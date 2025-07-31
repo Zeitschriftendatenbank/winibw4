@@ -31,13 +31,13 @@ function __feld7120(displayError,write,direct) {
     var feld8032;
     if(false == direct) // lese aktuelles Feld
     {
-        feldnummer = application.activeWindow.title.tag;
+        feldnummer = activeWindow.title.tag;
         if(feldnummer != "8032"){
             // Skriptabbruch, falls Aufruf aus falschem Feld erfolgt
-            application.messageBox("Feld7120", "Die Funktion darf nicht für das Feld " + feldnummer + " aufgerufen werden.", "alert-icon");
+            messageBox("Feld7120", "Die Funktion darf nicht für das Feld " + feldnummer + " aufgerufen werden.", "alert-icon");
             return;
         }
-        feld8032 = application.activeWindow.title.currentField;
+        feld8032 = activeWindow.title.currentField;
         feldnummer = "7120";
     }
     else // nehme direkten input
@@ -54,13 +54,13 @@ function __feld7120(displayError,write,direct) {
     var inhalt7120 = __Feldauf7120(inhalt8032);
     if (fehlerin7120 != "")
     {
-        if(displayError) application.messageBox("Feld7120", fehlerin7120, "alert-icon");
+        if(displayError) messageBox("Feld7120", fehlerin7120, "alert-icon");
     }
     if(write)
     {
         // Feld ausgeben
-        application.activeWindow.title.startOfField(false);
-        application.activeWindow.title.insertText(feldnummer + ' ' + inhalt7120 + "\n");
+        activeWindow.title.startOfField(false);
+        activeWindow.title.insertText(feldnummer + ' ' + inhalt7120 + "\n");
     }
     else
     {
