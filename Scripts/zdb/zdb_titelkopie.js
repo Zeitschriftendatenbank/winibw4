@@ -2,8 +2,8 @@ function __zdbNormdatenKopie(){
     // Titelkopie auf zdb_titeldatenkopie.ttl setzen
     activeWindow.titleCopyFile = '%APPDATA%\\OCLC\\WinIBW4\\ttlFiles_zdb\\gnd_title.ttl';
     //overwriteMode = false;
-    var idn = activeWindow.variable('P3GPP'),
-    typ = activeWindow.variable('P3VMC');
+    var idn = activeWindow.getVariable('P3GPP'),
+    typ = activeWindow.getVariable('P3VMC');
     activeWindow.command('show d', false);
     activeWindow.copyTitle();
     activeWindow.command('ein n', false);
@@ -25,7 +25,7 @@ function __zdbTiteldatenKopie(){
 
     // Überschrift und IDN einfügeng
     //overwriteMode = false;
-    var idn = activeWindow.variable('P3GPP');
+    var idn = activeWindow.getVariable('P3GPP');
     activeWindow.command('show d', false);
     // Titelkopie auf zdb_titeldatenkopie.ttl setzen
     activeWindow.titleCopyFile = '%APPDATA%\\OCLC\\WinIBW4\\ttlFiles_zdb\\zdb_titeldatenkopie.ttl';
@@ -147,7 +147,7 @@ function zdb_Digitalisierung() {
     }
     // Titelkopie auf zdb_titeldatenkopie_digi.ttl setzen
     var titlecopyfileStandard = getProfileString('winibw.filelocation', 'titlecopy', '');
-    var idn = activeWindow.variable('P3GPP');
+    var idn = activeWindow.getVariable('P3GPP');
     var showComment = " *** Titeldatenkopie Digitalisierung *** \n"
     if(!__zdbOnlineRessource('%APPDATA%\\OCLC\\WinIBW4\\ttlFiles_zdb\\zdb_titeldatenkopie_digi.ttl',showComment,['ld','dm'],true)) return false;
 
@@ -172,7 +172,7 @@ function zdb_Parallelausgabe(){
     }
 
     var titlecopyfileStandard = getProfileString('winibw.filelocation', 'titlecopy', '');
-    var idn = activeWindow.variable('P3GPP');
+    var idn = activeWindow.getVariable('P3GPP');
     var showComment = " *** Titeldatenkopie Parallelausgabe *** \n";
     var onlineResult = __zdbOnlineRessource('%APPDATA%\\OCLC\\WinIBW4\\ttlFiles_zdb\\zdb_titeldatenkopie_parallel.ttl',showComment,[],false);
     if(!onlineResult) {

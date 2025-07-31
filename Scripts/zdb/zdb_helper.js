@@ -4,8 +4,8 @@ function __zdbYesNo(msgtxt) {
 
 function __zdbGetFormat() {
     var format = "";
-    var p3gpr = activeWindow.variable('P3GPR');
-    var p3gdb = activeWindow.variable('P3GDB');
+    var p3gpr = activeWindow.getVariable('P3GPR');
+    var p3gdb = activeWindow.getVariable('P3GDB');
     if (p3gpr) {
         format = p3gpr;
     } else if (p3gdb) {
@@ -23,7 +23,7 @@ function __zdbGetFormat() {
 function __zdbGetZDB(idn) {
     idn = idn || false;
     if (idn) {
-        var myWindowId = __zdbOpenWorkWindow();
+        var myWindowId = activeWindow.windowID;
         activeWindow.commandLine('\zoe idn ' + idn);
     }
 
@@ -45,27 +45,11 @@ function __zdbGetZDB(idn) {
         zdbid = field[cat][0][0];
     }
 
-    if (idn) __zdbCloseWorkWindow(myWindowId);
+    if (idn) {
+        activateWindow(myWindowId);
+    }
 
     return zdbid.replace(/\s+/g, '');
-}
-
-/**
-* opens a new window for temporary works
-*/
-function __zdbOpenWorkWindow() {
-    var myWindowId = activeWindow.windowID;
-    newWindow();
-    return myWindowId;
-}
-
-/**
-* closes the window for temporary works and return to the old one
-*/
-function __zdbCloseWorkWindow(myWindowId) {
-    if (myWindowId == null) return false;
-    activeWindow.closeWindow();
-    activateWindow(myWindowId);
 }
 
 /**
@@ -103,15 +87,12 @@ function __zdbJSON(idn) {
 
     if (idn) // get zdb id of a different title in a work window
     {
-        disableScreenUpdate(true);
-        __zdbOpenWorkWindow();
         activeWindow.command('f idn ' + idn, true);
     }
 
     if ('P' != __zdbGetFormat()) activeWindow.command('s p', false);
 
     var rec = __zdbGetExpansionFromP3VTX();
-
     // get array of lines
     var arrLines = rec.match(/(.+)/gm);
     // for each line
@@ -147,16 +128,11 @@ function __zdbJSON(idn) {
         return string;
     };
 
-    if (idn) // close work window and return to old
-    {
-        __zdbCloseWorkWindow(myWindowId);
-        disableScreenUpdate(false);
-    }
     // back to source format
     if ('P' != format) activeWindow.command('s ' + format, false);
 
     if (activeWindow.windowID != myWindowId) {
-        __zdbCloseWorkWindow(myWindowId);
+        activateWindow(myWindowId);
     }
     return _rec;
 }
@@ -284,7 +260,7 @@ function __zdbParseExpansion(exp) {
  * @returns {string} The processed and unescaped expansion data.
  */
 function __zdbGetExpansionFromP3VTX() {
-    satz = activeWindow.variable('P3VTX')
+    var satz = activeWindow.getVariable('P3VTX')
         .replace('<ISBD><TABLE>', '')
         .replace('<\/TABLE>', '')
         .replace(/<BR>/g, "\n")

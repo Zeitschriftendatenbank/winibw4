@@ -41,7 +41,7 @@ function zdb_openFormat() {
 
 function zdb_MerkeIDN(){
     if(!__zdbCheckScreen(['8A','7A','MT','IT'],'Merke IDN')) return false;
-    var idn = activeWindow.variable('P3GPP'),
+    var idn = activeWindow.getVariable('P3GPP'),
     idn_formatiert = '!' + idn + '!';
     activeWindow.clipboard = idn_formatiert;
 }
@@ -121,7 +121,7 @@ function __zdbEXXX() {
 }
 
 function zdb_MailboxsatzAnlegen(){
-    var ppn = activeWindow.variable('P3GPP');
+    var ppn = activeWindow.getVariable('P3GPP');
     activeWindow.command('ein t', false);
     if (activeWindow.status != 'OK') {
         messageBox('MailboxsatzAnlegen', 'Sie haben nicht die nötigen Berechtigungen, um einen Mailboxsatz anzulegen.', 'alert-icon');
@@ -145,7 +145,7 @@ function zdb_HoleIDN(){
         // Ist das aktive Fenster eine Trefferliste?
         if(false == __zdbCheckScreen(['7A','8A'],'HoleIDN')) return false;
         //  IDN des markierten Titels aus der Trefferliste ermitteln
-        var idn = activeWindow.variable('P3GPP');
+        var idn = activeWindow.getVariable('P3GPP');
         // ID des aktiven Fensters ermitteln
         var fenster = activeWindow.windowID;
         // Falls das Bearbeitungsfenster ( = zdb.anfangsfenster) geschlossen wurde, gibt das System einen 'uncaught exception'-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
