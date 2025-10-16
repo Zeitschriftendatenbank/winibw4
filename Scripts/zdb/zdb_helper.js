@@ -37,7 +37,7 @@ function __zdbGetZDB(idn) {
     if (format !== 'P') {
         zdbid = (strScreen === 'MT' || strScreen === 'IT')
             ? activeWindow.title.findTag(cat, 0, false, false, true)
-            : activeWindow.findTagContent(cat, 0, false).trim();
+            : __Trim(activeWindow.findTagContent(cat, 0, false));
     } else {
         var field = (strScreen === 'MT' || strScreen === 'IT')
             ? __zdbParseField(activeWindow.title.findTag(cat, 0, true, false, true))
