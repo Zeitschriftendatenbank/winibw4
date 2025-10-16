@@ -1,7 +1,10 @@
 function zdb_DatenmaskeAbxz()
 {
-    __DatenmaskeEinfuegen("\\datenmasken_zdb\\maskeAbxz_zdb.txt");
+     if (__pruefeZDB()) {
+         __DatenmaskeEinfuegen("maskeAbxz_zdb.txt");
+     }
 }
+
 
 function zdb_DatenmaskeAbxzTr()
 {

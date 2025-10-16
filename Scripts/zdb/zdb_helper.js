@@ -173,8 +173,8 @@ function __zdbParseField(field) {
         // Return empty object or handle error gracefully
         return {};
     }
-
-    var split = arr[2].split(zdb.delimiter);
+    var del = ('P' == __zdbGetFormat()) ? zdb.delimiter : '$';
+    var split = arr[2].split(del);
 
     var subfield = {};
     var x = 1;
@@ -461,4 +461,17 @@ function __zdbCheckScreen(options, header, message) {
         return false;
     }
     return strScreen;
+}
+
+/**
+ * Retrieves the value of a specific subfield from a MARC field string.
+ *
+ * @param {string} field - The MARC field string to parse.
+ * @param {string} sfTag - The subfield tag to retrieve (e.g., 'a', 'b').
+ * @returns {*} The value of the specified subfield, or undefined if not found.
+ */
+function __zdbGetSubfield(field, sfTag) {
+    var fieldTag = /^(.{3,4})\s/.exec(field);
+    var subfields = __zdbParseField(field);
+    return subfields[fieldTag][sfTag];
 }

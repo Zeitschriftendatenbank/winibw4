@@ -42,7 +42,7 @@ function __feld7120(displayError,write,direct) {
     }
     else // nehme direkten input
     {
-        feld8032 = direct.replace(/^\s+|\s+$/g, ''); // left and right trim
+        feld8032 = __Trim(direct);
         feldnummer = feld8032.substring(0, 4);
         if(feldnummer != '8032' && feldnummer != '4025') {
             feldnummer = '8032';
@@ -66,10 +66,6 @@ function __feld7120(displayError,write,direct) {
     {
         return inhalt7120;
     }
-}
-
-function __trim(string) {
-    return string.replace(/^\s+|\s+$/g, '');
 }
 
 function __Feldauf7120(inhalt8032){
@@ -185,7 +181,7 @@ function __Vor7120(feld) {
 
 
 function __Bindestrich_Gleich_Klammern(feld) {
-    feld = __trim(feld);
+    feld = __Trim(feld);
     var kommada = false;
     var bindestrich7120 = "";
     var len = feld.length;
@@ -235,7 +231,7 @@ function __Bindestrich_Gleich_Klammern(feld) {
 
 function __Gleich7210(feld) {
     feld = feld.split('=');
-    return __trim(feld[0]);
+    return __Trim(feld[0]);
 }
 
 function __Punkt71204024(feld, startEnd) {
@@ -365,7 +361,7 @@ function __Ziffer7120(feld) {
 
 
 function __Musterjahr7120(feld, startEnd) {
-    feld = __trim(feld);
+    feld = __Trim(feld);
     if(/\//.test(feld)) {
         var jahre = /^(\d{4})\/(\d{4}|\d{2})$/.exec(feld);
         if(null == jahre) {
