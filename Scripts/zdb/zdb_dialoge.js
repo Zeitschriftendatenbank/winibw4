@@ -61,7 +61,7 @@ function zdb_Erscheinungsverlauf() {
 }
 
 function __zdbGet4024() {
-    var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT'], '__zdbGet4024');
+    var strScreen = __zdbCheckScreen(['MT', 'IT'], '__zdbGet4024');
     if (!strScreen) {
         utility.sentDataToDialog(false);
     } else {
