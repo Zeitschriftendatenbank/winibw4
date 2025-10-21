@@ -101,7 +101,7 @@ function zdb_EZB() {
     L = new LANG();
 
     dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
-    frontDoor = 'http://www.bibliothek.uni-regensburg.de/ezeit/?';
+    frontDoor = 'https://ezb.ur.de/?';
 
     zdb._rec = __zdbJSON();
 
