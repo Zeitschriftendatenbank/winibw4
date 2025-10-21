@@ -40,10 +40,10 @@ function zdb_openFormat() {
 }
 
 function zdb_MerkeIDN(){
-    if(!__zdbCheckScreen(['8A','7A','MT','IT'],'Merke IDN')) return false;
-    var idn = activeWindow.getVariable('P3GPP'),
-    idn_formatiert = '!' + idn + '!';
-    activeWindow.clipboard = idn_formatiert;
+    if(!__zdbCheckScreen(['8A','7A','MT','IT'],'Merke IDN')) {
+        return false;
+    }
+    activeWindow.clipboard = activeWindow.getVariable('P3GPP');
 }
 
 function zdb_idListe() {

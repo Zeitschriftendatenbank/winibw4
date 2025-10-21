@@ -27,7 +27,7 @@ function __zdbGetZDB(idn) {
         activeWindow.commandLine('\zoe idn ' + idn);
     }
 
-    var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT'], 'Merke ZDBID');
+    var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT'], '__zdbGetZDB');
     if (!strScreen) return false;
 
     var format = __zdbGetFormat();

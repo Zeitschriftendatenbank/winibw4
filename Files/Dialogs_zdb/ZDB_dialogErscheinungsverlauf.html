@@ -161,6 +161,7 @@
         function onLoad() {
             feld4024 = runScript('__zdbGet4024()');
             if (!(feld4024)) {
+                closeDialog();
                 return;
             }
             parse4024();

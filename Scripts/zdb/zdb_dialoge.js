@@ -61,8 +61,12 @@ function zdb_Erscheinungsverlauf() {
 }
 
 function __zdbGet4024() {
-    var feld4024 = application.activeWindow.title.findTag('4024', 0, false, true, false);
-    utility.sentDataToDialog(feld4024);
+    var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT'], '__zdbGet4024');
+    if (!strScreen) {
+        utility.sentDataToDialog(false);
+    } else {
+        utility.sentDataToDialog(application.activeWindow.title.findTag('4024', 0, false, true, false));
+    }
 }
 
 function __zdb_paste4024(o) {
