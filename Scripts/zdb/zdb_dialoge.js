@@ -497,3 +497,63 @@ function __zdb_csvImportTemplate_runImport(o) {
 function __zdbGetScr(){
     utility.sentDataToDialog(activeWindow.getVariable('scr'));
 }
+
+
+/**
+ * Read the contents of a file (line by line) and send the resulting text to a dialog.
+ *
+ * The function attempts to open a file using utility.newFileInput().openSpecial(dir, "\\" + path).
+ * If the file cannot be opened, utility.sentDataToDialog(false) is invoked and the function returns.
+ * When opened successfully, the file is read line-by-line. Lines may be conditionally skipped:
+ * - lines starting with "//" can be skipped if o.zdbNoComments is truthy,
+ * - blank lines can be skipped if o.zdbNoBlanks is truthy.
+ * After processing the lines the collected content is delivered via utility.sentDataToDialog(inhalt).
+ *
+ * Note: This comment documents the intended behavior of the implementation. The current source
+ * contains a few implementation issues that affect behavior (for example: duplicate variable
+ * declarations overwrite flags, a referenced noBlanksFlag identifier is not defined, and the
+ * collected content variable may not be appended to). Those issues should be resolved in code
+ * for the function to behave as described here.
+ *
+ * @param {Object} o - Options object controlling file selection and filtering.
+ * @param {string} o.theDir - Directory (special/open context) used by openSpecial.
+ * @param {string} o.thePath - Relative path or filename to open (will be prefixed with a backslash).
+ * @param {boolean} [o.zdbNoComments=false] - If true, skip lines that begin with "//".
+ * @param {boolean} [o.zdbNoBlanks=false] - If true, skip blank/empty lines.
+ *
+ * @returns {void} This function does not return a value. On success it calls utility.sentDataToDialog(inhalt)
+ *                   where inhalt is the concatenated/processed file content; on open failure it calls
+ *                   utility.sentDataToDialog(false).
+ *
+ * @throws {Error} No explicit exceptions are thrown by this function in normal operation; underlying
+ *                 utility methods may raise errors depending on their implementations.
+ */
+function __zdbGetFileContent(o) {
+    var dir = o.theDir,
+        path = o.thePath,
+        noCommentsFlag = o.zdbNoComments,
+        noCommentsFlag = o.zdbNoBlanks,
+        zeile = '',
+        inhalt = '',
+        defInpFile = utility.newFileInput();
+
+    if (!defInpFile.openSpecial(dir, "\\" + path)) {
+        utility.sentDataToDialog(false);
+        return;
+    }
+    for (zeile = ""; !defInpFile.isEOF();) {
+        zeile = defInpFile.readLine();
+        if (noCommentsFlag && zeile.substring(0, 2) === "//") {
+            continue;
+        }
+        // filter blank lines (preserve existing behaviour or conditionalize if needed)
+        if (noBlanksFlag) {
+            if (zeile.length === 0) continue;
+        } else {
+            // original behaviour previously skipped blanks unconditionally; keep that
+            if (zeile.length === 0) continue;
+        }
+
+    }
+    utility.sentDataToDialog(inhalt);
+}

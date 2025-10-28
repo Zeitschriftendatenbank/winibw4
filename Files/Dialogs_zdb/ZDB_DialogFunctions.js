@@ -54,7 +54,9 @@ function __zdb_deserialize_recursive(str) {
  * @throws {TypeError} If the form element named 'form' is not present (so appendChild will fail).
  * @throws {ReferenceError} If runScript is not defined in the global scope.
  */
-function __zdb_getFileContent(dir, path) {
+function __zdb_getFileContent(dir, path, noComments, noBlanks) {
+    if (typeof noComments === 'undefined') noComments = false;
+    if (typeof noBlanks === 'undefined') noBlanks = false;
     var form = document.getElementsByName('form')[0];
     var inputDir = document.getElementById('zdbTheDir');
     if (!inputDir) {
@@ -75,5 +77,26 @@ function __zdb_getFileContent(dir, path) {
         form.appendChild(inputPath);
     }
     inputPath.value = path;
+
+    var inputNoComments = document.getElementById('zdbNoComments');
+    if (!inputNoComments) {
+        inputNoComments = document.createElement('input');
+        inputNoComments.type = 'hidden';
+        inputNoComments.id = 'zdbNoComments';
+        inputNoComments.name = 'zdbNoComments';
+        form.appendChild(inputNoComments);
+    }
+    inputNoComments.value = noComments ? '1' : '0';
+
+    var inputNoBlanks = document.getElementById('zdbNoBlanks');
+    if (!inputNoBlanks) {
+        inputNoBlanks = document.createElement('input');
+        inputNoBlanks.type = 'hidden';
+        inputNoBlanks.id = 'zdbNoBlanks';
+        inputNoBlanks.name = 'zdbNoBlanks';
+        form.appendChild(inputNoBlanks);
+    }
+    inputNoBlanks.value = noBlanks ? '1' : '0';
+
     return runScript('__zdbGetFileContent');
 }
