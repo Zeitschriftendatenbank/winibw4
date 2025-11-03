@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>WinIBW-Startseite der ZDB</title>
+
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            color: #3c3c3c;
+            font-family: Verdana, Arial, sans-serif;
+            font-size: 1em;
+            margin-left: 0px;
+            margin-right: 0px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 1em;
+            font-weight: normal;
+            margin: 15px;
+            display: inline;
+        }
+
+        h2 {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 3px;
+            margin-bottom: 3px;
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        p {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            font-size: 0.8em;
+            color: #3e68a2;
+        }
+
+        a.bigger {
+            font-size: 1em;
+        }
+
+        #zdb {
+            background: #fff url(../Images/zdb_verlauf.gif) repeat-x right top;
+            padding: 10px;
+            margin: 0px;
+            height: 160px;
+        }
+
+        #footer {
+            font-size: 0.7em;
+            margin-top: 15px;
+            padding: 5px;
+            color: #4e4e4e;
+            background-color: #F5F5F5;
+            border-top: 1px solid #D3D3D3;
+            border-bottom: 1px solid #D3D3D3;
+        }
+
+        .kennung {
+            font-size: 0.7em;
+        }
+
+        .zdb_pink {
+            color: #d81281;
+        }
+
+        .weitere {
+            display: inline-block;
+            padding: 10px 8px 0 8px;
+            margin: 0;
+        }
+
+        .weitere li {
+            display: -moz-inline-box;
+            /* Moz */
+            display: inline-block;
+            /* Op, Saf, IE \*/
+            vertical-align: top;
+            /* IE Mac non capisce e a volte crea extra v space */
+            margin: 0 7px 15px 7px;
+            padding: 0;
+        }
+
+        .weitere_border {
+            border: 1px solid #DCDCDC;
+            display: block;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            text-align: left;
+            color: #808080;
+        }
+
+        .infobox {
+            left: 50%;
+            width: 750px;
+            margin-left: -350px;
+            margin-top: 30px;
+            position: relative;
+            border: 2px solid red;
+            padding: 5px;
+            font-size: 0.9em;
+        }
+    </style>
+    <script type="text/javascript" src="../winibw4.js"></script>
+</head>
+
+<body>
+    <img src="../Images/zdb_logo.gif" style="margin-bottom:5px;" align="middle" alt="ZDB-Logo" />
+    <h1>WinIBW-Startseite der Zeitschriftendatenbank</h1>
+    <div id="zdb">
+        <p>
+            <span class="zdb_pink">»</span> <a onmouseover="mouseOver(this)"; onmouseout="mouseOver()" class="bigger" href="pica3://ibw0.dnb.de:1040-1041/">Produktionssystem:
+                Zugang 1</a><br />
+            <span class="zdb_pink">»</span> <a onmouseover="mouseOver(this)"; onmouseout="mouseOver()" class="bigger" href="pica3://ibw0.dnb.de:1042/">Produktionssystem: Zugang
+                2</a><br />
+            <span class="zdb_pink">»</span> <a onmouseover="mouseOver(this)"; onmouseout="mouseOver()" class="bigger"
+                href="pica3://appr.ibw0.dnb.de:1040/">ILTIS/RDA-Approvalsystem</a></br>
+        </p>
+        <p>
+            <span class="kennung">ZDB-Kennung*: &nbsp;<b>6098</b> Passwort: <b>read</b></span>
+        </p>
+        <p>
+            <span class="kennung">Update-Service-URL: <a onmouseover="mouseOver(this)"; onmouseout="mouseOver()"
+                    href="http://winibw-repo.sbb.berlin/winibw/37">http://winibw-repo.sbb.berlin/winibw/37</a> ist
+                aktuell.</span><br />
+        </p>
+    </div>
+    <ul class="weitere">
+        <li>
+            <span class="weitere_border">» <a href="pica3://cbs.k10plus.de:1090-1099/">Produktionssystem
+                    K10plus</a><br />
+                » <a href="pica3://schulung.k10plus.de:1690-1692/">K10plus - Schulungsdatenbank</a><br />
+                <span class="kennung">Kennung*: <b>gtraining</b><br />
+                    Passwort: <b>gast</b></span></span>
+        </li>
+        <li>
+            <span class="weitere_border">» <a href="pica3://hebis.rz.uni-frankfurt.de:1035">HeBIS</a><br />&nbsp;<br />
+                <span class="kennung">Kennung*: <b>1000</b><br />Passwort: <b>17AaAu</b></span></span>
+        </li>
+        <li>
+            <span class="weitere_border">» <a href="pica3://cbs4.pica.nl:1035">PICA Holland</a><br />&nbsp;<br />
+                <span class="kennung">Kennung*: <b>9050</b><br />Passwort: <b>vwhw</b></span></span>
+        </li>
+    </ul>
+    <div id="footer">*) Die angegebenen Kennungen ermöglichen in allen Datenbanken nur <b>lesenden Zugriff</b>
+        (Ausnahme: Trainingssystem des GBV).</div>
+</body>
+
+</html>
