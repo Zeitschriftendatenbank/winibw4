@@ -20,3 +20,9 @@ source=/Dialogs_zdb/ZDB_dialogCsvImportTemplate.html, destination=%APPDATA%\OCLC
 source=/Dialogs_zdb/ZDB_dialogBibliothekDefinieren.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogBibliothekDefinieren.html
 source=/Dialogs_zdb/ZDB_dialogDigitalisierungConfig.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogDigitalisierungConfig.html
 source=/Dialogs_zdb/ZDB_dialogErscheinungsverlauf.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_zdb\ZDB_dialogErscheinungsverlauf.html
+
+source=/startup_zdb/start_ZDB.html, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\start_ZDB.html
+source=/startup_zdb/zdb_favicon.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_favicon.gif
+source=/startup_zdb/zdb_icon.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_icon.gif
+source=/startup_zdb/zdb_logo.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_logo.gif
+source=/startup_zdb/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_verlauf.gif
