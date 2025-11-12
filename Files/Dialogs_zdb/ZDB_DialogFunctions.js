@@ -22,7 +22,7 @@ function __zdb_deserialize_recursive(str) {
         return arr;
     }
 
-     if (str.length > 1 && str.substring(0, 2) === 'O:') {
+    if (str.length > 1 && str.substring(0, 2) === 'O:') {
         var obj = {};
         var parts = str.substring(2).split('@@@');
         for (var i = 0; i < parts.length; i++) {
@@ -57,7 +57,8 @@ function __zdb_deserialize_recursive(str) {
 function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     if (typeof noComments === 'undefined') noComments = false;
     if (typeof noBlanks === 'undefined') noBlanks = false;
-    var form = document.getElementsByName('form')[0];
+    var form = document.getElementById('excelTalle');
+
     var inputDir = document.getElementById('zdbTheDir');
     if (!inputDir) {
         inputDir = document.createElement('input');
@@ -69,6 +70,7 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     inputDir.value = dir;
 
     var inputPath = document.getElementById('zdbThePath');
+
     if (!inputPath) {
         inputPath = document.createElement('input');
         inputPath.type = 'hidden';
@@ -79,6 +81,7 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     inputPath.value = path;
 
     var inputNoComments = document.getElementById('zdbNoComments');
+
     if (!inputNoComments) {
         inputNoComments = document.createElement('input');
         inputNoComments.type = 'hidden';
@@ -89,6 +92,7 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     inputNoComments.value = noComments ? '1' : '0';
 
     var inputNoBlanks = document.getElementById('zdbNoBlanks');
+
     if (!inputNoBlanks) {
         inputNoBlanks = document.createElement('input');
         inputNoBlanks.type = 'hidden';
@@ -97,6 +101,11 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
         form.appendChild(inputNoBlanks);
     }
     inputNoBlanks.value = noBlanks ? '1' : '0';
+    try {
+        var content = runScript('__zdbGetFileContent');
+        return content;
+    } catch (e) {
+        alert("Error: " + e.message);
+    }
 
-    return runScript('__zdbGetFileContent');
 }

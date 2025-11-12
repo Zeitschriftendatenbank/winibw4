@@ -14,6 +14,7 @@
 <MenuItem>zdb_Digitalisierung() QQ 1 QQ Digitalisierung QQ </MenuItem>
 <MenuItem>zdb_Parallelausgabe() QQ 1 QQ Parallelausgabe QQ </MenuItem>
 <MenuItem>zdb_EZB() QQ 1 QQ zdb_EZB QQ </MenuItem>
+<MenuItem>zdb_alleinbesitz() QQ 1 QQ Alleinbesitz ermitteln QQ </MenuItem>
 <MenuItem>------------------------------</MenuItem>
 <MenuItem>===============&gt;&gt;&gt;.Voreinstellungen</MenuItem>
 <MenuItem>zdb_BibliothekDefinieren() QQ 1 QQ IDN der eigenen Bibliothek QQ </MenuItem>
@@ -37,8 +38,6 @@
 <MenuItems>
 <MenuItem>GetScriptEngineInfo() QQ 1 QQ GetScriptEngineInfo QQ </MenuItem>
 <MenuItem>sucheErsetzeDialog() QQ 1 QQ sucheErsetze QQ </MenuItem>
-<MenuItem>zdb_csvImportTemplate() QQ 1 QQ csvImportTemplate QQ </MenuItem>
-<MenuItem>zdb_alleinbesitz() QQ 1 QQ Alleinbesitz ermitteln QQ </MenuItem>
 </MenuItems>
 </ScriptMenu>
 </ScriptMenus>
