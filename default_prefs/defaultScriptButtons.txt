@@ -1,1 +1,4 @@
 zdb_merkeZDB() QQ 1 QQ ZDB-ID kopieren QQ Kopiert die ZDB-ID des aktuellen Titels
+zdb_MerkeIDN() QQ 1 QQ ZDB-ID kopieren QQ Kopiert die IDN des aktuellen Titels
+zdb_ExemplarmaskeZDB() QQ 1 QQ Bestand anlegen QQ Kopiert die Exemplarmaske in den aktuellen Titel
+zdb_MailboxsatzAnlegen() QQ 1 QQ Mailboxsatz anlegen QQ Erstellt eine Mailbox für den aktuellen Titel
