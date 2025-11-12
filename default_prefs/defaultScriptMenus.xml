@@ -14,7 +14,6 @@
 <MenuItem>zdb_Digitalisierung() QQ 1 QQ Digitalisierung QQ </MenuItem>
 <MenuItem>zdb_Parallelausgabe() QQ 1 QQ Parallelausgabe QQ </MenuItem>
 <MenuItem>zdb_EZB() QQ 1 QQ zdb_EZB QQ </MenuItem>
-<MenuItem>zdb_alleinbesitz() QQ 1 QQ Alleinbesitz ermitteln QQ </MenuItem>
 <MenuItem>------------------------------</MenuItem>
 <MenuItem>===============&gt;&gt;&gt;.Voreinstellungen</MenuItem>
 <MenuItem>zdb_BibliothekDefinieren() QQ 1 QQ IDN der eigenen Bibliothek QQ </MenuItem>
@@ -22,11 +21,12 @@
 <MenuItem>zdb_EZB_BibID() QQ 1 QQ EZB-BibID definieren QQ </MenuItem>
 <MenuItem>===============***.Voreinstellungen</MenuItem>
 <MenuItem>===============&gt;&gt;&gt;.Datenmasken</MenuItem>
-<MenuItem>zdb_DatenmaskeAdxz() QQ 1 QQ DatenmaskeAdxz QQ </MenuItem>
-<MenuItem>zdb_DatenmaskeOdxz() QQ 1 QQ DatenmaskeOdxz QQ </MenuItem>
-<MenuItem>zdb_DatenmaskeAbxz() QQ 1 QQ DatenmaskeAbxz QQ </MenuItem>
-<MenuItem>zdb_DatenmaskeAbxzTr() QQ 1 QQ DatenmaskeAbxzTr QQ </MenuItem>
-<MenuItem>zdb_DatenmaskeObxz() QQ 1 QQ DatenmaskeObxz QQ </MenuItem>
+<MenuItem>zdb_DatenmaskeAdxz() QQ 1 QQ Datenmaske Adxz QQ </MenuItem>
+<MenuItem>zdb_DatenmaskeAbxz() QQ 1 QQ Datenmaske Abxz QQ </MenuItem>
+<MenuItem>zdb_DatenmaskeAbxzTr() QQ 1 QQ Datenmaske Abxz OrigQQ </MenuItem>
+<MenuItem>zdb_DatenmaskeOdxz() QQ 1 QQ Datenmaske Odxz QQ </MenuItem>
+<MenuItem>zdb_DatenmaskeObxz() QQ 1 QQ Datenmaske Obxz QQ </MenuItem>
+<MenuItem>zdb_ExemplarmaskeZDB() QQ 1 QQ  QQ </MenuItem>
 <MenuItem>===============***.Datenmasken</MenuItem>
 <MenuItem>------------------------------</MenuItem>
 <MenuItem>zdb_ILTISseiten() QQ 1 QQ ILTIS-Dokumentation QQ </MenuItem>
@@ -36,7 +36,7 @@
 <Position>5</Position>
 <Label>Werkzeuge</Label>
 <MenuItems>
-<MenuItem>GetScriptEngineInfo() QQ 1 QQ GetScriptEngineInfo QQ </MenuItem>
+<MenuItem>zdb_alleinbesitz() QQ 1 QQ Alleinbesitz ermitteln QQ </MenuItem>
 <MenuItem>sucheErsetzeDialog() QQ 1 QQ sucheErsetze QQ </MenuItem>
 </MenuItems>
 </ScriptMenu>
