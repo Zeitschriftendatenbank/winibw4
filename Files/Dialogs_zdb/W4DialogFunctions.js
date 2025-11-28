@@ -218,12 +218,14 @@ function executeScript(scriptName, type) {
                 e = form.elements[i];
                 if (e.id || e.name) {
                     if (o != '{') o += ',';
-                    key = e.id ? e.id : e.name;
-                    value = (e.type == 'checkbox') ? e.checked : e.value;
-                    o += '"' + key + '":"' + value + '"';
+                    key = e.id ? e.id : e.name;   
+                    value = (e.type === 'checkbox') ? e.checked
+                          : (e.type === 'radio') ? (e.checked ? String(e.value).replace(/"/g, '\\"') : '')
+                          : (typeof e.value !== 'undefined' && e.value !== null ? String(e.value).replace(/"/g, '\\"') : '');                    o += '"' + key + '":"' + value + '"';
                 }
             }
             o += '}';
+            //alert(o);
             if (form.id) {
                 // Save the form contents for next time the dialog is used                
                 external.dialogFunctionDispatch(["putVar", 'dialog-form-' + form.id, '(' + o + ')']);
@@ -304,9 +306,6 @@ function addEventHandlers() {
         var elements = forms[f].elements;
         var tabElm = [];
         for (var e in elements) {
-            if(!elements.hasOwnProperty(e)){
-                continue;
-            }
             var element = elements[e];
             if (element.tagName && !element.hidden && !element.disabled && element.focus && element.addEventListener) {
                 var tagName = element.tagName.toLowerCase();
