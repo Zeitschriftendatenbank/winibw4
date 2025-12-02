@@ -1,4 +1,5 @@
-# Workflow for syncing specific files to cKlee/IBW4 repository
+# Workflow for syncing script files to cKlee/IBW4 repository
+# Syncs Scripts/zdb/ and Scripts/isil/ subdirectories
 name: Sync Files to IBW4
 
 on:
@@ -6,11 +7,13 @@ on:
     branches:
       - dev
     paths:
-      - 'Scripts/zdb/**'
-      - 'Scripts/isil/**'
+      - 'Scripts/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   sync:
@@ -19,7 +22,7 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v4
 
-      - name: Push files to IBW4 repository
+      - name: Sync Scripts directory to IBW4 repository
         uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
