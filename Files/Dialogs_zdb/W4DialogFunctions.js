@@ -42,8 +42,8 @@
  * in the dialog script, 
  * var return-value = runScript(scriptName);
  * the 'return-value' will be "A string!" or true or 12345
- */ 
-function runScript(scriptName) {    
+ */
+function runScript(scriptName) {
     if (!isValidString(scriptName)) {
         alert("Error: incorrect parameters at calling 'runScript' in the dialog: \n" + scriptName);
         return false;
@@ -82,7 +82,7 @@ function runScript_afterCloseDialog(scriptName) {
  * A boolean return-value indicates whether the sending is successful or not.
  */
 function sendCommandToCBS(cmd, backGround) {
-    if (backGround == undefined) backGround = false; 
+    if (backGround == undefined) backGround = false;
     if (!isValidString(cmd) || typeof (backGround) != 'boolean') {
         alert("Error: incorrect parameters at calling 'sendCommandToCBS' in the dialog : \n" + cmd + "\n" + backGround);
         return false;
@@ -93,7 +93,7 @@ function sendCommandToCBS(cmd, backGround) {
 /*
  * This function is to get the value of the given variable, such as "P3GPP", "P3VAH", "P3VBK"
  * The variableName must be of 'string'
- */ 
+ */
 function getValueOfVariable(variableName) {
     if (!isValidString(variableName)) {
         alert("Error: incorrect parameters at calling 'getValueOfVariable' in the dialog: \n" + variableName);
@@ -117,14 +117,14 @@ function getValueOfVariable(variableName) {
  * value must be integer
  *
  * A boolean return-value indicates whether writeProfileInt is successful or not.
- */ 
+ */
 function writeProfileInt(section, entry, value) {
     if (!isValidString(section) || !isValidString(entry) || typeof (value) != 'number') {
         alert("Error: incorrect parameters at calling 'writeProfileInt' in the dialog : \n" + section + "\n" + entry + "\n" + value);
         return false;
     }
-	//is NaN(value) is true when parseInt(a non-digit string), e.g. parseInt("");
-	if (isNaN(value)) value = 0; 
+    //is NaN(value) is true when parseInt(a non-digit string), e.g. parseInt("");
+    if (isNaN(value)) value = 0;
     return external.dialogFunctionDispatch(["writeProfileValue", section, entry, value]);
 }
 
@@ -167,7 +167,7 @@ function writeProfileString(section, entry, value) {
     if (!isValidString(section) || !isValidString(entry) || !isString(value)) {
         alert("Error: incorrect parameters at calling 'writeProfileString' in the dialog : \n" + section + "\n" + entry + "\n" + value);
         return false;
-    }    
+    }
     return external.dialogFunctionDispatch(["writeProfileValue", section, entry, value]);
 }
 
@@ -191,7 +191,7 @@ function getProfileString(section, entry, defaultValue) {
 
 /*
  * This function is to close a HTML dialog
- */ 
+ */
 function closeDialog() { external.close(); }
 
 
@@ -209,7 +209,7 @@ function executeScript(scriptName, type) {
         if (type != 1 && type != 2) return;
         var theScriptName;
         if (scriptName.slice(-2) == '()') {
-            theScriptName = scriptName;           
+            theScriptName = scriptName;
         } else {
             var form = document.forms[0];
             var o = '{';
@@ -218,10 +218,11 @@ function executeScript(scriptName, type) {
                 e = form.elements[i];
                 if (e.id || e.name) {
                     if (o != '{') o += ',';
-                    key = e.id ? e.id : e.name;   
+                    key = e.id ? e.id : e.name;
                     value = (e.type === 'checkbox') ? e.checked
-                          : (e.type === 'radio') ? (e.checked ? String(e.value).replace(/"/g, '\\"') : '')
-                          : (typeof e.value !== 'undefined' && e.value !== null ? String(e.value).replace(/"/g, '\\"') : '');                    o += '"' + key + '":"' + value + '"';
+                        : (e.type === 'radio') ? (e.checked ? String(e.value).replace(/"/g, '\\"') : '')
+                            : (typeof e.value !== 'undefined' && e.value !== null ? String(e.value).replace(/"/g, '\\"') : '');
+                    o += '"' + key + '":"' + value + '"';
                 }
             }
             o += '}';
@@ -230,7 +231,7 @@ function executeScript(scriptName, type) {
                 // Save the form contents for next time the dialog is used                
                 external.dialogFunctionDispatch(["putVar", 'dialog-form-' + form.id, '(' + o + ')']);
             }
-            theScriptName = scriptName + '(' + o + ')';            
+            theScriptName = scriptName + '(' + o + ')';
         }
         return (type == 1) ? external.dialogFunctionDispatch(["exeScript", theScriptName]) : external.runScriptAfterCloseDialog(theScriptName);
     } catch (e) {
@@ -279,7 +280,7 @@ function setOnEditKeyPress(element) {
                     }
                     break;
                 case 'c':
-                    // copy
+                // copy
                 case 'x':
                     // copy and delete
                     if (element.selectionStart < element.selectionEnd) {
@@ -290,8 +291,8 @@ function setOnEditKeyPress(element) {
                         element.value = element.value.substring(0, element.selectionStart)
                             + element.value.substring(element.selectionEnd);
                         element.selectionStart = element.selectionEnd = selStart;
-                    } 
-                    break;                        
+                    }
+                    break;
                 default:
                     break;
             }

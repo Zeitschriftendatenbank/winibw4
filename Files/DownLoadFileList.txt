@@ -26,3 +26,9 @@ source=/startup_zdb/zdb_favicon.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_
 source=/startup_zdb/zdb_icon.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_icon.gif
 source=/startup_zdb/zdb_logo.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_logo.gif
 source=/startup_zdb/zdb_verlauf.gif, destination=%APPDATA%\OCLC\WinIBW4\startup_zdb\zdb_verlauf.gif
+
+source=/excelTool/ZDB_DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_dev\ZDB_DialogFunctions.js
+source=/excelTool/ZDBStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_dev\ZDBStyle.css
+source=/excelTool/W4DialogFunctions.js, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_dev\W4DialogFunctions.js
+source=/excelTool/W4DialogStyle.css, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_dev\W4DialogStyle.css
+source=/excelTool/ZDB_dialogExcelTabelle.html, destination=%APPDATA%\OCLC\WinIBW4\Dialogs_dev\ZDB_dialogExcelTabelle.html
