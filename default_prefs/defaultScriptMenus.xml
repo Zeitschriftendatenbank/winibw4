@@ -13,7 +13,7 @@
 <MenuItem>zdb_Datensatzkopie() QQ 1 QQ Datensatzkopie QQ </MenuItem>
 <MenuItem>zdb_Digitalisierung() QQ 1 QQ Digitalisierung QQ </MenuItem>
 <MenuItem>zdb_Parallelausgabe() QQ 1 QQ Parallelausgabe QQ </MenuItem>
-<MenuItem>zdb_EZB() QQ 1 QQ zdb_EZB QQ </MenuItem>
+<MenuItem>zdb_EZB() QQ 1 QQ ZDB2EZB QQ </MenuItem>
 <MenuItem>------------------------------</MenuItem>
 <MenuItem>===============&gt;&gt;&gt;.Voreinstellungen</MenuItem>
 <MenuItem>zdb_BibliothekDefinieren() QQ 1 QQ IDN der eigenen Bibliothek QQ </MenuItem>
