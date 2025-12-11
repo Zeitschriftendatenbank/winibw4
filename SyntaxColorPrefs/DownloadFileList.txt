@@ -1,1 +1,0 @@
-source=syntaxColor_Prefs.txt, destination=%APPDATA%\OCLC\WinIBW4\SyntaxColorPrefs\syntaxColor_Prefs.txt

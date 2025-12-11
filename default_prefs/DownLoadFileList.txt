@@ -1,1 +1,0 @@
-source=defaultScriptMenus.xml, destination=%APPDATA%\OCLC\WinIBW4\Scripts\ScriptDownload\defaultScriptMenus.xml

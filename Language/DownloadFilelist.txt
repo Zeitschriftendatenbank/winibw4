@@ -1,1 +1,0 @@
-source=strings_DU.txt, destination=%APPDATA%\OCLC\WinIBW4\Language\strings_DU.txt
