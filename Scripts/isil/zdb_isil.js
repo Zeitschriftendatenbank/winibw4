@@ -4,19 +4,19 @@ function __isilOPAC(bearbeiter) {
     if (!__zdbCheckScreen(['8A'], 'Script OPAC')) {
         return false;
     }
-    // set global variable _rec
-    __zdbJSON();
-    if ('Tw' != _rec['002@'][0]['0']) {
+    // set global variable ZDB._rec
+    ZDB._rec = __zdbJSON();
+    if ('Tw' != ZDB._rec['002@'][0]['0']) {
         __zdbError('Das Script kann nur auf Tw-Sätze angewendet werden.');
         return false;
     }
 
-    var isil = _rec['008H'][0]['e'];
+    var isil = ZDB._rec['008H'][0]['e'];
 
-    _rec['OPAC_url'] = 'https://isil.staatsbibliothek-berlin.de/isil/' + isil;
+    ZDB._rec['OPAC_url'] = 'https://isil.staatsbibliothek-berlin.de/isil/' + isil;
 
-    if (_rec['035B']) {
-        mailTo[0] = (_rec['035B'][0]['k']) ? _rec['035B'][0]['k'][0] : "keine E-Mail-Adresse angegeben";
+    if (ZDB._rec['035B']) {
+        mailTo[0] = (ZDB._rec['035B'][0]['k']) ? ZDB._rec['035B'][0]['k'][0] : "keine E-Mail-Adresse angegeben";
     }
 
     // GET the File opac_textbausteine.txt
@@ -24,7 +24,7 @@ function __isilOPAC(bearbeiter) {
     //var theLine;
     var fileName = "\\" + "opac_textbausteine.txt";
     if (!theFileInput.openSpecial("ProfD", fileName)) {
-        application.messageBox("Datei suchen", "Datei " + fileName + " wurde nicht gefunden.", "error-icon");
+        messageBox("Datei suchen", "Datei " + fileName + " wurde nicht gefunden.", "error-icon");
         return;
     }
     var text = theFileInput.read(theFileInput.getAvailable());
@@ -35,7 +35,7 @@ function __isilOPAC(bearbeiter) {
     //__zdbError(lvrtext);
     var lvrs = eval('({' + lvrtext + '})');
 
-    text = text.replace(/{003@ \$0}/g, application.activeWindow.getVariable("P3GPP"));
+    text = text.replace(/{003@ \$0}/g, activeWindow.getVariable("P3GPP"));
 
 
     // IFM
@@ -43,17 +43,18 @@ function __isilOPAC(bearbeiter) {
         mailTo.push(decodeURIComponent(encodeURIComponent(lvrs['IFM-CC'])));
     }
 
-    if (_rec['035I']) {
-        var lvr = decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['a'][0]]));
+    if (ZDB._rec['035I']) {
+        var lvr = decodeURIComponent(encodeURIComponent(lvrs[ZDB._rec['035I'][0]['a'][0]]));
         text = text.replace(/{LVR}/g, lvr);
         // LVR-CC
-        if (_rec['035I'][0]['a'].length > 0) {
-        mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['a'][0] + '-CC'])));
+        if (ZDB._rec['035I'][0]['a']) {
+        mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[ZDB._rec['035I'][0]['a'][0] + '-CC'])));
         }
         //Verbund-CC
-        if (_rec['035I'][0]['c'].length > 0) {
-            mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['c'][0] + '-CC'])));
+        if (ZDB._rec['035I'][0]['c']) {
+            mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[ZDB._rec['035I'][0]['c'][0] + '-CC'])));
         }
+        
         
 
         //__zdbError(lvr);
@@ -65,26 +66,37 @@ function __isilOPAC(bearbeiter) {
             k: "Fernleihfähig? ja, nur Papierkopie an Endnutzer"
         };
 
-        var fli = decodeURIComponent(encodeURIComponent(flis[_rec['035I'][0]['e']]));
+        var fli = decodeURIComponent(encodeURIComponent(flis[ZDB._rec['035I'][0]['e']]));
         text = (0 < fli.length) ? text.replace(/{FLI}/g, fli) : "Fernleihindikator für Produkte nicht aussagekrätig. Bitte überdenken.";
     }
 
     // DBS-CC
-    if (_rec['008H'][0]['b']) {
+    if (ZDB._rec['008H'][0]['b']) {
         mailTo.push(decodeURIComponent(encodeURIComponent(lvrs['DBS-CC'])));
     }
 
+    ZDB._rec['dali'] = [];
     // Primärerfassung
-    if (!_rec['035E'][0]['e']) {
-        _rec['035E'][0]['e'] = 'ZDB';
-            } else {
+    if (ZDB._rec['035E'] && ZDB._rec['035E'][0] && !ZDB._rec['035E'][0]['e']) {
+        ZDB._rec['035E'][0]['e'] = 'ZDB';
+        if (ZDB._rec['035E'][0]['d'] && ZDB._rec['035E'][0]['d'][0]) {
+            ZDB._rec['dali'][0] = {'d': ["Datenlieferung an:\t\t" + ZDB._rec['035E'][0]['d'][0]]};
+        } else {
+            ZDB._rec['dali'][0] = {'d': ["Datenlieferung an:\t\t"]};
+        }
+    } else {
         //Verbund-CC
-        if (_rec['035E'][0]['d'].length > 0) {
-            for (i = 0; i < _rec['035E'][0]['d'].length; i++) {
-                if (_rec['035E'][0]['d'][i] + '-CC' in lvrs) {
-                    mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035E'][0]['d'][i] + '-CC'])));
+        if (ZDB._rec['035E'] && ZDB._rec['035E'][0] && ZDB._rec['035E'][0]['d'] && ZDB._rec['035E'][0]['d'].length > 0) {
+            for (i = 0; i < ZDB._rec['035E'][0]['d'].length; i++) {
+                if (ZDB._rec['035E'][0]['d'][i] + '-CC' in lvrs) {
+                    mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[ZDB._rec['035E'][0]['d'][i] + '-CC'])));
                 }
             }
+        }
+        if (ZDB._rec['035E'] && ZDB._rec['035E'][0] && ZDB._rec['035E'][0]['d'] && ZDB._rec['035E'][0]['d'][0]) {
+            ZDB._rec['dali'][0] = {'d': ["Liefernder Verbund:\t\t" + ZDB._rec['035E'][0]['d'][0]]};
+        } else {
+            ZDB._rec['dali'][0] = {'d': ["Liefernder Verbund:\t\t"]};
         }
     }
 
@@ -95,9 +107,9 @@ function __isilOPAC(bearbeiter) {
     var results = {}, matches;
     while ((matches = getVarsRegEx.exec(text)) != null) {
         results[matches[0]] = '';
-        if (_rec[matches[1]]) {
-            if (_rec[matches[1]][0][matches[2]]) {
-                results[matches[0]] = _rec[matches[1]][0][matches[2]];
+        if (ZDB._rec[matches[1]]) {
+            if (ZDB._rec[matches[1]][0][matches[2]]) {
+                results[matches[0]] = ZDB._rec[matches[1]][0][matches[2]];
             }
         }
     }
@@ -143,21 +155,21 @@ function __isilOPAC(bearbeiter) {
 
     // clipboard
     var uniqueMailTo = __zdbArrayUnique(mailTo);
-    application.activeWindow.clipboard = uniqueMailTo.join("; ") + "\n" + mail;
+    activeWindow.clipboard = uniqueMailTo.join("; ") + "\n" + mail;
 
     /*if(__zdbYesNo("Der Text wurde in die Zwischenablage kopiert. Soll eine neue Mail an " + mailTo + " erstellt werden?")) {
-        application.shellExecute('mailto:' + mailTo + '?subject=' + isil, 5, 'open','');
+        shellExecute('mailto:' + mailTo + '?subject=' + isil, 5, 'open','');
     }*/
 
     // open browser
-    application.shellExecute(_rec['OPAC_url'], 5, 'open', '');
-    application.messageBox("ISIL OPAC", "Der Text wurde in die Zwischenablage kopiert", "message-icon");
+    shellExecute(ZDB._rec['OPAC_url'], 5, 'open', '');
+    messageBox("ISIL OPAC", "Der Text wurde in die Zwischenablage kopiert", "message-icon");
 
 }
 
 function isil_isilInactive() {
     OPAC();
-    application.activeWindow.command('k', false);
+    activeWindow.command('k', false);
 
     var datum = new Date(),
         fy = datum.getFullYear(),
@@ -167,76 +179,76 @@ function isil_isilInactive() {
         feld_680 = '680 Löschung' + jahr + '-' + monat,
         feld_900 = '900 $aUngültig; Bibliothek/Einrichtung aufgelöst // aufgegangen in <ISIL der Zielbibliothek> // ergänzende Information zur Auflösung oder dem Verbleib',
         feld_805 = "805 I\n",
-        feld_110 = '110 früher: ' + _rec['029A'][0]['a'][0] + "\n";
+        feld_110 = '110 früher: ' + ZDB._rec['029A'][0]['a'][0] + "\n";
     var feld_005 = "\n005 Tw\n",
         feld_806 = '',
         feld_092 = '092 ',
         bik = '';
 
     // sigel
-    if (_rec['008H'][0]['d']) {
-        feld_092 += '$d' + _rec['008H'][0]['d'][0];
+    if (ZDB._rec['008H'][0]['d']) {
+        feld_092 += '$d' + ZDB._rec['008H'][0]['d'][0];
     }
     // isil
-    feld_092 += '$e' + _rec['008H'][0]['e'][0] + "\n";
+    feld_092 += '$e' + ZDB._rec['008H'][0]['e'][0] + "\n";
 
     // bik
-    if (_rec['008H'][0]['a']) {
-        bik = _rec['008H'][0]['a'][0];
-        feld_680 += '; BIK war ' + bik + ', ILN ' + _rec['035E'][0]['c'][0] + '; Auftragsbestätigung: ...';
+    if (ZDB._rec['008H'][0]['a']) {
+        bik = ZDB._rec['008H'][0]['a'][0];
+        feld_680 += '; BIK war ' + bik + ', ILN ' + ZDB._rec['035E'][0]['c'][0] + '; Auftragsbestätigung: ...';
     }
 
-    if (_rec['035D']) {
-        for (var i = 0; i < _rec['035D'].length; i++) {
+    if (ZDB._rec['035D']) {
+        for (var i = 0; i < ZDB._rec['035D'].length; i++) {
             feld_806 += '806 ';
-            if (_rec['035D'][i]['a']) {
-                feld_806 += _rec['035D'][i]['a'][0];
+            if (ZDB._rec['035D'][i]['a']) {
+                feld_806 += ZDB._rec['035D'][i]['a'][0];
             }
-            if (_rec['035D'][i]['b']) {
-                feld_806 += '$b' + _rec['035D'][i]['b'][0];
+            if (ZDB._rec['035D'][i]['b']) {
+                feld_806 += '$b' + ZDB._rec['035D'][i]['b'][0];
             }
             feld_806 += "\n";
         }
     }
 
-    application.activeWindow.title.endOfBuffer(false);
+    activeWindow.title.endOfBuffer(false);
 
-    application.activeWindow.title.insertText(feld_005 + feld_092 + feld_110 + feld_680 + "\n" + feld_805 + feld_806 + feld_900);
+    activeWindow.title.insertText(feld_005 + feld_092 + feld_110 + feld_680 + "\n" + feld_805 + feld_806 + feld_900);
 }
 
 function zdb_set_bik() {
     var prompter = utility.newPrompter(),
         bik_in;
-    if (prompter.prompt("BIK speichern", "Setze die zuletzt vergebene BIK ohne Prüfziffer", application.getProfileString('zdb.userdata', 'bik', ''), '', '')) {
+    if (prompter.prompt("BIK speichern", "Setze die zuletzt vergebene BIK ohne Prüfziffer", getProfileString('zdb.userdata', 'bik', ''), '', '')) {
         if (!(bik_in = prompter.getEditValue())) {
             return false;
         }
-        application.writeProfileString('zdb.userdata', 'bik', '' + bik_in.substr(0, 6));
+        writeProfileString('zdb.userdata', 'bik', '' + bik_in.substr(0, 6));
     }
 }
 
 function zdb_bik() {
     if (!__zdbCheckScreen(['MI'], 'BIK erstellen.')) return false;
-    var win = application.activeWindow.windowID;
+    var win = activeWindow.windowID;
     //var win = __zdbOpenWorkWindow();
-    var nextBIK = application.getProfileString('zdb.userdata', 'bik', '');
+    var nextBIK = getProfileString('zdb.userdata', 'bik', '');
     if ('' == nextBIK) {
         __zdbError('Bitte zuerst die letzte BIK definieren.');
         return false;
     }
-    //application.activeWindow.command('s d', false);
+    //activeWindow.command('s d', false);
     do {
-        application.activeWindow.command('r', false);
+        activeWindow.command('r', false);
         nextBIK = (parseInt(nextBIK) + 1).toString().slice(-6);
-        application.activeWindow.command('f bbg Tw and bik ' + nextBIK + '-?', false);
-    } while ('8A' == application.activeWindow.getVariable('scr')
-        && application.activeWindow.status != 'ERROR');
+        activeWindow.command('f bbg Tw and bik ' + nextBIK + '-?', false);
+    } while ('8A' == activeWindow.getVariable('scr')
+        && activeWindow.status != 'ERROR');
 
-    //application.activateWindow(win);
+    //activateWindow(win);
     __zdbCloseWorkWindow(win);
-    application.activeWindow.title.findTag2('092', 0, false, true, false);
-    application.activeWindow.title.insertText(__zdbPruezibik(nextBIK));
-    application.writeProfileString('zdb.userdata', 'bik', '' + nextBIK);
+    activeWindow.title.findTag2('092', 0, false, true, false);
+    activeWindow.title.insertText(__zdbPruezibik(nextBIK));
+    writeProfileString('zdb.userdata', 'bik', '' + nextBIK);
 }
 
 function zdbPruezibik() {
@@ -249,7 +261,7 @@ function zdbPruezibik() {
         return false;
     }
     var bik = __zdbPruezibik(bik_in);
-    application.activeWindow.clipboard = bik;
+    activeWindow.clipboard = bik;
     __meldung("BIK " + bik + " wurde in die Zwischenablage kopiert.");
 }
 
@@ -271,7 +283,7 @@ function __zdbPruezibik(bik_in) {
 }
 
 function isil_merkeISIL() {
-    application.activeWindow.clipboard = __isilGetISIL();
+    activeWindow.clipboard = __isilGetISIL();
 }
 
 /**
@@ -284,9 +296,9 @@ function __isilGetISIL(idn) {
     if (idn) // get zdb id of a different title in a work window
     {
         var myWindowId = __zdbOpenWorkWindow();
-        application.activeWindow.commandLine('\zoe idn ' + idn);
+        activeWindow.commandLine('\zoe idn ' + idn);
     }
-    //var strScreen = application.activeWindow.getVariable('scr');
+    //var strScreen = activeWindow.getVariable('scr');
     var strScreen = __zdbCheckScreen(['8A', 'MI', 'IT'], 'Merke ISIL');
     if (false == strScreen) return false;
     // set the right category
@@ -305,10 +317,10 @@ function __isilGetISIL(idn) {
     if ('P' != format) {
         // Korrekturmodus
         if (strScreen == 'MI' || strScreen == 'IT') {
-            _field = application.activeWindow.title.findTag(cat, 0, false, false, true);
+            _field = activeWindow.title.findTag(cat, 0, false, false, true);
         }
         else {
-            _field = application.activeWindow.findTagContent(cat, 0, false);
+            _field = activeWindow.findTagContent(cat, 0, false);
             // workaround since findTagContent has errors
             _field = _field.replace(/^\s+|\s?\n$/g, '');
         }
@@ -322,10 +334,10 @@ function __isilGetISIL(idn) {
     {
         // Korrekturmodus
         if (strScreen == 'MI' || strScreen == 'IT') {
-            _field = __zdbParseField(application.activeWindow.title.findTag(cat, 0, true, false, true));
+            _field = __zdbParseField(activeWindow.title.findTag(cat, 0, true, false, true));
         }
         else {
-            _field = __zdbParseField(application.activeWindow.findTagContent(cat, 0, true));
+            _field = __zdbParseField(activeWindow.findTagContent(cat, 0, true));
         }
         // __zeigeEigenschaften(_field);
         isil = _field[cat]['e'][0];
@@ -346,15 +358,15 @@ function isil_isilListe() {
     while (set.nextTit()) {
         alleisil.push(__isilGetISIL());
     }
-    application.activeWindow.clipboard = alleisil.join("\r\n");
-    application.messageBox("ISIL-Liste", "Alle ISIL wurden eingesammelt und in den " +
+    activeWindow.clipboard = alleisil.join("\r\n");
+    messageBox("ISIL-Liste", "Alle ISIL wurden eingesammelt und in den " +
         "Zwischenspeicher geschrieben. \nSie können die ISIL jetzt mit dem Shortcut Strg+v " +
         "in eine Datei einfügen.", "message-icon");
 }
 
 function isil_OSM() {
-    if (application.activeWindow.variable("scr") != "MI") {
-        application.messageBox('Fehler', "Die Funktion kann nur im Korrekturmodus aufgerufen werden.", "error-icon");
+    if (activeWindow.variable("scr") != "MI") {
+        messageBox('Fehler', "Die Funktion kann nur im Korrekturmodus aufgerufen werden.", "error-icon");
         return false;
     }
 
@@ -362,13 +374,13 @@ function isil_OSM() {
     var repl = false;
     var feld371;
     var prompter = utility.newPrompter();
-    while ((feld371 = application.activeWindow.title.findTag2("371", iterator, true, true, false)) == "") {
+    while ((feld371 = activeWindow.title.findTag2("371", iterator, true, true, false)) == "") {
         if (feld371.match(/\$2S/)) break;
         iterator++;
     }
 
 
-    var name = application.activeWindow.title.findTag2("110", 0, false, false, false),
+    var name = activeWindow.title.findTag2("110", 0, false, false, false),
         street = feld371.match(/371 ([^$]*)/),
         city = feld371.match(/\$b([^$]*)/),
         cntr = feld371.match(/\$d([^$]*)/),
@@ -386,7 +398,7 @@ function isil_OSM() {
     var url = base + query + format;
 
     var selected = false;
-    application.activeWindow.clipboard = url;
+    activeWindow.clipboard = url;
     xmlDoc = __isilRequest(url);
     var xmlrows = xmlDoc.getElementsByTagName("place");
     if (xmlrows.length < 1) {
@@ -400,7 +412,7 @@ function isil_OSM() {
                     adr = prompter.getEditValue();
                     url = base + 'q=' + encodeURIComponent(adr) + format;
                     xmlDoc = __isilRequest(url);
-                    application.activeWindow.clipboard = url;
+                    activeWindow.clipboard = url;
                     xmlrows = xmlDoc.getElementsByTagName("place");
                 }
                 else {
@@ -408,11 +420,11 @@ function isil_OSM() {
                 }
             }
         } else {
-            application.shellExecute(ui + encodeURIComponent(adr) + format, 5, "open", "");
+            shellExecute(ui + encodeURIComponent(adr) + format, 5, "open", "");
         }
     }
     else {
-        application.shellExecute(ui + query, 5, "open", "");
+        shellExecute(ui + query, 5, "open", "");
     }
     var xmlRowsCount = xmlrows.length;
     var treffer = 0;
@@ -438,17 +450,17 @@ function isil_OSM() {
         var re = /\$k[^$]*\$l[^$]*/;
         var replacementpattern = "$k" + lon + "$l" + lat;
         var result = feld371.replace(re, replacementpattern);
-        application.activeWindow.title.deleteLine(1);
-        application.activeWindow.title.insertText("\n" + result + "\n");
+        activeWindow.title.deleteLine(1);
+        activeWindow.title.insertText("\n" + result + "\n");
     }
     else {
         var subfields = new Array("$n", "$o", "$p", "$z", "$2", "$3");
         var ind;
         for (var i = 0; i < subfields.length; i++) {
-            ind = application.activeWindow.title.currentField.indexOf(subfields[i]);
+            ind = activeWindow.title.currentField.indexOf(subfields[i]);
             if (ind != -1) {
-                application.activeWindow.title.charRight(ind, false);
-                application.activeWindow.title.insertText("$k" + lon + "$l" + lat);
+                activeWindow.title.charRight(ind, false);
+                activeWindow.title.insertText("$k" + lon + "$l" + lat);
                 return;
             }
         }
@@ -458,11 +470,11 @@ function isil_OSM() {
 function __isilRequest(url) {
     var request = new ActiveXObject('MSXML2.XMLHTTP.6.0');
     try {
-        application.messageBox('Fehler', url, 'error-icon');
+        messageBox('Fehler', url, 'error-icon');
         request.open('GET', url, false);
         request.send('');
     } catch (e) {
-        application.messageBox('Fehler', url + ': Could not connect, error: ' + e, 'error-icon');
+        messageBox('Fehler', url + ': Could not connect, error: ' + e, 'error-icon');
         return;
     }
 
@@ -472,9 +484,9 @@ function __isilRequest(url) {
 function isil_online() {
     var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT', 'MI'], 'ISIL Online');
     if (false == strScreen) return false;
-    if ('Tw' != application.activeWindow.variable('P3VMC')) {
+    if ('Tw' != activeWindow.variable('P3VMC')) {
         return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.');
     }
-    __zdbJSON(application.activeWindow.variable('P3GPP'));
-    application.shellExecute('http://ld.zdb-services.de/resource/organisations/' + _rec['008H'][0]['e'][0], 5, 'open', '');
+    __zdbJSON(activeWindow.variable('P3GPP'));
+    shellExecute('http://ld.zdb-services.de/resource/organisations/' + ZDB._rec['008H'][0]['e'][0], 5, 'open', '');
 }

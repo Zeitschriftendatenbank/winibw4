@@ -4,7 +4,7 @@
 /**
 * ZDB globale Variablen
 */
-var zdb =  {
+var ZDB =  {
     // auto Suchbox
     anfangsfenster: '',
     delimiter: '\u0192', // Unterfeldzeichen 'ƒ' = \u0192
@@ -13,6 +13,26 @@ var zdb =  {
     _rec: {} // global varibale holding the JSON record
 };
 
+ZDB._first = function(arr, key) {
+    if('String' == typeof arr) {
+        arr = this._rec[arr];
+    }
+    return (arr && arr[0] && arr[0][key]) ? arr[0][key][0] : null;
+}
+
+ZDB._has = function(arr, key) {
+        if('String' == typeof arr) {
+        arr = this._rec[arr];
+    }
+    return (arr && arr[0] && arr[0][key]);
+}
+
+ZDB._pushIf = function(arr, val) {
+    if (val) arr.push(val);
+}
+ZDB._replAll = function(text, re, val) {
+    return text.replace(re, val);
+}
 
 function zdb_merkeZDB(){
     activeWindow.clipboard = __zdbGetZDB();
@@ -139,7 +159,7 @@ function zdb_MailboxsatzAnlegen(){
 
 function zdb_HoleIDN(){
     // Wurde vorab eine Suche mit dem Skript 'Automatische Suchbox' ausgeführt?
-    if (typeof zdb.anfangsfenster == 'undefined') {
+    if (typeof ZDB.anfangsfenster == 'undefined') {
         messageBox('HoleIDN', 'Vor Aufruf des Skriptes "HoleIDN" muss zunächst eine automatische Suche mit Hilfe des Skriptes "AutomatischeSuchBox" gestartet werden.', 'alert-icon');
     } else {
         // Ist das aktive Fenster eine Trefferliste?
@@ -151,7 +171,7 @@ function zdb_HoleIDN(){
         // Falls das Bearbeitungsfenster ( = zdb.anfangsfenster) geschlossen wurde, gibt das System einen 'uncaught exception'-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
         try {
             // Zurück zum zdb.anfangsfenster gehen
-            activateWindow(zdb.anfangsfenster);
+            activateWindow(ZDB.anfangsfenster);
             // IDN einfügen
             activeWindow.title.insertText('!' + idn + '!');
             // Trefferliste schließen

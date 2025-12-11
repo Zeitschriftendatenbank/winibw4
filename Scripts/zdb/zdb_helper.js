@@ -475,3 +475,19 @@ function __zdbGetSubfield(field, sfTag) {
     var subfields = __zdbParseField(field);
     return subfields[fieldTag][sfTag];
 }
+
+function __zdbPruezibik(bik_in) {
+    if (bik_in.length !== 6) return false;
+
+    var z1 = bik_in[5] * 2,
+        z2 = bik_in[4] * 3,
+        z3 = bik_in[3] * 4,
+        z4 = bik_in[2] * 5,
+        z5 = bik_in[1] * 6,
+        z6 = bik_in[0] * 7;
+
+    var sum = z1 + z2 + z3 + z4 + z5 + z6;
+    var prue = sum - Math.floor(sum / 11) * 11;
+    if (prue == 10) prue = 'X';
+    return bik_in + '-' + prue;
+}
