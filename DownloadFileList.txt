@@ -1,5 +1,0 @@
-source=/SyntaxColorPrefs/syntaxColor_Prefs.txt, destination=%APPDATA%\OCLC\WinIBW4\SyntaxColorPrefs\syntaxColor_Prefs.txt
-source=/default_prefs/defaultScriptButtons.txt, destination=%APPDATA%\OCLC\WinIBW4\default_prefs\defaultScriptButtons.txt
-source=/default_prefs/defaultScriptList.txt, destination=%APPDATA%\OCLC\WinIBW4\default_prefs\defaultScriptList.txt
-source=/default_prefs/defaultScriptMenus.xml, destination=%APPDATA%\OCLC\WinIBW4\default_prefs\defaultScriptMenus.xml
-source=/Language/strings_DU.txt, destination=%APPDATA%\OCLC\WinIBW4\Language\strings_DU.txt
