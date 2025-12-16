@@ -1,3 +1,4 @@
 Language
 SyntaxColorPrefs
 default_prefs
+csvDefinitions_zdb.txt
