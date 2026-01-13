@@ -38,6 +38,11 @@
 <MenuItems>
 <MenuItem>zdb_alleinbesitz() QQ 1 QQ Alleinbesitz ermitteln QQ </MenuItem>
 <MenuItem>sucheErsetzeDialog() QQ 1 QQ sucheErsetze QQ </MenuItem>
+<MenuItem>ppnListe() QQ 1 QQ PPN-Liste erstellen QQ </MenuItem>
+<MenuItem>kommandoBox() QQ 1 QQ Kommandobox QQ </MenuItem>
+<MenuItem>rechercheStapel() QQ 1 QQ rechercheStapel QQ </MenuItem>
+<MenuItem>WinIBW4Handbuch() QQ 1 QQ WinIBW 4 Handbuch QQ </MenuItem>
+<MenuItem>excelTabelle() QQ 1 QQ CSV-Liste erstellen QQ </MenuItem>
 </MenuItems>
 </ScriptMenu>
 </ScriptMenus>

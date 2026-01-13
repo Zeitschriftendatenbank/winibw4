@@ -1,41 +1,5 @@
-// Datei: zdb_scripte_public.js
-// WinIBW-Version ab 3.7
-
-/**
-* ZDB globale Variablen
-*/
-var ZDB =  {
-    // auto Suchbox
-    anfangsfenster: '',
-    delimiter: '\u0192', // Unterfeldzeichen 'ƒ' = \u0192
-    delimiterReg: '\u0192', // regualr expression version Unterfeldzeichen '$' = \$
-    charCode: 402, // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
-    _rec: {} // global varibale holding the JSON record
-};
-
-ZDB._first = function(arr, key) {
-    if('String' == typeof arr) {
-        arr = this._rec[arr];
-    }
-    return (arr && arr[0] && arr[0][key]) ? arr[0][key][0] : null;
-}
-
-ZDB._has = function(arr, key) {
-        if('String' == typeof arr) {
-        arr = this._rec[arr];
-    }
-    return (arr && arr[0] && arr[0][key]);
-}
-
-ZDB._pushIf = function(arr, val) {
-    if (val) arr.push(val);
-}
-ZDB._replAll = function(text, re, val) {
-    return text.replace(re, val);
-}
-
 function zdb_merkeZDB(){
-    activeWindow.clipboard = __zdbGetZDB();
+    activeWindow.clipboard = ZDB._getZDB();
 }
 
 function zdb_ILTISseiten(){
@@ -59,8 +23,12 @@ function zdb_openFormat() {
     }
 }
 
+function __zdbYesNo(msgtxt) {
+    return utility.newPrompter().confirm('Ihre Entscheidung', msgtxt);
+}
+
 function zdb_MerkeIDN(){
-    if(!__zdbCheckScreen(['8A','7A','MT','IT'],'Merke IDN')) {
+    if(!ZDB._checkScreen(['8A','7A','MT','IT'],'Merke IDN')) {
         return false;
     }
     activeWindow.clipboard = activeWindow.getVariable('P3GPP');
@@ -72,73 +40,17 @@ function zdb_idListe() {
         allezdb = [];
 
         while (t = set.nextTit()) {
-            allezdb[t] = __zdbGetZDB();
+            allezdb[t] = ZDB._getZDB();
         }
-        activeWindow.clipboard = allezdb.join("\r\n");
+        activeWindow.clipboard = alleZDB.join("\r\n");
         messageBox ("ZDB-ID-Liste", "Alle ZDB-IDs wurden eingesammelt und in den " +
             "Zwischenspeicher geschrieben. \nSie können die ZDB-IDs jetzt mit dem Shortcut Strg+v " +
             "in eine Datei einfügen.", "message-icon");
 }
 
-/**
- * Kategorie 'EXXX x' wird automatisch befüllt
- * @param string content
- * @param function|undefined callback
- */
-function __zdbExemplarErfassen(content, callback) {
-    var exNum = __zdbEXXX();
-    if (!__zdbCheckScreen(['MT', 'IE'])) {
-        activeWindow.command('e ' + exNum, false);
-    }
-    // Exemplarsatz anlegen und befüllen
-    activeWindow.title.insertText(exNum + " x\n" + content);
-    if (typeof callback !== 'undefined') {
-        callback();
-    }
-    return exNum;
-}
 
-/**
- * Gibt ein Array von genutzten Exemplarnummern zurück
- * @returns array Genutzte Exemplarnummern
- */
-function __zdbExemplarNummern() {
-    activeWindow.command('show d', false);
-    var found = (activeWindow.getVariable('P3CLIP')).match(/\n(E\d\d\d)/g);
-    found.sort();
-    for (var i = 0; i < found.length; i += 1) {
-        if ('0' == found[i][3]) {
-            found[i] = found[i].substring(4);
-        } else {
-            found[i] = found[i].substring(3);
-        }
-    }
-    return found;
-}
 
-function __zdbEXXX() {
-    var record,
-        num;
-    if(__zdbCheckScreen(['MT'])){
-        activeWindow.title.selectAll();
-        record = activeWindow.title.selection;
-        activeWindow.title.selectNone();
-    } else {
-        record = activeWindow.getVariable('P3CLIP');
-    }
-    for (var i = 1; i <= 999; i += 1) {
-        num = "E" + ("000" + i).slice(-3);
-        if ('' != record) {
-            if (record.indexOf(num) == -1) {
-                return num;
-            }
-        } else {
-            if (!activeWindow.title.find("\n" + num, true, false, true)) {
-                return num;
-            }
-        }
-    }
-}
+
 
 function zdb_MailboxsatzAnlegen(){
     var ppn = activeWindow.getVariable('P3GPP');
@@ -163,14 +75,14 @@ function zdb_HoleIDN(){
         messageBox('HoleIDN', 'Vor Aufruf des Skriptes "HoleIDN" muss zunächst eine automatische Suche mit Hilfe des Skriptes "AutomatischeSuchBox" gestartet werden.', 'alert-icon');
     } else {
         // Ist das aktive Fenster eine Trefferliste?
-        if(false == __zdbCheckScreen(['7A','8A'],'HoleIDN')) return false;
+        if(false == ZDB._checkScreen(['7A','8A'],'HoleIDN')) return false;
         //  IDN des markierten Titels aus der Trefferliste ermitteln
         var idn = activeWindow.getVariable('P3GPP');
         // ID des aktiven Fensters ermitteln
         var fenster = activeWindow.windowID;
-        // Falls das Bearbeitungsfenster ( = zdb.anfangsfenster) geschlossen wurde, gibt das System einen 'uncaught exception'-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
+        // Falls das Bearbeitungsfenster ( = ZDB.anfangsfenster) geschlossen wurde, gibt das System einen 'uncaught exception'-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
         try {
-            // Zurück zum zdb.anfangsfenster gehen
+            // Zurück zum ZDB.anfangsfenster gehen
             activateWindow(ZDB.anfangsfenster);
             // IDN einfügen
             activeWindow.title.insertText('!' + idn + '!');
@@ -185,11 +97,11 @@ function zdb_HoleIDN(){
 
 
 function zdb_alleinbesitz() {
-    var eigene_bibliothek =  getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+    var eigene_bibliothek =  getProfileString('ZDB.userdata', 'eigeneBibliothek', '');
     if('' == eigene_bibliothek) {
         if(__zdbYesNo('Ihre Bibliothek ist noch nicht definiert. Wollen Sie ihre Bibliothek jetzt defnieren?')) {
             zdb_BibliothekDefinieren();
-            eigene_bibliothek =  getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+            eigene_bibliothek =  getProfileString('ZDB.userdata', 'eigeneBibliothek', '');
             if('' == eigene_bibliothek) {
                 return false;
             }
@@ -235,9 +147,6 @@ function zdb_alleinbesitz() {
 
     activeWindow.command('f bie ' + id + ' not bie ' + command, false);
 }
-
-
-
 
 
 

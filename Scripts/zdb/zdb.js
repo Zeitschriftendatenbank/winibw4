@@ -1,18 +1,41 @@
-function __zdbYesNo(msgtxt) {
-    return utility.newPrompter().confirm('Ihre Entscheidung', msgtxt);
+var ZDB = {
+    anfangsfenster : '', // auto Suchbox
+    delimiter : '\u0192', // Unterfeldzeichen 'ƒ' = \u0192
+    charCode : 402, // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
+    _rec : {} // global varibale holding the JSON record
 }
 
-function __zdbGetFormat() {
-    var format = "";
-    var p3gpr = activeWindow.getVariable('P3GPR');
-    var p3gdb = activeWindow.getVariable('P3GDB');
-    if (p3gpr) {
-        format = p3gpr;
-    } else if (p3gdb) {
-        format = p3gdb;
+ZDB._first = function (arr, key) {
+    if ('String' == typeof arr) {
+        arr = this._rec[arr];
     }
-    format = format.toUpperCase();
-    return format;
+    return (arr && arr[0] && arr[0][key]) ? arr[0][key][0] : null;
+}
+
+ZDB._has = function (arr, key) {
+    if ('String' == typeof arr) {
+        arr = this._rec[arr];
+    }
+    return (arr && arr[0] && arr[0][key]);
+}
+
+ZDB._pushIf = function (arr, val) {
+    if (val) arr.push(val);
+}
+
+ZDB._replAll = function (text, re, val) {
+    return text.replace(re, val);
+}
+
+ZDB._format = function (f) {
+    if (typeof f === 'undefined' || f === null) {
+        this.format = activeWindow.getVariable('P3GPR').toUpperCase();
+        if(!this.format) {
+            this.format = activeWindow.getVariable('P3GDB').toUpperCase();
+        }
+        return this.format;
+    }
+    activeWindow.command('s ' + f, false);
 }
 
 /**
@@ -20,17 +43,17 @@ function __zdbGetFormat() {
 * @param {string} idn optional
 * @return {string|boolean} ZDBID or false
 */
-function __zdbGetZDB(idn) {
+ZDB._getZDB = function (idn) {
     idn = idn || false;
     if (idn) {
         var myWindowId = activeWindow.windowID;
         activeWindow.commandLine('\zoe idn ' + idn);
     }
 
-    var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT'], '__zdbGetZDB');
+    var strScreen = this._checkScreen(['8A', 'MT', 'IT'], '_getZDB');
     if (!strScreen) return false;
 
-    var format = __zdbGetFormat();
+    var format = this._format();
     var cat = { 'D': '2110', 'DA': '2110', 'P': '006Z' }[format];
     var zdbid;
 
@@ -40,8 +63,8 @@ function __zdbGetZDB(idn) {
             : __Trim(activeWindow.findTagContent(cat, 0, false));
     } else {
         var field = (strScreen === 'MT' || strScreen === 'IT')
-            ? __zdbParseField(activeWindow.title.findTag(cat, 0, true, false, true))
-            : __zdbParseField(activeWindow.findTagContent(cat, 0, true));
+            ? this._parseField(activeWindow.title.findTag(cat, 0, true, false, true))
+            : this._parseField(activeWindow.findTagContent(cat, 0, true));
         zdbid = field[cat][0][0];
     }
 
@@ -54,10 +77,10 @@ function __zdbGetZDB(idn) {
 
 /**
 * Expansion object to RDA fields
-* @param {object} e created from __zdbParseExpansion()
+* @param {object} e created from __parseExpansion()
 * @return {string} RDA fields
 */
-function __zdbExpansionToText(e) {
+ZDB._expansionToText = function (e) {
     var text = '';
     if (e.norm) {
         text = '$l' + e.norm.a;
@@ -76,12 +99,12 @@ function __zdbExpansionToText(e) {
  * @property {Function} katToString - A method to convert a specific category (`kat`) into a formatted string.
  *                                    The string includes all subfields and their values, separated by a delimiter.
  */
-function __zdbJSON(idn) {
+ZDB._toJSON = function (idn) {
     var _rec = {};
     idn = idn || false;
 
     // save format
-    var format = __zdbGetFormat();
+    var format = this._format();
 
     var myWindowId = activeWindow.windowID;
 
@@ -90,15 +113,15 @@ function __zdbJSON(idn) {
         activeWindow.command('f idn ' + idn, true);
     }
 
-    if ('P' != __zdbGetFormat()) activeWindow.command('s p', false);
+    if ('P' != format) this._format('P');
 
-    var rec = __zdbGetExpansionFromP3VTX();
+    var rec = this._getExpansionFromP3VTX();
     // get array of lines
     var arrLines = rec.match(/(.+)/gm);
     // for each line
     var i = 0;
     while (i < arrLines.length) {
-        var _line = __zdbParseField(arrLines[i]);
+        var _line = this._parseField(arrLines[i]);
         // key is the category
         for (var key in _line) {
             if (_line.hasOwnProperty(key)) {
@@ -121,7 +144,7 @@ function __zdbJSON(idn) {
             string += "\n" + kat + ' ';
             for (var sub in this[kat][i]) {
                 for (var x = 0; x < this[kat][i][sub].length; x++) {
-                    string += zdb.delimiter + sub + this[kat][i][sub][x];
+                    string += this.delimiter + sub + this[kat][i][sub][x];
                 }
             }
         }
@@ -129,14 +152,13 @@ function __zdbJSON(idn) {
     };
 
     // back to source format
-    if ('P' != format) activeWindow.command('s ' + format, false);
+    if ('P' != format) this._format(format);
 
     if (activeWindow.windowID != myWindowId) {
         activateWindow(myWindowId);
     }
     return _rec;
 }
-
 
 /**
 * Liest ein Feldinhalt in ein Object
@@ -166,14 +188,14 @@ function __zdbJSON(idn) {
 * Zugriff: obj['017A']['a'][0] --> "ee"
 * Zugriff: obj['017A']['a'][1] --> "mg"
 */
-function __zdbParseField(field) {
+ZDB._parseField = function (field) {
     var _field = {};
     var arr = field.match(/^([^\s]+)\s(.+)/);
     if (!arr || arr.length < 3) {
         // Return empty object or handle error gracefully
         return {};
     }
-    var del = ('P' == __zdbGetFormat()) ? zdb.delimiter : '$';
+    var del = ('P' == this._format()) ? this.delimiter : '$';
     var split = arr[2].split(del);
 
     var subfield = {};
@@ -224,7 +246,7 @@ function __zdbParseField(field) {
 *
 * --Advz--Magyar Tudományos Akadémia$bTörténettudományi Osztály [Tb1]$BVerfasser: Értekezések a Történettudományi Osztály köréb?l
 */
-function __zdbParseExpansion(exp) {
+ZDB._parseExpansion = function (exp) {
     var split;
     var _exp = {};
     var re = /(?:--[^-]+--)([^:]*)(?::\s(?:(?:\[(.+)\])|(?:(.+)))?)?/;
@@ -259,7 +281,7 @@ function __zdbParseExpansion(exp) {
  *
  * @returns {string} The processed and unescaped expansion data.
  */
-function __zdbGetExpansionFromP3VTX() {
+ZDB._getExpansionFromP3VTX = function () {
     var satz = activeWindow.getVariable('P3VTX')
         .replace('<ISBD><TABLE>', '')
         .replace('<\/TABLE>', '')
@@ -272,7 +294,7 @@ function __zdbGetExpansionFromP3VTX() {
         .replace(/\r/g, "\n")
         .replace(/\u001b./g, ''); // replace /n (Zeilenumbruch) entfernt,
     // weil hier die $8 Expansion durch Zeilenbruch abgetrennt wurde
-    return __zdbUnescapeHtml(satz);
+    return this._unescapeHtml(satz);
 }
 
 /**
@@ -280,7 +302,7 @@ function __zdbGetExpansionFromP3VTX() {
  * @param {string} text with html escaped chars
  * @return {string} text with unescaped chars
  */
-function __zdbUnescapeHtml(text) {
+ZDB._unescapeHtml = function (text) {
     var map = {
         '&amp;': '&',
         '&lt;': '<',
@@ -303,20 +325,14 @@ function __zdbUnescapeHtml(text) {
  *
  * @throws {Error} Alerts the user if the provided format is invalid.
  */
-function __zdbGetRecord(format, extmode) {
-    var scr = __zdbCheckScreen(['7A', '8A'], 'zdbGetRecord');
-    if (false == scr) return false;
-
+ZDB._getRecord = function (format, extmode) {
+    var scr = this._checkScreen(['7A', '8A'], '_getRecord');
+    if (!scr) return false;
     var satz = null;
 
-    if ((format != 'P') && (format != 'D')) {
-        return alert('Funktion getRecord mit falschem Format "' + format
-            + "\"aufgerufen.\n"
-            + 'Bitte wenden Sie sich an Ihre Systembetreuer.');
-    }
-    activeWindow.command('show ' + format, false);
+    this._format(format);
     if (extmode) {
-        satz = __zdbGetExpansionFromP3VTX();
+        satz = this._getExpansionFromP3VTX();
     } else {
         satz = activeWindow.copyTitle();
         //satz = satz.replace(/\r/g,'');
@@ -325,7 +341,7 @@ function __zdbGetRecord(format, extmode) {
         activeWindow.simulateIBWKey('FE');
     else
         if (format == 'P')
-            activeWindow.command('show D', false);
+            this._format('D');
     satz = satz + "\n";
     return satz;
 }
@@ -337,7 +353,7 @@ function __zdbGetRecord(format, extmode) {
  * @param {Array} arr - The array to filter for unique values.
  * @returns {Array} A new array with duplicate values removed.
  */
-function __zdbArrayUnique(arr) {
+ZDB._arrayUnique = function (arr) {
     var r = [];
     o: for (var i = 0, n = arr.length; i < n; i++) {
         for (var x = 0, y = r.length; x < y; x++) {
@@ -356,7 +372,7 @@ function __zdbArrayUnique(arr) {
  * @param {Array} a2 - The array containing elements to remove from `a1`.
  * @returns {Array} The modified `a1` array with elements removed.
  */
-function __zdbArrayDiff(a1, a2) {
+ZDB._arrayDiff = function (a1, a2) {
     for (var i = 0; i < a2.length; i++) {
         for (var y = 0; y < a1.length; y++) {
             if (a2[i] === a1[y]) {
@@ -371,21 +387,21 @@ function __zdbArrayDiff(a1, a2) {
 * Check if subfield exists with specific content
 * @return {bool}
 */
-function __zdbCheckSF(kat, sf, I, C) {
+ZDB._checkSF = function (kat, sf, I, C) {
     var i = I || 0;
     var c = C || false;
-    
-    if (typeof zdb._rec[kat] === 'undefined') return false;
-    if (typeof zdb._rec[kat][i][sf] === 'undefined') return false;
-    
+
+    if (typeof this._rec[kat] === 'undefined') return false;
+    if (typeof this._rec[kat][i][sf] === 'undefined') return false;
+
     if (c) {
         var x = 0;
-        while (x < zdb._rec[kat][i][sf].length) {
-            if (zdb._rec[kat][i][sf][x] == c) return true;
+        while (x < this._rec[kat][i][sf].length) {
+            if (this._rec[kat][i][sf][x] == c) return true;
             x++;
         }
         return false;
-    } 
+    }
     return true;
 }
 
@@ -398,7 +414,7 @@ function __zdbCheckSF(kat, sf, I, C) {
 * @param {string} pos optional: the subfield position 0 ... x
 * @param {string} pos optional: the occurence of a repeatable field 0 ... x
 */
-function __zdbInsertSubfield(field, subfield, content, pos, occ) {
+ZDB._insertSubfield = function (field, subfield, content, pos, occ) {
     var data = '',
         splitted = [];
     if (typeof occ === 'undefined') {
@@ -430,8 +446,7 @@ function __zdbInsertSubfield(field, subfield, content, pos, occ) {
 * @param {string} message optional
 * @return {string}|{bool} screen variable or false
 */
-function __zdbCheckScreen(options, header, message) {
-
+ZDB._checkScreen = function (options, header, message) {
     var map = {
         '8A': 'Vollanzeige',
         '7A': 'Trefferliste',
@@ -446,6 +461,9 @@ function __zdbCheckScreen(options, header, message) {
         'MI': 'Norm-Korrekturmodus'
     };
     var strScreen = activeWindow.getVariable('scr');
+    if(!strScreen) {
+        strScreen = 'XX'; // assume login screen if scr is empty
+    }
     var opt = options.join('#');
     if (opt.indexOf(strScreen) < 0) {
         var arr = [];
@@ -456,7 +474,7 @@ function __zdbCheckScreen(options, header, message) {
         var list = arr.join(', ');
         if (typeof header !== 'undefined') {
             message = message || 'Die Funktion kann nur aus ' + list + ' aufgerufen werden.';
-            messageBox(header, message, 'alert-icon');
+            messageBox(header, message, 'error-icon');
         }
         return false;
     }
@@ -470,24 +488,69 @@ function __zdbCheckScreen(options, header, message) {
  * @param {string} sfTag - The subfield tag to retrieve (e.g., 'a', 'b').
  * @returns {*} The value of the specified subfield, or undefined if not found.
  */
-function __zdbGetSubfield(field, sfTag) {
+ZDB._getSubfield = function (field, sfTag) {
     var fieldTag = /^(.{3,4})\s/.exec(field);
-    var subfields = __zdbParseField(field);
+    var subfields = this._parseField(field);
     return subfields[fieldTag][sfTag];
 }
 
-function __zdbPruezibik(bik_in) {
-    if (bik_in.length !== 6) return false;
-
-    var z1 = bik_in[5] * 2,
-        z2 = bik_in[4] * 3,
-        z3 = bik_in[3] * 4,
-        z4 = bik_in[2] * 5,
-        z5 = bik_in[1] * 6,
-        z6 = bik_in[0] * 7;
-
-    var sum = z1 + z2 + z3 + z4 + z5 + z6;
-    var prue = sum - Math.floor(sum / 11) * 11;
-    if (prue == 10) prue = 'X';
-    return bik_in + '-' + prue;
+/**
+ * Kategorie 'EXXX x' wird automatisch befüllt
+ * @param string content
+ * @param function|undefined callback
+ */
+ZDB._exemplarErfassen = function (content, callback) {
+    var exNum = this._EXXX();
+    if (!this._checkScreen(['MT', 'IE'])) {
+        activeWindow.command('e ' + exNum, false);
+    }
+    // Exemplarsatz anlegen und befüllen
+    activeWindow.title.insertText(exNum + " x\n" + content);
+    if (typeof callback !== 'undefined') {
+        callback();
+    }
+    return exNum;
 }
+
+/**
+ * Gibt ein Array von genutzten Exemplarnummern zurück
+ * @returns array Genutzte Exemplarnummern
+ */
+ZDB._exemplarNummern = function () {
+     this._format('D');
+    var found = (activeWindow.getVariable('P3CLIP')).match(/\n(E\d\d\d)/g);
+    found.sort();
+    for (var i = 0; i < found.length; i += 1) {
+        if ('0' == found[i][3]) {
+            found[i] = found[i].substring(4);
+        } else {
+            found[i] = found[i].substring(3);
+        }
+    }
+    return found;
+}
+
+ZDB._EXXX = function () {
+    var record,
+        num;
+    if (this._checkScreen(['MT'])) {
+        activeWindow.title.selectAll();
+        record = activeWindow.title.selection;
+        activeWindow.title.selectNone();
+    } else {
+        record = activeWindow.getVariable('P3CLIP');
+    }
+    for (var i = 1; i <= 999; i += 1) {
+        num = "E" + ("000" + i).slice(-3);
+        if ('' != record) {
+            if (record.indexOf(num) == -1) {
+                return num;
+            }
+        } else {
+            if (!activeWindow.title.find("\n" + num, true, false, true)) {
+                return num;
+            }
+        }
+    }
+}
+

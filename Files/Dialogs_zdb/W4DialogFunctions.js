@@ -325,9 +325,11 @@ function setOnEditKeyPress(element) {
 function addEventHandlers() {
     var forms = document.getElementsByTagName('form');
     for (var f in forms) {
+        if (!forms.hasOwnProperty(f)) continue;
         var elements = forms[f].elements;
         var tabElm = [];
         for (var e in elements) {
+            if (!elements.hasOwnProperty(e)) continue;
             var element = elements[e];
             if (element.tagName && !element.hidden && !element.disabled && element.focus && element.addEventListener) {
                 var tagName = element.tagName.toLowerCase();

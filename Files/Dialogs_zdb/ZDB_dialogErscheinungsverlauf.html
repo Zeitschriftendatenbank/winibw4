@@ -185,10 +185,8 @@
         }
 
         function onCancel() {
-            return true;
+            closeDialog();
         }
-
-
 
         function parse4024() {
             //alert(feld4024);
@@ -274,9 +272,9 @@
             return true;
         }
         // Initialize the dialog on page load
-        //document.addEventListener("DOMContentLoaded", onLoad);
-        onLoad();
-        // ]]>
+        document.addEventListener("DOMContentLoaded", onLoad);
+        //onLoad();
+        //]]>
     </script>
 </body>
 
