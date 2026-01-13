@@ -59,6 +59,7 @@ function zdb_DigiConfig() {
 
 
 function zdb_csvImportTemplate() {
+    if (false == ZDB._checkScreen(['8A', '7A', 'IT', 'IE'], 'AutomatischeSuchBox')) return false;
     showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogCsvImportTemplate.html', 400, 100, 500, 500);
 }
 
@@ -221,3 +222,89 @@ function __zdbGetFileContent(o) {
     }
     utility.sentDataToDialog(inhalt);
 }
+
+function zdb_Erscheinungsverlauf() {
+    if (false == ZDB._checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 400, 100, 600, 500);
+}
+
+function __zdbGet4024() {
+    var strScreen = __zdbCheckScreen(['MT', 'IT'], '__zdbGet4024');
+    if (!strScreen) {
+        utility.sentDataToDialog(false);
+    } else {
+        utility.sentDataToDialog(application.activeWindow.title.findTag('4024', 0, false, true, false));
+    }
+}
+
+function __zdb_paste4024(o) {
+    //__zeigeEigenschaften(o);
+    var bb, bj, bh, bm, bt, eb, ej, eh, em, et, feld4024, _feld4024 = [];
+    for (var g = 0; g <= o.count; g++) {
+        feld4024 = "";
+        bb = "";
+        bj = "";
+        bh = "";
+        bm = "";
+        bt = "";
+        eb = "";
+        ej = "";
+        eh = "";
+        em = "";
+        et = "";
+        if ("" !== (bb = o['bb' + g])) {
+            feld4024 += "$d" + bb;
+        }
+        if ("" !== (bh = o['bh' + g])) {
+            feld4024 += "$e" + bh;
+        }
+        if ("" !== (bt = o['bt' + g])) {
+            feld4024 += "$b" + bt;
+        }
+        if ("" !== (bm = o['bm' + g])) {
+            feld4024 += "$c" + bm;
+        }
+        if ("" !== (bj = o['bj' + g])) {
+            feld4024 += "$j" + bj;
+        }
+        if ("" !== (eb = o['eb' + g])) {
+            feld4024 += "$n" + eb;
+        }
+        if ("" !== (eh = o['eh' + g])) {
+            feld4024 += "$o" + eh;
+        }
+        if ("" !== (et = o['et' + g])) {
+            feld4024 += "$l" + et;
+        }
+        if ("" !== (em = o['em' + g])) {
+            feld4024 += "$m" + em;
+        }
+        if ("" !== (ej = o['ej' + g])) {
+            feld4024 += "$k" + ej;
+        }
+        if ("" !== feld4024) _feld4024.push(feld4024);
+    }
+    // Simulated title field operations:
+    var titleField = activeWindow.title;
+    var current4024 = titleField.findTag ? titleField.findTag('4024', 0, true, true, false) : "";
+    if ("" !== current4024) {
+        titleField.deleteLine(1);
+    } else {
+        titleField.endOfField(false);
+        titleField.insertText("\n");
+    }
+    titleField.insertText('4024 ' + _feld4024.join('$0;'));
+    if ('true' == o.lfd) {
+        var ende = _feld4024[_feld4024.length - 1];
+        if (ende.match(/\$o|\$l|\$m|\$n|\$k/)) {
+            alert("Da ein Wert in der letzten Endgruppe vorhanden ist, wird die Angabe 'laufend' ignoriert.");
+            titleField.insertText("\n");
+        } else {
+            titleField.insertText("$6-\n");
+        }
+    } else {
+        titleField.insertText("\n");
+    }
+    return true;
+}
+
