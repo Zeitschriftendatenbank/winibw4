@@ -224,12 +224,12 @@ function __zdbGetFileContent(o) {
 }
 
 function zdb_Erscheinungsverlauf() {
-    if (false == ZDB._checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 400, 100, 600, 500);
+    if (false === ZDB._checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 400, 100, 500, 400);
 }
 
 function __zdbGet4024() {
-    var strScreen = __zdbCheckScreen(['MT', 'IT'], '__zdbGet4024');
+    var strScreen = ZDB._checkScreen(['MT', 'IT'], '__zdbGet4024');
     if (!strScreen) {
         utility.sentDataToDialog(false);
     } else {
