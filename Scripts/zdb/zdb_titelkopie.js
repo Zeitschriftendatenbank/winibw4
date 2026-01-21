@@ -393,7 +393,11 @@ function __zdbFeld424XSet(_felder424X) {
 }
 
 function __zdbIsRda() {
-    return ('rda' == ZDB._rec['010E'][0]['e'][0]) ? true : false;
+    if (_rec && _rec['010E'] && _rec['010E'].length > 0 &&
+        _rec['010E'][0] && _rec['010E'][0]['e'] && _rec['010E'][0]['e'].length > 0) {
+        return _rec['010E'][0]['e'][0] === 'rda';
+    }
+    return false;
 }
 
 /**
