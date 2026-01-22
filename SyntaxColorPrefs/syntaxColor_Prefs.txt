@@ -34,22 +34,31 @@ prefs.presentation.syntaxColor.D.regexFormatPair = (<[bB][rR]>)(\d{3}[A-Z]) @@@@
 prefs.presentation.syntaxColor.D.regexFormatPair = (<[bB][rR]>)(\d{3,4}) @@@@@@@@@@ $1<span style="font-weight:bold">$2</span>
 prefs.presentation.syntaxColor.D.regexFormatPair = (\$[a-zA-Z0-9]) @@@@@@@@@@ <span style="font-weight:bold;color:CC3300">$0</span>
 prefs.presentation.syntaxColor.D.regexFormatPair = (.+?)(?:<[bB][rR]>) @@@@@@@@@@ <div style="direction: ltr">$1</div>
+prefs.presentation.syntaxColor.D.regexFormatPair = \x1BI(.+?)\x1BN @@@@@@@@@@ <i>$1</i>
+prefs.presentation.syntaxColor.D.regexFormatPair = WinIBW @@@@@@@@@@ <span style="color:FF00FF">$0</span>
+prefs.presentation.syntaxColor.D.regexFormatPair = (!\d{8,10}(\d|x|X)!) @@@@@@@@@@ <span style="color:0000FF">$0</span>
+
 prefs.presentation.syntaxColor.DA.regexFormatPair = (<[bB][rR]>)(E\d{3}) @@@@@@@@@@ $1<span style="font-weight:bold;color:CC0033">$2</span>
 prefs.presentation.syntaxColor.DA.regexFormatPair = (\$\w) @@@@@@@@@@ <span style="font-weight:bold;color0000FF">$0</span>
 prefs.presentation.syntaxColor.DA.regexFormatPair = (<[bB][rR]>)([a-zA-Z0-9]{3,4} ) @@@@@@@@@@ $1<span style="color:CC3300">$2</span>
 prefs.presentation.syntaxColor.DA.regexFormatPair = (.+?)(?:<[bB][rR]>) @@@@@@@@@@ <div style="direction: ltr">$1</div>
+
 prefs.presentation.syntaxColor.P.regexFormatPair = (\xc6\x92[a-zA-Z0-9]) @@@@@@@@@@ <span style="font-weight:bold;color:FF0000">$0</span>
 prefs.presentation.syntaxColor.P.regexFormatPair = (<[bB][rR]>)(0\d{2}[A-Z@]) @@@@@@@@@@ $1<span style="font-weight:bold;color:CC3300">$2</span>
 prefs.presentation.syntaxColor.P.regexFormatPair = (<[bB][rR]>)(1\d{2}[A-Z@]) @@@@@@@@@@ $1<span style="font-weight:bold;color:000099">$2</span>
 prefs.presentation.syntaxColor.P.regexFormatPair = (<[bB][rR]>)(208@\/\d{2,3}) @@@@@@@@@@ $1<span style="font-weight:bold;color:CC0033">$2</span>
 prefs.presentation.syntaxColor.P.regexFormatPair = (<[bB][rR]>)(2\\d{3}[A-Z@]) @@@@@@@@@@ $1<span style="font-weight:bold">$2</span>
 prefs.presentation.syntaxColor.P.regexFormatPair = (.+?)(?:<[bB][rR]>) @@@@@@@@@@ <div style="direction: ltr">$1</div>
+
 prefs.presentation.syntaxColor.G.regexFormatPair = (\xc6\x92[a-zA-Z0-9]) @@@@@@@@@@ <span style="font-weight:bold;color:0000FF">$0</span>
 prefs.presentation.syntaxColor.G.regexFormatPair = (<[bB][rR]>)(0\d{2}[A-Z@]) @@@@@@@@@@ $1<span style="font-weight:bold;color:000000">$2</span>
 prefs.presentation.syntaxColor.G.regexFormatPair = (<[bB][rR]>)(1\d{2}[A-Z@]) @@@@@@@@@@ $1<span style="font-weight:bold;color:000099">$2</span>
 prefs.presentation.syntaxColor.G.regexFormatPair = (<[bB][rR]>)(208@\/\d{2,3}) @@@@@@@@@@ $1<span style="font-weight:bold;color:CC0033">$2</span>
 prefs.presentation.syntaxColor.G.regexFormatPair = (.+?)(?:<[bB][rR]>) @@@@@@@@@@ <div style="direction: ltr">$1</div>
+
 prefs.presentation.syntaxColor.PA.regexFormatPair = (\xc6\x92[a-zA-Z0-9]) @@@@@@@@@@ <span style="font-weight:bold;color:CC3300">$0</span>
 prefs.presentation.syntaxColor.PA.regexFormatPair = (.+?)(?:<[bB][rR]>) @@@@@@@@@@ <div style="direction: ltr">$1</div>
-prefs.presentation.syntaxColor.D.regexFormatPair = \x1BI(.+?)\x1BN @@@@@@@@@@ <i>$1</i>
-prefs.presentation.syntaxColor.D.regexFormatPair = WinIBW @@@@@@@@@@ <span style="color:FF00FF">$0</span>
+
+
+
+prefs.editscreen.syntaxColor.D.regexFormatPair = (!\d{8,10}(\d|x|X)!) @@@@@@@@@@ #0000FF
