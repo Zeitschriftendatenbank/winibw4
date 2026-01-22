@@ -42,6 +42,8 @@ prefs.presentation.syntaxColor.DA.regexFormatPair = (<[bB][rR]>)(E\d{3}) @@@@@@@
 prefs.presentation.syntaxColor.DA.regexFormatPair = (\$\w) @@@@@@@@@@ <span style="font-weight:bold;color0000FF">$0</span>
 prefs.presentation.syntaxColor.DA.regexFormatPair = (<[bB][rR]>)([a-zA-Z0-9]{3,4} ) @@@@@@@@@@ $1<span style="color:CC3300">$2</span>
 prefs.presentation.syntaxColor.DA.regexFormatPair = (.+?)(?:<[bB][rR]>) @@@@@@@@@@ <div style="direction: ltr">$1</div>
+prefs.presentation.syntaxColor.DA.regexFormatPair = (!\d{8,10}(\d|x|X)!) @@@@@@@@@@ <span style="color:0000FF">$0</span>
+
 
 prefs.presentation.syntaxColor.P.regexFormatPair = (\xc6\x92[a-zA-Z0-9]) @@@@@@@@@@ <span style="font-weight:bold;color:FF0000">$0</span>
 prefs.presentation.syntaxColor.P.regexFormatPair = (<[bB][rR]>)(0\d{2}[A-Z@]) @@@@@@@@@@ $1<span style="font-weight:bold;color:CC3300">$2</span>
