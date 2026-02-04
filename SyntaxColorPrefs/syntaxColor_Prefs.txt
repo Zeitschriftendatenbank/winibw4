@@ -9,8 +9,8 @@ prefs.presentation.syntaxColor.D.regexFormatPair = ((092.+?\$e)([^\$<]{2,3}-[^\$
 
 prefs.editscreen.protectedColor = #CC0033
 prefs.editscreen.expandedColor = #808080
-prefs.editscreen.syntaxColor.D.regexFormatPair = (^\d{3}[A-Z] ) @@@@@@@@@@ #CC3300
-prefs.editscreen.syntaxColor.D.regexFormatPair = (^\d{2}[A-Z] ) @@@@@@@@@@ #CC3300
+prefs.editscreen.syntaxColor.D.regexFormatPair = (^\d{3}[A-Z] ) @@@@@@@@@@ #017E6F
+prefs.editscreen.syntaxColor.D.regexFormatPair = (^\d{2}[A-Z] ) @@@@@@@@@@ #017E6F
 prefs.editscreen.syntaxColor.D.regexFormatPair = (^\d{3,4} ) @@@@@@@@@@ #017E6F
 prefs.editscreen.syntaxColor.D.regexFormatPair = \$T\d{2}.*?(%%) @@@@@@@@@@ #D81281
 prefs.editscreen.syntaxColor.D.regexFormatPair = (\$\w) @@@@@@@@@@ #0000FF
