@@ -17,8 +17,8 @@ prefs.editscreen.syntaxColor.D.regexFormatPair = (\$\w) @@@@@@@@@@ #0000FF
 prefs.editscreen.syntaxColor.D.regexFormatPair = (^E\d{3} ) @@@@@@@@@@ #CC3300
 prefs.editscreen.syntaxColor.D.regexFormatPair = (!\d{8,10}(\d|x|X)!) @@@@@@@@@@ #0000FF
 
-prefs.editscreen.syntaxColor.P.regexFormatPair = (^\d{3}[A-Z] ) @@@@@@@@@@ #CC3300
-prefs.editscreen.syntaxColor.P.regexFormatPair = (^\d{2}[A-Z] ) @@@@@@@@@@ #CC3300
+prefs.editscreen.syntaxColor.P.regexFormatPair = (^\d{3}[A-Z] ) @@@@@@@@@@ #017E6F
+prefs.editscreen.syntaxColor.P.regexFormatPair = (^\d{2}[A-Z] ) @@@@@@@@@@ #017E6F
 prefs.editscreen.syntaxColor.P.regexFormatPair = (^\d{3}[A-Z@] ) @@@@@@@@@@ #017E6F
 prefs.editscreen.syntaxColor.P.regexFormatPair = (\d{3}[A-Z@]\/\d\d ) @@@@@@@@@@ #017E6F
 prefs.editscreen.syntaxColor.P.regexFormatPair = \ƒT\d{2}.*?(%%) @@@@@@@@@@ #D81281
