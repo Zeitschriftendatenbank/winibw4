@@ -35,17 +35,19 @@ function CSV() {
     this._validateUserLogin();
 }
 
-CSV.prototype._validateUserLogin = function () {
-    var userRole = activeWindow.getVariable("scr");
-    if (userRole === "" || CSV_CONFIG.VALID_USER_ROLES.indexOf(userRole) < 0) {
-        throw "Sie müssen sich eingeloggt haben um mit diesem Skript arbeiten zu können.";
-    }
-};
+
 
 CSV.prototype =
 {
+    _validateUserLogin: function () {
+        var userRole = activeWindow.getVariable("scr");
+        if (userRole === "" || CSV_CONFIG.VALID_USER_ROLES.indexOf(userRole) < 0) {
+            throw "Sie müssen sich eingeloggt haben um mit diesem Skript arbeiten zu können.";
+        }
+    },
     __openCsv: function () {
         if (this.csvFilename === this.isOpen) {
+            messageBox("Die Datei " + this.csvFilename + " ist bereits geöffnet.");
             this.csv.close();
         }
         if (!this.csv.openSpecial("ProfD", this.path + this.csvFilename)) {
@@ -86,24 +88,30 @@ CSV.prototype =
                 break;
             }
             if (row >= theStart && aLine !== "") {
-                this.lineArray = this.__csvToArray(aLine);
-                this.line = {};
+                var lineArray = this.__csvToArray(aLine);
+                var lineObj = {};
                 for (var y = 0; y < this.keys.length; y++) {
-                    this.line[this.keys[y]] = this.lineArray[y].toString();
+                    // protect against missing columns
+                    lineObj[this.keys[y]] = (lineArray[y] !== undefined && lineArray[y] !== null) ? lineArray[y].toString() : "";
                 }
+                // expose line for callbacks that expect `this.line`,
+                // but clear it immediately after processing so it can be GC'd
+                this.line = lineObj;
                 if (!this.searchindex) {
                     this.callback();
+                    delete this.line;
                     continue;
                 }
                 activeWindow.setVariable(CSV_CONFIG.SEARCH_PARAM_VAR, "");
-                activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key], false);
+                activeWindow.command("\\zoe " + this.searchindex + " " + this.line[this.id_key], false);
                 idn = activeWindow.getVariable(CSV_CONFIG.SEARCH_PARAM_VAR);
                 cbsMessage = this.__csvGetMessages();
                 if (idn === "" || cbsMessage) {
-                    this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + " " + cbsMessage + ";" + activeWindow.status);
+                    this.__csvLOG("\\zoe " + this.searchindex + " " + this.line[this.id_key] + " " + cbsMessage + ";" + activeWindow.status);
                 } else {
                     this.callback();
                 }
+                delete this.line;
             }
         }
         this.csv.close();
@@ -123,7 +131,7 @@ CSV.prototype =
         message = "\"" + message + "\"";
         var cbsMessage;
         if (activeWindow.status !== "OK" || save !== true) {
-            var logMsg = save === false 
+            var logMsg = save === false
                 ? "Datensatz wurde verlassen und nicht gespeichert;"
                 : "Datensatz kann nicht gespeichert werden;";
             this.__csvLOG(logMsg + activeWindow.status + ";" + message);
@@ -144,12 +152,13 @@ CSV.prototype =
         return true;
     },
     __csvGetMessages: function () {
-        if (activeWindow.messages.count === 0) {
+        var msgs = utility.messages();
+        if (msgs.count === 0) {
             return false;
         }
         var messageText = "";
-        for (var i = 0; i < activeWindow.messages.count; i++) {
-            messageText += activeWindow.messages.item(i).text + ";";
+        for (var i = 0; i < msgs.count; i++) {
+            messageText += msgs.item(i).text + ";";
         }
         return "\"" + messageText + "\"";
     },

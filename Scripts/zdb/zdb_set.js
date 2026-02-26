@@ -1,6 +1,6 @@
 function SET(logFilename, format, eigeneBibliothek) {
     this.format           = format || 'd';
-    this.setSize          = application.activeWindow.getVariable("P3GSZ");
+    this.setSize          = activeWindow.getVariable("P3GSZ");
     this.next             = 1;
     this.current          = 1;
     this.next_ex          = 0;
@@ -14,7 +14,7 @@ SET.prototype = {
         function () {
             this.current = this.next;
             if (this.current <= this.setSize) {
-                application.activeWindow.command("\\too " + this.format + " " + this.current, false);
+                activeWindow.command("\\too " + this.format + " " + this.current, false);
                 this.ex_numbers();
                 this.next += 1;
                 return this.current;
@@ -24,11 +24,11 @@ SET.prototype = {
     edit:
         function (ex) {
             var exe = ex || '';
-            application.activeWindow.command("\\mut " + this.format + " " + exe, false);
-            if ('MEMT'.indexOf(application.activeWindow.getVariable("src")) == -1) {
+            activeWindow.command("\\mut " + this.format + " " + exe, false);
+            if ('MEMT'.indexOf(activeWindow.getVariable("src")) == -1) {
                 throw new Error(this.getMessages());
             }
-            return application.activeWindow.title;
+            return activeWindow.title;
         },
     nextEx:
         function (eigeneBibliothek) {
@@ -47,7 +47,7 @@ SET.prototype = {
                 
                 this.next_ex += 1;
                 if (!this.test_eigene(ex, this.eigeneBibliothek)) {
-                    application.activeWindow.simulateIBWKey('FR'); // exit Exemplar
+                    activeWindow.simulateIBWKey('FR'); // exit Exemplar
                     return this.nextEx();
                 }
                 return ex;
@@ -61,11 +61,11 @@ SET.prototype = {
             switch (this.format) {
             case 'd':
                 kat = '4800';
-                regex = new RegExp('!(.+)\!', 'g');
+                regex = new RegExp('!(.+)!');
                 break;
             case 'p':
                 kat = '247C';
-                regex = new RegExp(delimiter + '9(.+)' + delimiter + '8', 'g');
+                regex = new RegExp(delimiter + '9(.+)' + delimiter + '8');
                 break;
             }
             ex.findTag(kat, 0, false, true, false);
@@ -88,7 +88,7 @@ SET.prototype = {
             this.next_ex = 0;
             this.current_ex = 0;
             var regexpExe,
-                strTitle =  application.activeWindow.getVariable("P3CLIP"),
+                strTitle =  activeWindow.getVariable("P3CLIP"),
                 match;
             switch (this.format) {
             case "d":
@@ -106,10 +106,11 @@ SET.prototype = {
     getMessages:
         function () {
             var messageText = "",
-                i;
-            if (application.activeWindow.messages.count > 0) {
-                for (i = 0; i < application.activeWindow.messages.count; i += 1) {
-                    messageText += application.activeWindow.messages.item(i).text + ";";
+                i,
+                msgs = utility.messages();
+            if (msgs.count > 0) {
+                for (i = 0; i < msgs.count; i += 1) {
+                    messageText += msgs.item(i).text + ";";
                 }
             } else {
                 return '';
@@ -125,12 +126,12 @@ SET.prototype = {
             save = save || true;
             if (save == false) {
                 // return undone but write error to a log file
-                application.activeWindow.simulateIBWKey("FE");
+                activeWindow.simulateIBWKey("FE");
             } else {
-                application.activeWindow.simulateIBWKey("FR");
+                activeWindow.simulateIBWKey("FR");
             }
 
-            var status = application.activeWindow.status,
+            var status = activeWindow.status,
                 cbsMessage = this.getMessages();
 
             if(status == 'OK') {
@@ -140,7 +141,7 @@ SET.prototype = {
             } else {
                 // an error occured
                 //return undone but write error to a log file
-                application.activeWindow.simulateIBWKey("FE");
+                activeWindow.simulateIBWKey("FE");
                 message = status + "\t" + cbsMessage;
             }
 
@@ -168,13 +169,11 @@ LOGGER.prototype = {
         },
     log:
         function (message) {
-            this.out = utility.newFileOutput();
-            if(!this.out.openSpecial("ProfD", this.theRelativePath)) {
-                this.out.createSpecial("ProfD", this.theRelativePath);
-            }
-            var idn = application.activeWindow.getVariable("P3GPP");
-            this.out.writeLine(new Date() + this.delimiter + idn + this.delimiter + message);
-            this.out.close();
+            var out = utility.newFileOutput();
+            out.createSpecial("ProfD", this.theRelativePath);
+            var idn = activeWindow.getVariable("P3GPP");
+            out.writeLine(new Date() + this.delimiter + idn + this.delimiter + message);
+            out.close();
         }
 };
 

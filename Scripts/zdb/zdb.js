@@ -100,7 +100,7 @@ ZDB._expansionToText = function (e) {
  *                                    The string includes all subfields and their values, separated by a delimiter.
  */
 ZDB._toJSON = function (idn) {
-    var _rec = {};
+    this._rec = {};
     idn = idn || false;
 
     // save format
@@ -126,18 +126,18 @@ ZDB._toJSON = function (idn) {
         for (var key in _line) {
             if (_line.hasOwnProperty(key)) {
                 // if key already exists
-                if (_rec.hasOwnProperty(key)) {
-                    _rec[key].push(_line[key]);
+                if (this._rec.hasOwnProperty(key)) {
+                    this._rec[key].push(_line[key]);
                 } else { // key does not exist
                     // always create an array
-                    _rec[key] = [_line[key]];
+                    this._rec[key] = [_line[key]];
                 }
             }
         }
         i++;
     }
 
-    _rec.katToString = function (kat) {
+    this._rec.katToString = function (kat) {
         var string = '',
             i;
         for (i = 0; i < this[kat].length; i++) {
@@ -157,7 +157,7 @@ ZDB._toJSON = function (idn) {
     if (activeWindow.windowID != myWindowId) {
         activateWindow(myWindowId);
     }
-    return _rec;
+    return this._rec;
 }
 
 /**
