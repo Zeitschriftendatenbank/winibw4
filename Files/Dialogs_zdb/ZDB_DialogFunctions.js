@@ -4,38 +4,30 @@
  * @param {string} str The serialized string to parse.
  * @returns {any} The parsed data (object, array, or primitive).
  */
-function __zdb_deserialize_recursive(str) {
-    if (typeof str !== 'string') {
-        return str; // Return non-string values as is
+const __zdb_deserialize_recursive = (str) => {
+    if (typeof str !== 'string') return str;
+
+    if (str.length > 1 && str.startsWith('P:')) return str.substring(2);
+
+    if (str.length > 1 && str.startsWith('A:')) {
+        const parts = str.substring(2).split('@@@');
+        return parts.map(p => __zdb_deserialize_recursive(p));
     }
 
-    if (str.length > 1 && str.substring(0, 2) === 'P:') {
-        return str.substring(2); // It's a primitive type
-    }
-
-    if (str.length > 1 && str.substring(0, 2) === 'A:') {
-        var arr = [];
-        var parts = str.substring(2).split('@@@');
-        for (var i = 0; i < parts.length; i++) {
-            arr.push(__zdb_deserialize_recursive(parts[i]));
-        }
-        return arr;
-    }
-
-    if (str.length > 1 && str.substring(0, 2) === 'O:') {
-        var obj = {};
-        var parts = str.substring(2).split('@@@');
-        for (var i = 0; i < parts.length; i++) {
-            var part = parts[i].split(':::');
-            var key = part[0];
-            var value = part[1];
+    if (str.length > 1 && str.startsWith('O:')) {
+        const obj = {};
+        const parts = str.substring(2).split('@@@');
+        for (const part of parts) {
+            const kv = part.split(':::');
+            const key = kv[0];
+            const value = kv[1];
             obj[key] = __zdb_deserialize_recursive(value);
         }
         return obj;
     }
 
-    return str; // Handle other cases or return as is
-}
+    return str;
+};
 
 
 /**
@@ -54,12 +46,10 @@ function __zdb_deserialize_recursive(str) {
  * @throws {TypeError} If the form element named 'form' is not present (so appendChild will fail).
  * @throws {ReferenceError} If runScript is not defined in the global scope.
  */
-function __zdb_getFileContent(dir, path, noComments, noBlanks) {
-    if (typeof noComments === 'undefined') noComments = false;
-    if (typeof noBlanks === 'undefined') noBlanks = false;
-    var form = document.getElementById('excelTalle');
+const __zdb_getFileContent = async (dir, path, noComments = false, noBlanks = false) => {
+    const form = document.getElementById('excelTalle');
 
-    var inputDir = document.getElementById('zdbTheDir');
+    let inputDir = document.getElementById('zdbTheDir');
     if (!inputDir) {
         inputDir = document.createElement('input');
         inputDir.type = 'hidden';
@@ -69,8 +59,7 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     }
     inputDir.value = dir;
 
-    var inputPath = document.getElementById('zdbThePath');
-
+    let inputPath = document.getElementById('zdbThePath');
     if (!inputPath) {
         inputPath = document.createElement('input');
         inputPath.type = 'hidden';
@@ -80,8 +69,7 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     }
     inputPath.value = path;
 
-    var inputNoComments = document.getElementById('zdbNoComments');
-
+    let inputNoComments = document.getElementById('zdbNoComments');
     if (!inputNoComments) {
         inputNoComments = document.createElement('input');
         inputNoComments.type = 'hidden';
@@ -91,8 +79,7 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
     }
     inputNoComments.value = noComments ? '1' : '0';
 
-    var inputNoBlanks = document.getElementById('zdbNoBlanks');
-
+    let inputNoBlanks = document.getElementById('zdbNoBlanks');
     if (!inputNoBlanks) {
         inputNoBlanks = document.createElement('input');
         inputNoBlanks.type = 'hidden';
@@ -101,11 +88,12 @@ function __zdb_getFileContent(dir, path, noComments, noBlanks) {
         form.appendChild(inputNoBlanks);
     }
     inputNoBlanks.value = noBlanks ? '1' : '0';
+
     try {
-        var content = runScript('__zdbGetFileContent');
+        const content = await runScript('__zdbGetFileContent');
         return content;
     } catch (e) {
-        alert("Error: " + e.message);
+        alert(`Error: ${e && e.message ? e.message : e}`);
+        throw e;
     }
-
-}
+};

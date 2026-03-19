@@ -10,25 +10,34 @@
     <script type="application/javascript">
         var fields = ["f1101", "f2050", "f2051", "f4085", "f4233", "f4238a", "f4238b", "f4238c", "f4238d", "f4238e", "f4238f", "f4238g", "f4238h", "f4238m", "f4238n"];
 
-        function loadConfig() {
-            for (var f in fields) {
-                document.getElementById(fields[f]).value = getProfileString("zdb.userdata.digiconfig", fields[f].substring(1), "");
+        const loadConfig = async () => {
+            try {
+                for (var f in fields) {
+                    const val = await getProfileString("zdb.userdata.digiconfig", fields[f].substring(1), "");
+                    document.getElementById(fields[f]).value = val;
+                }
+            } catch (e) {
+                alert('Fehler beim Laden der Einstellungen: ' + e.message);
             }
-        }
+        };
 
-        function saveConfig() {
-            if ("" == document.getElementById("f1101").value) {
-                document.getElementById("f1101").value = "cr";
+        const saveConfig = async () => {
+            try {
+                if ("" == document.getElementById("f1101").value) {
+                    document.getElementById("f1101").value = "cr";
+                }
+                if (!document.getElementById("f4085").value.match(/^=u.*/)) {
+                    document.getElementById("f4085").value = "=u " + document.getElementById("f4085").value;
+                }
+                for (var f in fields) {
+                    await writeProfileString("zdb.userdata.digiconfig", fields[f].substring(1), document.getElementById(fields[f]).value);
+                }
+                closeDialog();
+            } catch (e) {
+                alert('Fehler beim Speichern: ' + e.message);
             }
-            if (!document.getElementById("f4085").value.match(/^=u.*/)) {
-                document.getElementById("f4085").value = "=u " + document.getElementById("f4085").value;
-            }
-            for (var f in fields) {
-                writeProfileString("zdb.userdata.digiconfig", fields[f].substring(1), document.getElementById(fields[f]).value);
-            }
-            closeDialog();
-        }
-        setTimeout(function () { loadConfig(); }, 100);
+        };
+        setTimeout(() =>  loadConfig(), 400);
     </script>
 </head>
 
@@ -38,93 +47,93 @@
         vom ZDB-Skripte "Digitalisierung" automatisch übernommen.
     </p>
     <form id="digitalisierungConfig">
-        <div class="scrollable" style="max-height:60vh; overflow:auto; padding:8px;">
+        <div style="overflow:auto; padding:8px;">
         <div class="m-4">
             <label for="f1101">1101:</label>
         </div>
-        <input type="text" id="f1101" name="f1101" value="" size="70" />
+        <input type="text" id="f1101" name="f1101" value="" size="50"  />
 
         <div class="m-4">
             <label for="f2050">2050:</label>
         </div>
-        <input type="text" id="f2050" name="f2050" value="" size="70" />
+        <input type="text" id="f2050" name="f2050" value="" size="50"  />
 
         <div class="m-4">
             <label for="f2051">2051:</label>
         </div>
-        <input type="text" id="f2051" name="f2051" value="" size="70" />
+        <input type="text" id="f2051" name="f2051" value="" size="50"  />
 
         <div class="m-4">
             <label for="f4085">4085:</label>
         </div>
-        <input type="text" id="f4085" name="f4085" value="" size="70" />
+        <input type="text" id="f4085" name="f4085" value="" size="50"  />
 
         <div class="m-4">
             <label for="f4233">4233:</label>
         </div>
-        <input type="text" id="f4233" name="f4233" value="" size="70" />
+        <input type="text" id="f4233" name="f4233" value="" size="50"  />
 
         <div class="m-4">
             <label for="f4238a">4238 $a: [Online-Ausgabe/CD-ROM-Ausgabe/Mikrofilm-Ausgabe]</label>
         </div>
-        <input type="text" id="f4238a" name="f4238a" value="" size="70" />
+        <input type="text" id="f4238a" name="f4238a" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238b">4238 $b: [Reproduktionsort]</label>
         </div>
-        <input type="text" id="f4238b" name="f4238b" value="" size="70" />
+        <input type="text" id="f4238b" name="f4238b" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238c">4238 $c: [Digitalisierende Institution]</label>
         </div>
-        <input type="text" id="f4238c" name="f4238c" value="" size="70" />
+        <input type="text" id="f4238c" name="f4238c" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238d">4238 $d: [Erscheinungsdaten der Reproduktion (nicht normiert)]</label>
         </div>
-        <input type="text" id="f4238d" name="f4238d" value="" size="70" />
+        <input type="text" id="f4238d" name="f4238d" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238e">4238 $e: [Umfangsangabe der Reproduktion]</label>
         </div>
-        <input type="text" id="f4238e" name="f4238e" value="" size="70" />
+        <input type="text" id="f4238e" name="f4238e" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238f">4238 $f: [Ungezählter Gesamttitel der Reproduktion]</label>
         </div>
-        <input type="text" id="f4238f" name="f4238f" value="" size="70" />
+        <input type="text" id="f4238f" name="f4238f" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238g">4238 $g: [Zählung der Reproduktion in Sortierform (JJJJ) - Anfang]</label>
         </div>
-        <input type="text" id="f4238g" name="f4238g" value="" size="70" />
+        <input type="text" id="f4238g" name="f4238g" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238h">4238 $h: [Zählung der Reproduktion in Sortierform (JJJJ) - Ende]</label>
         </div>
-        <input type="text" id="f4238h" name="f4238h" value="" size="70" />
+        <input type="text" id="f4238h" name="f4238h" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238m">4238 $m: [Zählung der reproduzierten Teile (Bände, Jahrgänge) in Vorlageform]</label>
         </div>
-        <input type="text" id="f4238m" name="f4238m" value="" size="70" />
+        <input type="text" id="f4238m" name="f4238m" value="" size="50"  />
 
 
         <div class="m-4">
             <label for="f4238n">4238 $n: [Fußnote zur Reproduktion]</label>
         </div>
-        <input type="text" id="f4238n" name="f4238n" value="" size="70" />
+        <input type="text" id="f4238n" name="f4238n" value="" size="50"  />
 </div>
     </form>
-    <div style="margin-top:40px; margin-left: 220px">
+    <div>
         <button type="button" onclick="saveConfig();">
             <lang>IDS_OK</lang>
         </button>
