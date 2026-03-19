@@ -30,137 +30,27 @@ if (!Array.prototype.indexOf) {
     };
 }
 
-function GetScriptEngineInfo() {
-    var s;
-    s = ""; // Build string with necessary info.
-    s += ScriptEngine() + " Version ";
-    s += ScriptEngineMajorVersion() + ".";
-    s += ScriptEngineMinorVersion() + ".";
-    s += ScriptEngineBuildVersion();
-    alert(s);
-}
-
 
 function zdb_AutomatischeSuchBox() {
-    if (false == ZDB._checkScreen(['MT', 'IT', 'IE'], 'AutomatischeSuchBox')) return false;
-    anfangsfenster = application.activeWindow.windowID; // globale Variable, die vom Skript HoleIDN verwendet wird
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_AutomatischeSuchBox.html');
+    if (false == ZDB.checkScreen(['MT', 'IT', 'IE'], 'AutomatischeSuchBox')) return false;
+    ZDB.anfangsfenster = activeWindow.windowID; // globale Variable, die vom Skript HoleIDN verwendet wird
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_AutomatischeSuchBox.html', 200, 200, 400, 400, 'Automatische Suchbox');
     return true;
 }
 
+function __zdbAutomatischeSuchboxSearch(o) {
+    var searchString = o && typeof o.searchString === 'string' ? o.searchString : '';
+    // opens results in new window, so no need to check for screen type here
+    activeWindow.command('f ' + searchString, true);
+    utility.sentDataToDialog(activeWindow.receivedMessageOnly !== true);
+}
+
 function zdb_BibliothekDefinieren() {
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogBibliothekDefinieren.html');
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogBibliothekDefinieren.html', 200, 200, 500, 400,'Eigene Bibliothek definieren');
 }
 
 function zdb_DigiConfig() {
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogDigitalisierungConfig.html', 400, 100, 400, 500);
-}
-
-
-
-function zdb_csvImportTemplate() {
-    if (false == ZDB._checkScreen(['8A', '7A', 'IT', 'IE'], 'AutomatischeSuchBox')) return false;
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogCsvImportTemplate.html', 400, 100, 500, 500);
-}
-
-function __zdb_csvImportTemplate_load(dir) {
-    try {
-        var arNames = [];
-        var theDir = getSpecialDirectory("ProfD");
-        theDir.append(dir);
-        if (theDir.exists()) {
-            var theDirEnum = theDir.directoryEntries;
-            while (theDirEnum.hasMoreElements()) {
-                var theItem = theDirEnum.getNext();
-                if (theItem.isFile()) {
-                    var found,
-                        i;
-                    for (found = false, i = 0; (i < arNames.length) && !found; i++) {
-                        found = (arNames[i] == theItem.leafName);
-                    }
-                    if (!found) {
-                        arNames.push(theItem.leafName);
-                    }
-                }
-            }
-        }
-        return arNames.sort();
-    } catch (e) { alert('LoadFiles: ' + e.name + ': ' + e.message); }
-}
-
-function __zdb_csvImportTemplate_loadDatenmasken() {
-    utility.sentDataToDialog(__zdb_csvImportTemplate_load("datenmasken_eigene").join('@@@'));
-}
-function __zdb_csvImportTemplate_loadCsv() {
-    utility.sentDataToDialog(__zdb_csvImportTemplate_load('csv').join('@@@'));
-}
-
-function __zdb_csvImportTemplate_runImport(o) {
-    var theFileInput = utility.newFileInput(),
-        norm = '',
-        counter = 1,
-        header,
-        template,
-        csv = new CSV();
-
-    var paths = [
-        "\\datenmasken_eigene\\",
-        "\\datenmasken_kxp\\",
-        "\\datenmasken_zdb\\"
-    ];
-    var found = false;
-    for (var i = 0; i < paths.length; i++) {
-        if (theFileInput.openSpecial("ProfD", paths[i] + o.idFileListdatenmasken)) {
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        alert("Datei " + o.idFileListdatenmasken + " wurde nicht gefunden.");
-        return;
-    }
-    for (template = ""; !theFileInput.isEOF();) {
-        template += theFileInput.readLine() + "\n"
-    }
-    theFileInput.close();
-
-    var importer = function () {
-        var fillTemplate = function (template, line) {
-            //__zeigeEigenschaften(line);
-            for (var col in line) {
-                if (!line.hasOwnProperty(col)) continue;
-                if ('' == col) continue;
-                var re = new RegExp('\\{([^{]*?)@' + col.replace('$', '\\$') + '@([^{]*?)}|\\{' + col.replace('$', '\\$') + '}', "g");
-                if ('' == line[col]) {
-                    template = template.replace(re, "");
-                } else {
-                    template = template.replace(re, "$1" + line[col] + "$2");
-                }
-            }
-            return template;
-        };
-        activeWindow.command("e" + norm, false);
-        csv.line['##'] = counter++;
-        activeWindow.title.insertText(fillTemplate(template, csv.line));
-        if ('false' == o.idCheckboxTest) csv.__csvSaveBuffer(true, 'Importiere Template mit Zähler ' + counter);
-    };
-
-
-    csv.csvFilename = o.idFileListcsv;
-    csv.delimiter = ('t' == o.separator) ? "\t" : o.separator;
-    csv.startLine = o.start || 2;
-    if ('true' == o.idCheckboxTest) {
-        csv.endLine = csv.startLine;
-    }
-    norm = ('true' == o.idCheckboxNorm) ? ' n' : '';
-    counter = o.counter;
-    header = csv.__csvGetHeader();
-    csv.__csvSetProperties(importer, header, '', false, false, false, 'LOG_isil_import.txt');
-    csv.__csvAPI();
-}
-
-function __zdbGetScr(){
-    utility.sentDataToDialog(activeWindow.getVariable('scr'));
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogDigitalisierungConfig.html', 200, 200, 600, 500, 'Digitalisierungs-Config');
 }
 
 
@@ -224,16 +114,21 @@ function __zdbGetFileContent(o) {
 }
 
 function zdb_Erscheinungsverlauf() {
-    if (false === ZDB._checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 400, 100, 500, 400);
+    if (false === ZDB.checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
+    try {
+        showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 200, 200, 500, 400);
+    } catch (error) {
+        alert('Error showing dialog: ' + (error && error.message ? error.message : String(error)));
+    }
 }
 
 function __zdbGet4024() {
-    var strScreen = ZDB._checkScreen(['MT', 'IT'], '__zdbGet4024');
+    var strScreen = ZDB.checkScreen(['MT', 'IT'], '__zdbGet4024');
     if (!strScreen) {
         utility.sentDataToDialog(false);
     } else {
-        utility.sentDataToDialog(application.activeWindow.title.findTag('4024', 0, false, true, false));
+        var f4024 = activeWindow.title.findTag('4024', 0, false, true, false);
+        utility.sentDataToDialog(f4024);
     }
 }
 
