@@ -420,7 +420,7 @@ ZDB.checkSF = function (kat, sf, I, C) {
     if (c) {
         var x = 0;
         while (x < this._rec[kat][i][sf].length) {
-            if (this._rec[kat][i][sf][x] == c) return true;
+            if (this._rec[kat][i][sf][x] === c) return true;
             x++;
         }
         return false;
@@ -512,6 +512,10 @@ ZDB.checkScreen = function (options, header, message) {
  * @returns {*} The value of the specified subfield, or undefined if not found.
  */
 ZDB.getSubfield = function (field, sfTag) {
+    var tagMatch = /^(.{3,4})\s/;
+    if(!tagMatch.test(field)) {
+        field = '000 ' + field; // prepend dummy tag if not present
+    }
     var m = /^(.{3,4})\s/.exec(field);
     if (!m) return undefined;
     var tag = m[1];
@@ -527,7 +531,8 @@ ZDB.getSubfield = function (field, sfTag) {
  */
 ZDB.exemplarErfassen = function (content, callback) {
     var exNum = this.EXXX();
-    if (!this.checkScreen(['MT', 'IE'])) {
+    //alert("Erfasse Exemplar " + exNum + " mit Inhalt: " + content);
+    if (this.checkScreen(['8A'])) {
         activeWindow.command('e ' + exNum, false);
     }
     // Exemplarsatz anlegen und befüllen
@@ -559,12 +564,16 @@ ZDB.exemplarNummern = function () {
 ZDB.EXXX = function () {
     var record,
         num;
-    if (this.checkScreen(['MT'])) {
+    if (this.checkScreen(['MT', 'IT'])) {
         activeWindow.title.selectAll();
         record = activeWindow.title.selection;
         activeWindow.title.selectNone();
+        activeWindow.endOfBuffer(false);
     } else {
         record = activeWindow.getVariable('P3CLIP');
+        if(!record) {
+            record = ZDB.getExpansionFromP3VTX();
+        }
     }
     for (var i = 1; i <= 999; i += 1) {
         num = "E" + ("000" + i).slice(-3);
@@ -581,7 +590,7 @@ ZDB.EXXX = function () {
 }
 
 ZDB.getExpansionFromP3VTX = function () {
-    return application.activeWindow.getVariable('P3VTX')
+    return activeWindow.getVariable('P3VTX')
         .replace(/<ISBD><TABLE>|<\/TABLE>/g, '')
         .replace(/\u001b[IN]/g, '')
         .replace(/<BR>/g, '\n')
