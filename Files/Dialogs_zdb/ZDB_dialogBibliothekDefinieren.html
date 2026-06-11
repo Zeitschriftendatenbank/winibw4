@@ -8,24 +8,38 @@
     <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
     <script src="./W4DialogFunctions.js"></script>
     <script type="application/javascript">
-        function getIdn() {
-            document.getElementById("idnInput").value = getProfileString("zdb.userdata", "eigeneBibliothek", "");
-            return true;
-        }
-        function saveIdn() {
-            var idn_input = document.getElementById("idnInput").value;
-            if (idn_input.match(/^(\d{8,9}[\d|x|X])$/gi)) {
-                writeProfileString("zdb.userdata", "eigeneBibliothek", idn_input);
-                closeDialog();
-            } else if (idn_input.length == 0) {
-                writeProfileString("zdb.userdata", "eigeneBibliothek", "");
-                closeDialog();
-            } else {
-                alert("Der eingegebene Wert kann keine IDN sein.")
+        const getIdn = async () => {
+            try {
+                const val = await getProfileString("zdb.userdata", "eigeneBibliothek", "");
+                alert("Gespeicherte IDN: " + val);
+                document.getElementById("idnInput").value = val;
+                return true;
+            } catch (e) {
+                alert('Fehler beim Laden der Einstellungen: ' + e.message);
             }
-        }
+        };
+        const saveIdn = async () => {
+
+                var idn_input = document.getElementById("idnInput").value;
+                if (idn_input.match(/^(\d{8,9}[\d|x|X])$/gi)) {
+                    alert(idn_input + " wird als IDN gespeichert.");
+                    if(await writeProfileString("zdb.userdata", "eigeneBibliothek", idn_input)) {
+                        alert("IDN erfolgreich gespeichert.");
+                        closeDialog();
+                    } else {
+                        alert("Fehler beim Speichern der IDN.");
+                    }
+                    
+                } else if (idn_input.length === 0) {
+                    await writeProfileString("zdb.userdata", "eigeneBibliothek", "");
+                    closeDialog();
+                } else {
+                    alert("Der eingegebene Wert kann keine IDN sein.")
+                }
+
+        };
+        setTimeout(() =>  getIdn(), 400);
     </script>
-    <script type="text/javascript">setTimeout(function () { getIdn(); }, 100);</script>
 </head>
 
 <body>
@@ -37,7 +51,7 @@
         <label for="idnInput">IDN eingeben:</label>
         <input type="text" id="idnInput" name="idnInput" size="40" />
         <br>
-        <button type="submit" onclick="saveIdn();">OK</button>
+        <button type="button" onclick="saveIdn();">OK</button>
         <button type="button" onclick="closeDialog();">Abbrechen</button>
     </form>
 </body>

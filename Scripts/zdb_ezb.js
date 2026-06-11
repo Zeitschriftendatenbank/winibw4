@@ -18,7 +18,7 @@ function __zdbDruckausgabe(dppn) {
         return false;
     }
 
-    satz = ZDB._getRecord('D', false);
+    satz = ZDB.getRecord('D', false);
     if (satz === false) {
         return false;
     }
@@ -68,7 +68,7 @@ function __EZBNota(maske) {
 }
 
 function zdb_EZB_BibID() {
-    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogEZBAccountDefinieren.html');
+    showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogEZBAccountDefinieren.html', 200, 200, 400, 400,'EZBAccountDefinieren');
 }
 
 function zdb_EZB() {
@@ -82,7 +82,7 @@ function zdb_EZB() {
     var L, i, s, u, p, x, d;
     var dbformUrl, frontDoor;
 
-    if (!ZDB._checkScreen(['7A', '8A'], 'EZB')) return false;
+    if (!ZDB.checkScreen(['7A', '8A'], 'EZB')) return false;
     if ('O' != activeWindow.getVariable('P3VMC').substr(0, 1)) {
         alert('Das Skript darf nur bei O-Aufnahmen aufgerufen werden.');
         return false;
@@ -103,7 +103,7 @@ function zdb_EZB() {
     dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
     frontDoor = 'https://ezb.ur.de/?';
 
-    ZDB._rec = ZDB._toJSON();
+    ZDB._rec = ZDB.JSON();
 
     title = ZDB._rec['021A'][0]['a'][0];
     idx = title.indexOf(' @');
@@ -122,17 +122,17 @@ function zdb_EZB() {
         var unterreihe_tit = '';
         for (p in ZDB._rec['021C']) {
             if (!ZDB._rec['021C'].hasOwnProperty(p)) continue;
-            if (ZDB._checkSF('021C', 'r', p)) {
+            if (ZDB.checkSF('021C', 'r', p)) {
                 unterreihe_bez += ' / ' + ZDB._rec['021C'][0]['r'][0];
             } else {
-                if (ZDB._checkSF('021C', 'l', p)) {
+                if (ZDB.checkSF('021C', 'l', p)) {
                     unterreihe_bez += ' / ' + ZDB._rec['021C'][p]['l'][0];
                 } else {
-                    if (ZDB._checkSF('021C', 'a', p)) {
+                    if (ZDB.checkSF('021C', 'a', p)) {
                         unterreihe_bez += ' / ' + ZDB._rec['021C'][p]['a'][0];
                     }
                 }
-                if (ZDB._checkSF('021C', 'a', p)) {
+                if (ZDB.checkSF('021C', 'a', p)) {
                     unterreihe_tit = ': ' + ZDB._rec['021C'][p]['a'][0];
                 }
             }
@@ -140,11 +140,11 @@ function zdb_EZB() {
         title += unterreihe_bez + unterreihe_tit;
     }
 
-    if (ZDB._checkSF('021A', 'e')) {
+    if (ZDB.checkSF('021A', 'e')) {
         title += ' / ' + ZDB._rec['021A'][0]['e'][0];
     }
 
-    publisher = (ZDB._checkSF('033A', 'n')) ? ZDB._rec['033A'][0]['n'][0] : '';
+    publisher = (ZDB.checkSF('033A', 'n')) ? ZDB._rec['033A'][0]['n'][0] : '';
 
     eissn = '';
     if (ZDB._rec['005A']) {
@@ -168,17 +168,17 @@ function zdb_EZB() {
     first_date = '';
     first_issue = '';
     if (ZDB._rec['031N']) {
-        if (ZDB._checkSF('031N', 'd')) {
+        if (ZDB.checkSF('031N', 'd')) {
             first_volume = ZDB._rec['031N'][0]['d'][0];
         }
-        if (ZDB._checkSF('031N', 'e')) {
+        if (ZDB.checkSF('031N', 'e')) {
             first_issue = ZDB._rec['031N'][0]['e'][0];
         }
-        if (ZDB._checkSF('031N', 'j')) {
+        if (ZDB.checkSF('031N', 'j')) {
             first_date = ZDB._rec['031N'][0]['j'][0];
         }
     } else if (ZDB._rec['031@']) {
-        if (ZDB._checkSF('031@', 'a')) {
+        if (ZDB.checkSF('031@', 'a')) {
             first_volume = ZDB._rec['031@'][0]['a'][0];
         }
     }
@@ -191,19 +191,19 @@ function zdb_EZB() {
                 _ezbnota.push(_ezb[x]);
             }
         }
-        _ezbnota = ZDB._arrayUnique(_ezbnota);
+        _ezbnota = ZDB.arrayUnique(_ezbnota);
     }
     if (ZDB._rec['039D']) {
         for (d in ZDB._rec['039D']) {
             if (!ZDB._rec['039D'].hasOwnProperty(d)) { continue; }
-            if (ZDB._checkSF('039D', 'n', d, 'Druck-Ausgabe')) {
-                if (ZDB._checkSF('039D', '9', d)) {
+            if (ZDB.checkSF('039D', 'n', d, 'Druck-Ausgabe')) {
+                if (ZDB.checkSF('039D', '9', d)) {
                     dppn = ZDB._rec['039D'][d]['9'][0];
                 }
-                if (ZDB._checkSF('039D', 'X', d)) {
+                if (ZDB.checkSF('039D', 'X', d)) {
                     pissn = ZDB._rec['039D'][d]['X'][0];
                     break;
-                } else if (ZDB._checkSF('039D', '8', d)) {
+                } else if (ZDB.checkSF('039D', '8', d)) {
                     indxISSN = ZDB._rec['039D'][d][8][0].indexOf('ISSN: ');
                     pissn = ZDB._rec['039D'][d][8][0].substring(indxISSN + 6, indxISSN + 15);
                     break;

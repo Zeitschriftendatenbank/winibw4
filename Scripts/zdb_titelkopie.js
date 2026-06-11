@@ -21,7 +21,7 @@ function __zdbNormdatenKopie() {
 
 function __zdbTiteldatenKopie() {
 
-    ZDB._rec = ZDB._toJSON();
+    ZDB._rec = ZDB.JSON();
 
     // Überschrift und IDN einfügeng
     //overwriteMode = false;
@@ -55,7 +55,7 @@ function __zdbTiteldatenKopie() {
     var codes0600;
     if ('' != (codes0600 = activeWindow.title.findTag('0600', 0, false, true, true))) {
         var _codes0600 = codes0600.split(';');
-        var _codes = ZDB._arrayDiff(_codes0600, ['ee', 'mg', 'nw', 'vt', 'ra', 'rb', 'ru', 'rg']);
+        var _codes = ZDB.arrayDiff(_codes0600, ['ee', 'mg', 'nw', 'vt', 'ra', 'rb', 'ru', 'rg']);
         if (0 < _codes.length) {
             activeWindow.title.insertText(_codes.join(';'));
         }
@@ -122,7 +122,7 @@ function __zdbMediatype() {
 }
 
 function zdb_Datensatzkopie() {
-    if (false == ZDB._checkScreen(['8A'], 'Datensatzkopie')) return false;
+    if (false == ZDB.checkScreen(['8A'], 'Datensatzkopie')) return false;
     //Persönliche Einstellung des Titelkopie-Pfades ermitteln
     var titlecopyfileStandard = getProfileString('prefs', 'titleCopyFile', '');
     if (activeWindow.materialCode.charAt(0) == 'T') {
@@ -135,7 +135,7 @@ function zdb_Datensatzkopie() {
 }
 
 function zdb_Digitalisierung() {
-    if (false == ZDB._checkScreen(['8A'], 'Digitalisierung')) return false;
+    if (false == ZDB.checkScreen(['8A'], 'Digitalisierung')) return false;
     // Prüfen, ob Titeldatensatz mit bibliographischer Gattung 'A' aufgerufen, bei 'T' oder 'O' Fehlermeldung ausgeben
     var matCode = activeWindow.materialCode.charAt(0);
     if (matCode == 'T' || matCode == 'O') {
@@ -159,7 +159,7 @@ function zdb_Digitalisierung() {
 }
 
 function zdb_Parallelausgabe() {
-    if (false == ZDB._checkScreen(['8A'], 'Parallelausgabe')) {
+    if (false == ZDB.checkScreen(['8A'], 'Parallelausgabe')) {
         return false;
     }
     var matCode = activeWindow.materialCode.charAt(0);
@@ -187,7 +187,7 @@ function zdb_Parallelausgabe() {
 
 function __zdbOnlineRessource(copyFile, showComment, add0600, digi) {
     // set global variable ZDB._rec
-    ZDB._rec = ZDB._toJSON();
+    ZDB._rec = ZDB.JSON();
 
     var _felder424X = __zdbFeld424XGet();
     // Titelaufnahme kopieren und neue Titelaufnahme anlegen
@@ -215,7 +215,7 @@ function __zdbOnlineRessource(copyFile, showComment, add0600, digi) {
     add0600 = typeof add0600 !== 'undefined' ? add0600 : [];
     if (!add0600) { add0600 = []; }
     if (ZDB._rec['017A']) {
-        var _codes = ZDB._arrayDiff(ZDB._rec['017A'][0]['a'], ['es', 'ks', 'sf', 'sm', 'mg', 'mm', 'nw', 'ra', 'rb', 'rc', 'rg', 'ru', 'ee', 'vt']);
+        var _codes = ZDB.arrayDiff(ZDB._rec['017A'][0]['a'], ['es', 'ks', 'sf', 'sm', 'mg', 'mm', 'nw', 'ra', 'rb', 'rc', 'rg', 'ru', 'ee', 'vt']);
         // join arrays
         _codes = _codes.concat(add0600);
 
@@ -322,7 +322,7 @@ function __zdbFeld4238() {
 function __zdbTitelAnpassen() {
     // Titel anpassen
     var feld4000 = __zdbDeleteField('4000', true, true);
-    if (ZDB._checkSF('021A', 'e')) // Körperschaftsergänzungen vhd.
+    if (ZDB.checkSF('021A', 'e')) // Körperschaftsergänzungen vhd.
     {
         var e = 0;
         while (ZDB._rec['021A'][0]['e'] && ZDB._rec['021A'][0]['e'][e]) {
@@ -330,13 +330,13 @@ function __zdbTitelAnpassen() {
             e++;
         }
 
-        if (!ZDB._checkSF('021A', 'h')) // Verfasserangabe nicht vhd.
+        if (!ZDB.checkSF('021A', 'h')) // Verfasserangabe nicht vhd.
         {
             feld4000 += ' / ' + ZDB._rec['021A'][0]['e'][0];
         }
     }
 
-    if (ZDB._checkSF('021A', 'n')) // Materialbenennung vhd.
+    if (ZDB.checkSF('021A', 'n')) // Materialbenennung vhd.
     {
         feld4000 = feld4000.replace(' [[' + ZDB._rec['021A'][0]['n'][0] + ']]', '');
     }
@@ -451,8 +451,8 @@ function __zdbFeld424XGet() {
             for (var e in ZDB._rec[f]) // Wiederholungen
             {
                 if (!ZDB._rec[f].hasOwnProperty(e)) { continue; }
-                code = (ZDB._checkSF(f, 'b', e)) ? _code[ZDB._rec[f][e]['b'][0]] : '';
-                if (ZDB._checkSF(f, 'a', e)) // Vortext vorhanden
+                code = (ZDB.checkSF(f, 'b', e)) ? _code[ZDB._rec[f][e]['b'][0]] : '';
+                if (ZDB.checkSF(f, 'a', e)) // Vortext vorhanden
                 {
                     /*if('039E' != f || rda ) // kein Vortext für 4244 ohne rda
                     {
@@ -471,13 +471,13 @@ function __zdbFeld424XGet() {
                     }
                 }
 
-                if (ZDB._checkSF(f, '8', e)) // Expansion vhd.
+                if (ZDB.checkSF(f, '8', e)) // Expansion vhd.
                 {
-                    _exp = ZDB._parseExpansion(ZDB._rec[f][e][8][0]);
-                    expText = ZDB._expansionToText(_exp); // Text with subfields $l and/or $t
+                    _exp = ZDB.parseExpansion(ZDB._rec[f][e][8][0]);
+                    expText = ZDB.expansionToText(_exp); // Text with subfields $l and/or $t
                     _felder424X[f].c.push(code + expText); // $bf#Fortsetzung von$lVerantwortl$tTitel
                 }
-                else if (ZDB._checkSF(f, 'r', e)) // something like 039E $bs$r2014 Sonderh. zu u. ab 2015 Forts. als Online-Ausg. ---> Lexware-Unternehmer-Wissen
+                else if (ZDB.checkSF(f, 'r', e)) // something like 039E $bs$r2014 Sonderh. zu u. ab 2015 Forts. als Online-Ausg. ---> Lexware-Unternehmer-Wissen
                 {
                     match = ZDB._rec[f][e]['r'][0].match(re);
                     if (match) {
@@ -486,10 +486,10 @@ function __zdbFeld424XGet() {
                         _felder424X[f].c.push(code + '$t' + ZDB._rec[f][e]['r'][0]);
                     }
                 }
-                else if (ZDB._checkSF(f, 't', e)) {
+                else if (ZDB.checkSF(f, 't', e)) {
                     text = code;
-                    if (ZDB._checkSF(f, 'n', e)) text += '$n' + ZDB._rec[f][e]['n'][0];
-                    if (ZDB._checkSF(f, 'l', e)) text += '$l' + ZDB._rec[f][e]['l'][0];
+                    if (ZDB.checkSF(f, 'n', e)) text += '$n' + ZDB._rec[f][e]['n'][0];
+                    if (ZDB.checkSF(f, 'l', e)) text += '$l' + ZDB._rec[f][e]['l'][0];
                     text += '$t' + ZDB._rec[f][e]['t'][0];
                     _felder424X[f].c.push(text);
                 }

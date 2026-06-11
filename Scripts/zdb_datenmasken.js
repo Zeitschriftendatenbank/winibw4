@@ -28,3 +28,7 @@ function zdb_nutzerMaske() {
     var maskenNr = application.getProfileString("zdb.userdata", "maske", "");
     __DatenmaskeEinfuegen(maskenNr);
 }*/
+function zdb_ExemplarmaskeZDB()
+{
+	__exemplarmaskeEinfuegen("_zdb");
+}

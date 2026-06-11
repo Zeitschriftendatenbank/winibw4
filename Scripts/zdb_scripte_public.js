@@ -1,5 +1,5 @@
 function zdb_merkeZDB(){
-    activeWindow.clipboard = ZDB._getZDB();
+    activeWindow.clipboard = ZDB.getZDB();
 }
 
 function zdb_ILTISseiten(){
@@ -28,7 +28,7 @@ function __zdbYesNo(msgtxt) {
 }
 
 function zdb_MerkeIDN(){
-    if(!ZDB._checkScreen(['8A','7A','MT','IT'],'Merke IDN')) {
+    if(!ZDB.checkScreen(['8A','7A','MT','IT'],'Merke IDN')) {
         return false;
     }
     activeWindow.clipboard = activeWindow.getVariable('P3GPP');
@@ -40,7 +40,7 @@ function zdb_idListe() {
         allezdb = [];
 
         while (t = set.nextTit()) {
-            allezdb[t] = ZDB._getZDB();
+            allezdb[t] = ZDB.getZDB();
         }
         activeWindow.clipboard = alleZDB.join("\r\n");
         messageBox ("ZDB-ID-Liste", "Alle ZDB-IDs wurden eingesammelt und in den " +
@@ -75,7 +75,7 @@ function zdb_HoleIDN(){
         messageBox('HoleIDN', 'Vor Aufruf des Skriptes "HoleIDN" muss zunächst eine automatische Suche mit Hilfe des Skriptes "AutomatischeSuchBox" gestartet werden.', 'alert-icon');
     } else {
         // Ist das aktive Fenster eine Trefferliste?
-        if(false == ZDB._checkScreen(['7A','8A'],'HoleIDN')) return false;
+        if(false == ZDB.checkScreen(['7A','8A'],'HoleIDN')) return false;
         //  IDN des markierten Titels aus der Trefferliste ermitteln
         var idn = activeWindow.getVariable('P3GPP');
         // ID des aktiven Fensters ermitteln
@@ -148,5 +148,46 @@ function zdb_alleinbesitz() {
     activeWindow.command('f bie ' + id + ' not bie ' + command, false);
 }
 
+function LANG() {
+    this.codes = {
+        'aar': 'aa', 'abk': 'ab', 'ave': 'ae', 'afr': 'af', 'aka': 'ak', 'amh': 'am', 'arg': 'an', 'ara': 'ar', 'asm': 'as', 'ava': 'av', 'aym': 'ay',
+        'aze': 'az', 'bak': 'ba', 'bel': 'be', 'bul': 'bg', 'bih': 'bh', 'bis': 'bi', 'bam': 'bm', 'ben': 'bn', 'tib': 'bo', 'tib': 'bo', 'bre': 'br',
+        'bos': 'bs', 'cat': 'ca', 'che': 'ce', 'cha': 'ch', 'cos': 'co', 'cre': 'cr', 'cze': 'cs', 'cze': 'cs', 'chu': 'cu', 'chv': 'cv', 'wel': 'cy',
+        'wel': 'cy', 'dan': 'da', 'ger': 'de', 'ger': 'de', 'div': 'dv', 'dzo': 'dz', 'ewe': 'ee', 'gre': 'el', 'gre': 'el', 'eng': 'en', 'epo': 'eo',
+        'spa': 'es', 'est': 'et', 'baq': 'eu', 'baq': 'eu', 'per': 'fa', 'per': 'fa', 'ful': 'ff', 'fin': 'fi', 'fij': 'fj', 'fao': 'fo', 'fre': 'fr',
+        'fre': 'fr', 'fry': 'fy', 'gle': 'ga', 'gla': 'gd', 'glg': 'gl', 'grn': 'gn', 'guj': 'gu', 'glv': 'gv', 'hau': 'ha', 'heb': 'he', 'hin': 'hi',
+        'hmo': 'ho', 'hrv': 'hr', 'hat': 'ht', 'hun': 'hu', 'arm': 'hy', 'arm': 'hy', 'her': 'hz', 'ina': 'ia', 'ind': 'id', 'ile': 'ie', 'ibo': 'ig',
+        'iii': 'ii', 'ipk': 'ik', 'ido': 'io', 'ice': 'is', 'ice': 'is', 'ita': 'it', 'iku': 'iu', 'jpn': 'ja', 'jav': 'jv', 'geo': 'ka', 'geo': 'ka',
+        'kon': 'kg', 'kik': 'ki', 'kua': 'kj', 'kaz': 'kk', 'kal': 'kl', 'khm': 'km', 'kan': 'kn', 'kor': 'ko', 'kau': 'kr', 'kas': 'ks', 'kur': 'ku',
+        'kom': 'kv', 'cor': 'kw', 'kir': 'ky', 'lat': 'la', 'ltz': 'lb', 'lug': 'lg', 'lim': 'li', 'lin': 'ln', 'lao': 'lo', 'lit': 'lt', 'lub': 'lu',
+        'lav': 'lv', 'mlg': 'mg', 'mah': 'mh', 'mao': 'mi', 'mao': 'mi', 'mac': 'mk', 'mac': 'mk', 'mal': 'ml', 'mon': 'mn', 'mar': 'mr', 'may': 'ms',
+        'may': 'ms', 'mlt': 'mt', 'bur': 'my', 'bur': 'my', 'nau': 'na', 'nob': 'nb', 'nde': 'nd', 'nep': 'ne', 'ndo': 'ng', 'dut': 'nl', 'dut': 'nl',
+        'nno': 'nn', 'nor': 'no', 'nbl': 'nr', 'nav': 'nv', 'nya': 'ny', 'oci': 'oc', 'oji': 'oj', 'orm': 'om', 'ori': 'or', 'oss': 'os', 'pan': 'pa',
+        'pli': 'pi', 'pol': 'pl', 'pus': 'ps', 'por': 'pt', 'que': 'qu', 'roh': 'rm', 'run': 'rn', 'rum': 'ro', 'rum': 'ro', 'rus': 'ru', 'kin': 'rw',
+        'san': 'sa', 'srd': 'sc', 'snd': 'sd', 'sme': 'se', 'sag': 'sg', 'sin': 'si', 'slo': 'sk', 'slo': 'sk', 'slv': 'sl', 'smo': 'sm', 'sna': 'sn',
+        'som': 'so', 'alb': 'sq', 'alb': 'sq', 'srp': 'sr', 'ssw': 'ss', 'sot': 'st', 'sun': 'su', 'swe': 'sv', 'swa': 'sw', 'tam': 'ta', 'tel': 'te',
+        'tgk': 'tg', 'tha': 'th', 'tir': 'ti', 'tuk': 'tk', 'tgl': 'tl', 'tsn': 'tn', 'ton': 'to', 'tur': 'tr', 'tso': 'ts', 'tat': 'tt', 'twi': 'tw',
+        'tah': 'ty', 'uig': 'ug', 'ukr': 'uk', 'urd': 'ur', 'uzb': 'uz', 'ven': 've', 'vie': 'vi', 'vol': 'vo', 'wln': 'wa', 'wol': 'wo', 'xho': 'xh',
+        'yid': 'yi', 'yor': 'yo', 'zha': 'za', 'chi': 'zh', 'chi': 'zh', 'zul': 'zu'
+    };
+};
 
-
+LANG.prototype = {
+    getCode: function (code) {
+        var flip = {};
+        code = code.toLowerCase();
+        if (code.length == 2) {
+            for (var key in this.codes) {
+                flip[this.codes[key]] = key;
+            }
+        } else if (code.length == 3) {
+            flip = this.codes;
+        } else {
+            return false;
+        }
+        if (flip.hasOwnProperty(code)) {
+            return flip[code];
+        }
+        return false;
+    }
+};

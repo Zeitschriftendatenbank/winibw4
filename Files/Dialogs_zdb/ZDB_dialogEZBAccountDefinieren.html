@@ -8,22 +8,31 @@
     <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
     <script src="./W4DialogFunctions.js"></script>
     <script type="application/javascript">
-        function getBibId() {
-            document.getElementById("ezbBibIdInput").value = getProfileString("zdb", "ezb.account", "");
-            return true;
-        }
-        function saveBibId() {
-            var bibid_input = document.getElementById("ezbBibIdInput").value;
-            if (bibid_input.length > 0) {
-                writeProfileString("zdb", "ezb.account", bibid_input);
-                closeDialog();
-            } else {
-                writeProfileString("zdb", "ezb.account", "");
-                closeDialog();
+        const getBibId = async () => {
+            try {
+                const val = await getProfileString("zdb", "ezb.account", "");
+                document.getElementById("ezbBibIdInput").value = val;
+                return true;
+            } catch (e) {
+                alert('Fehler beim Laden der Einstellungen: ' + e.message);
             }
-        }
+        };
+        const saveBibId = async () => {
+            try {
+                var bibid_input = document.getElementById("ezbBibIdInput").value;
+                if (bibid_input.length > 0) {
+                    await writeProfileString("zdb", "ezb.account", bibid_input);
+                    closeDialog();
+                } else {
+                    await writeProfileString("zdb", "ezb.account", "");
+                    closeDialog();
+                }
+            } catch (e) {
+                alert('Fehler beim Speichern: ' + e.message);
+            }
+        };
+        setTimeout(() =>  getBibId(), 400);
     </script>
-    <script type="text/javascript">setTimeout(function () { getBibId(); }, 100);</script>
 </head>
 
 <body>
@@ -32,11 +41,16 @@
     <p>Leere Eingabe und "OK" löscht die gespeicherte BibID.</p>
 
     <form id="EZBAccountDefinierenForm">
+        <div class="form-group">
+            <div class="form-cell"> 
         <label for="ezbBibIdInput">BibID eingeben:</label>
         <input type="text" id="ezbBibIdInput" name="ezbBibIdInput" size="40" />
-        <br>
+            </div>
+        </div>
+        <div>
         <button type="submit" onclick="saveBibId();">OK</button>
         <button type="button" onclick="closeDialog();">Abbrechen</button>
+        </div>
     </form>
 </body>
 </html>

@@ -1,6 +1,4 @@
 datenmasken_zdb
-Dialogs_dev
 Dialogs_zdb
 exemplarmasken_zdb
 ttlFiles_zdb
-startup_zdb

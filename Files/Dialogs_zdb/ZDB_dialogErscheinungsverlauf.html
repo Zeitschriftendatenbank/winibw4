@@ -96,7 +96,7 @@
 </head>
 
 <body>
-    <form id="erscheinungsverlaufForm" onsubmit="return onAccept();">
+    <form id="erscheinungsverlaufForm" onsubmit="onAccept(event); return false;">
         <input type="hidden" name="count" id="count" value="" />
         <div class="dialog">
             <div id="groups"></div>
@@ -112,15 +112,15 @@
         </div>
     </form>
     <script type="application/javascript">
-        var groupcount = 0,
-            groupIndex = 0,
-            count = 0,
-            groups = [],
-            feld4024;
+        var groupcount = 0;
+        var    groupIndex = 0;
+        var    count = 0;
+        const    groups = [];
+        var  feld4024 = '';
 
 
-        function createGroupBox(idx) {
-            var group = document.createElement('div');
+        const createGroupBox = (idx) => {
+            const group = document.createElement('div');
             group.className = 'groupbox';
             group.innerHTML =
                 '<div class="caption">' + (idx + 1) + '. Gruppe</div>' +
@@ -153,43 +153,52 @@
             return group;
         }
 
-        function addGroup() {
-            var groupsDiv = document.getElementById('groups');
+        const addGroup = () => {
+            const groupsDiv = document.getElementById('groups');
             groupsDiv.appendChild(createGroupBox(groupIndex));
             groupIndex++;
         }
 
-        function onLoad() {
-            feld4024 = runScript('__zdbGet4024()');
-            if (!(feld4024)) {
-                closeDialog();
-                return;
-            }
-            parse4024();
-
-            groupcount = groups.length;
-            if (groupcount === 0) {
-                addGroup();
-            } else {
-                for (var i = 0; i < groupcount; i++) {
-                    addGroup();
+        const onLoad = async () => {
+            try {
+                feld4024 = await runScript('__zdbGet4024()');
+                if ('' === feld4024) {
+                    closeDialog();
+                    return;
                 }
-                insert();
+                parse4024();
+
+                const groupcount = groups.length;
+                if (groupcount === 0) {
+                    addGroup();
+                } else {
+                    for (let i = 0; i < groupcount; i++) {
+                        addGroup();
+                    }
+                    insert();
+                }
+                return true;
+            } catch (error) {
+                alert('Error loading dialog: ' + (error && error.message ? error.message : String(error)));
             }
-            return true;
-        }
+        };
 
-        function onAccept() {
-            document.getElementById('count').value = groupIndex - 1;
-            runScript_afterCloseDialog('__zdb_paste4024');
+        const onAccept = async (evt) => {
+            if (evt && typeof evt.preventDefault === 'function') evt.preventDefault();
+            try {
+                document.getElementById('count').value = groupIndex - 1;
+                await runScript('__zdb_paste4024');
+                closeDialog();
+            } catch (error) {
+                alert('Error on accept: ' + (error && error.message ? error.message : String(error)));
+            }
+        };
+
+        const onCancel = () => {
             closeDialog();
         }
 
-        function onCancel() {
-            closeDialog();
-        }
-
-        function parse4024() {
+        const parse4024 = () => {
             //alert(feld4024);
             if (!feld4024) {
                 return;
@@ -197,10 +206,10 @@
             //alert('zdb_parse4024');
             //__zeigeEigenschaften(o);
             //alert('test serialize: ' + __zdb_serialize_recursive([{ bj: '1995' }]));
-            var split4024, bb, bj, bh, bm, bt, eb, ej, eh, em, et, group, splitter;
-            var getChained = function (chain, splitter, where) {
+            let split4024, bb, bj, bh, bm, bt, eb, ej, eh, em, et, group, splitter;
+            const getChained = (chain, splitter, where) => {
                 //alert('getChained: ' + chain);
-                var split;
+                let split;
                 if (splitter.test(chain)) {
                     split = chain.split('/');
                     return ('b' === where) ? split[0] : split[split.length - 1];
@@ -213,8 +222,8 @@
             }
             split4024 = feld4024.split('$0;');
             splitter = /\$/;
-            for (var s in split4024) {
-                if (split4024.hasOwnProperty()) {
+            for (let s in split4024) {
+                if (!split4024.hasOwnProperty(s)) {
                     continue;
                 }
                 group = {};
@@ -260,10 +269,10 @@
         }
 
 
-        function insert() {
-            var gint;
-            for (var g in groups) {
-                for (var i in groups[g]) {
+        const insert = () => {
+            let gint;
+            for (let g in groups) {
+                for (let i in groups[g]) {
                     //gint = parseInt(g, 10) + 1;
                     gint = parseInt(g, 10);
                     //alert('Get Name ' + i + "" + gint);
@@ -273,7 +282,8 @@
             return true;
         }
         // Initialize the dialog on page load
-        document.addEventListener("DOMContentLoaded", onLoad);
+        setTimeout(() => onLoad(), 400);
+        //document.addEventListener("DOMContentLoaded", onLoad);
         //onLoad();
         //]]>
     </script>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 window, document, html{
     overflow: auto;
 }
@@ -63,70 +62,4 @@ a.bigger {
 }
 .m-8 {
     margin: 8px;
-=======
-window, document, html{
-    overflow: auto;
-}
-p {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-input {
-    padding: 2px;
-}
-
-body {
-    color: #3c3c3c;
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 0.8em;
-    line-height: 1.3;
-    background: #fff url("zdb_verlauf.gif") repeat-x right top;
-    padding: 10px;
-}
-
-h1 {
-    font-size: 1em;
-    font-weight: normal;
-    margin: 15px;
-    display: inline;
-}
-
-h2 {
-    font-size: 0.9em;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-h3 {
-    font-size: 0.8em;
-    font-weight: bold;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-a {
-    font-size: 0.8em;
-    color: #3e68a2;
-}
-
-a.bigger {
-    font-size: 1em;
-}
-
-.m-2 {
-    margin: 2px;
-}
-.m-4 {
-    margin: 4px;
-}
-.m-6 {
-    margin: 6px;
-}
-.m-8 {
-    margin: 8px;
->>>>>>> 3e5d931d9d3b1faf29e675ab1fd818ecb1034437
 }

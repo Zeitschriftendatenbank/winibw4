@@ -18,7 +18,7 @@
 var fehlerin7120;
 
 function zdb_Feld7120() {
-    if(false == __zdbCheckScreen(["IE","IT","ME","MT"],"Feld7120")) return false;
+    if(false == ZDB.checkScreen(["IE","IT","ME","MT"],"Feld7120")) return false;
     __feld7120(true,true,false);
 }
 
@@ -103,7 +103,6 @@ function __Feldauf7120(inhalt8032){
         // Startgruppe
         block.start = __Vor7120(block.start);
         if('' == block.start) {
-           delete block;
            continue;
         }
         block.start = __Punkt71204024(block.start, 'start');

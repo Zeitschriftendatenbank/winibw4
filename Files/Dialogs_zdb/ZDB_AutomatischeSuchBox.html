@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automatische Suchbox</title>
+    <link rel="stylesheet" type="text/css" href="./W4DialogStyle.css" />
+    <link rel="stylesheet" type="text/css" href="./ZDBStyle.css" />
+    <script src="./W4DialogFunctions.js"></script>
+    <script type="application/javascript">
+        const focusInput = () => {
+            const input = document.getElementById("searchString");
+            if (input) {
+                input.focus();
+                input.select();
+            }
+        };
+
+        const onAccept = async (evt) => {
+            if (evt && typeof evt.preventDefault === "function") {
+                evt.preventDefault();
+            }
+
+            try {
+                const result = await runScript("__zdbAutomatischeSuchboxSearch");
+                const hasHit = !(result === false || result === "false" || result === 0 || result === "0");
+
+                if (hasHit) {
+                    closeDialog();
+                    return;
+                }
+
+                const searchString = document.getElementById("searchString").value;
+                const check = confirm(
+                    "Zu Ihrer Suchanfrage \"" + searchString + "\" konnte kein Treffer gefunden werden.\nNeue Suche starten?"
+                );
+                if (!check) {
+                    closeDialog();
+                } else {
+                    focusInput();
+                }
+            } catch (error) {
+                alert("Fehler bei der Suche: " + (error && error.message ? error.message : String(error)));
+            }
+        };
+
+        const onCancel = () => {
+            closeDialog();
+        };
+
+        setTimeout(() => focusInput(), 400);
+    </script>
+</head>
+
+<body>
+    <h2>Automatische Suchbox</h2>
+    <p>Bitte Suchanfrage eingeben:</p>
+
+    <form id="automatischeSuchboxForm" onsubmit="onAccept(event); return false;">
+        <div class="form-group">
+            <div class="form-cell">
+                <label for="searchString">Suchanfrage:</label>
+                <input type="text" id="searchString" name="searchString" size="40" value="Index Suchbegriff" />
+            </div>
+        </div>
+        <div>
+            <button type="submit">OK</button>
+            <button type="button" onclick="onCancel();">Abbrechen</button>
+        </div>
+    </form>
+</body>
+
+</html>

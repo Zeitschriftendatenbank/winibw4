@@ -1,41 +1,48 @@
 var ZDB = {
-    anfangsfenster : '', // auto Suchbox
-    delimiter : '\u0192', // Unterfeldzeichen 'ƒ' = \u0192
-    charCode : 402, // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
-    _rec : {} // global varibale holding the JSON record
+    anfangsfenster: '', // auto Suchbox
+    delimiter: '\u0192', // Unterfeldzeichen 'ƒ' = \u0192
+    charCode: 402, // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
+    _rec: {}, // global varibale holding the JSON record
+    _format: null
 }
 
-ZDB._first = function (arr, key) {
+ZDB.first = function (arr, key) {
     if ('String' == typeof arr) {
         arr = this._rec[arr];
     }
     return (arr && arr[0] && arr[0][key]) ? arr[0][key][0] : null;
 }
 
-ZDB._has = function (arr, key) {
+ZDB.has = function (arr, key) {
     if ('String' == typeof arr) {
         arr = this._rec[arr];
     }
     return (arr && arr[0] && arr[0][key]);
 }
 
-ZDB._pushIf = function (arr, val) {
+ZDB.pushIf = function (arr, val) {
     if (val) arr.push(val);
 }
 
-ZDB._replAll = function (text, re, val) {
+ZDB.replAll = function (text, re, val) {
     return text.replace(re, val);
 }
 
-ZDB._format = function (f) {
+ZDB.format = function (f) {
     if (typeof f === 'undefined' || f === null) {
-        this.format = activeWindow.getVariable('P3GPR').toUpperCase();
-        if(!this.format) {
-            this.format = activeWindow.getVariable('P3GDB').toUpperCase();
+        if (this._format) return this._format;
+        var v = activeWindow.getVariable('P3GPR');
+        if (v) {
+            v = v.toUpperCase();
+        } else {
+            v = activeWindow.getVariable('P3GDB');
+            if (v) v = v.toUpperCase();
         }
-        return this.format;
+        this._format = v;
+        return this._format;
     }
     activeWindow.command('s ' + f, false);
+    this._format = f;
 }
 
 /**
@@ -43,17 +50,17 @@ ZDB._format = function (f) {
 * @param {string} idn optional
 * @return {string|boolean} ZDBID or false
 */
-ZDB._getZDB = function (idn) {
+ZDB.getZDB = function (idn) {
     idn = idn || false;
     if (idn) {
         var myWindowId = activeWindow.windowID;
         activeWindow.commandLine('\zoe idn ' + idn);
     }
 
-    var strScreen = this._checkScreen(['8A', 'MT', 'IT'], '_getZDB');
+    var strScreen = this.checkScreen(['8A', 'MT', 'IT'], '_getZDB');
     if (!strScreen) return false;
 
-    var format = this._format();
+    var format = this.format();
     var cat = { 'D': '2110', 'DA': '2110', 'P': '006Z' }[format];
     var zdbid;
 
@@ -63,8 +70,8 @@ ZDB._getZDB = function (idn) {
             : __Trim(activeWindow.findTagContent(cat, 0, false));
     } else {
         var field = (strScreen === 'MT' || strScreen === 'IT')
-            ? this._parseField(activeWindow.title.findTag(cat, 0, true, false, true))
-            : this._parseField(activeWindow.findTagContent(cat, 0, true));
+            ? this.parseField(activeWindow.title.findTag(cat, 0, true, false, true))
+            : this.parseField(activeWindow.findTagContent(cat, 0, true));
         zdbid = field[cat][0][0];
     }
 
@@ -80,7 +87,7 @@ ZDB._getZDB = function (idn) {
 * @param {object} e created from __parseExpansion()
 * @return {string} RDA fields
 */
-ZDB._expansionToText = function (e) {
+ZDB.expansionToText = function (e) {
     var text = '';
     if (e.norm) {
         text = '$l' + e.norm.a;
@@ -99,12 +106,12 @@ ZDB._expansionToText = function (e) {
  * @property {Function} katToString - A method to convert a specific category (`kat`) into a formatted string.
  *                                    The string includes all subfields and their values, separated by a delimiter.
  */
-ZDB._toJSON = function (idn) {
-    var _rec = {};
+ZDB.JSON = function (idn) {
+    this._rec = {};
     idn = idn || false;
 
     // save format
-    var format = this._format();
+    var format = this.format();
 
     var myWindowId = activeWindow.windowID;
 
@@ -113,31 +120,31 @@ ZDB._toJSON = function (idn) {
         activeWindow.command('f idn ' + idn, true);
     }
 
-    if ('P' != format) this._format('P');
+    if ('P' != format) this.format('P');
 
-    var rec = this._getExpansionFromP3VTX();
+    var rec = this.getExpansionFromP3VTX();
     // get array of lines
     var arrLines = rec.match(/(.+)/gm);
     // for each line
     var i = 0;
     while (i < arrLines.length) {
-        var _line = this._parseField(arrLines[i]);
+        var _line = this.parseField(arrLines[i]);
         // key is the category
         for (var key in _line) {
             if (_line.hasOwnProperty(key)) {
                 // if key already exists
-                if (_rec.hasOwnProperty(key)) {
-                    _rec[key].push(_line[key]);
+                if (this._rec.hasOwnProperty(key)) {
+                    this._rec[key].push(_line[key]);
                 } else { // key does not exist
                     // always create an array
-                    _rec[key] = [_line[key]];
+                    this._rec[key] = [_line[key]];
                 }
             }
         }
         i++;
     }
 
-    _rec.katToString = function (kat) {
+    /*this._rec.katToString = function (kat) {
         var string = '',
             i;
         for (i = 0; i < this[kat].length; i++) {
@@ -149,15 +156,33 @@ ZDB._toJSON = function (idn) {
             }
         }
         return string;
-    };
+    };*/
+        // capture delimiter for closure use
+    var delim = this.delimiter;
+    this._rec.katToString = (function (r, d) {
+        return function (kat) {
+            var string = '',
+                i, sub, x;
+            for (i = 0; i < r[kat].length; i++) {
+                string += "\n" + kat + ' ';
+                for (sub in r[kat][i]) {
+                    if (!r[kat][i].hasOwnProperty(sub)) continue;
+                    for (x = 0; x < r[kat][i][sub].length; x++) {
+                        string += d + sub + r[kat][i][sub][x];
+                    }
+                }
+            }
+            return string;
+        };
+    })(this._rec, delim);
 
     // back to source format
-    if ('P' != format) this._format(format);
+    if ('P' != format) this.format(format);
 
     if (activeWindow.windowID != myWindowId) {
         activateWindow(myWindowId);
     }
-    return _rec;
+    return this._rec;
 }
 
 /**
@@ -188,16 +213,15 @@ ZDB._toJSON = function (idn) {
 * Zugriff: obj['017A']['a'][0] --> "ee"
 * Zugriff: obj['017A']['a'][1] --> "mg"
 */
-ZDB._parseField = function (field) {
+ZDB.parseField = function (field) {
     var _field = {};
     var arr = field.match(/^([^\s]+)\s(.+)/);
     if (!arr || arr.length < 3) {
         // Return empty object or handle error gracefully
         return {};
     }
-    var del = ('P' == this._format()) ? this.delimiter : '$';
+    var del = ('P' == this.format()) ? this.delimiter : '$';
     var split = arr[2].split(del);
-
     var subfield = {};
     var x = 1;
     while (x < split.length) {
@@ -216,7 +240,6 @@ ZDB._parseField = function (field) {
         x++;
     }
     _field[arr[1]] = subfield;
-
     return _field;
 }
 
@@ -246,7 +269,7 @@ ZDB._parseField = function (field) {
 *
 * --Advz--Magyar Tudományos Akadémia$bTörténettudományi Osztály [Tb1]$BVerfasser: Értekezések a Történettudományi Osztály köréb?l
 */
-ZDB._parseExpansion = function (exp) {
+ZDB.parseExpansion = function (exp) {
     var split;
     var _exp = {};
     var re = /(?:--[^-]+--)([^:]*)(?::\s(?:(?:\[(.+)\])|(?:(.+)))?)?/;
@@ -281,7 +304,7 @@ ZDB._parseExpansion = function (exp) {
  *
  * @returns {string} The processed and unescaped expansion data.
  */
-ZDB._getExpansionFromP3VTX = function () {
+ZDB.getExpansionFromP3VTX = function () {
     var satz = activeWindow.getVariable('P3VTX')
         .replace('<ISBD><TABLE>', '')
         .replace('<\/TABLE>', '')
@@ -294,7 +317,7 @@ ZDB._getExpansionFromP3VTX = function () {
         .replace(/\r/g, "\n")
         .replace(/\u001b./g, ''); // replace /n (Zeilenumbruch) entfernt,
     // weil hier die $8 Expansion durch Zeilenbruch abgetrennt wurde
-    return this._unescapeHtml(satz);
+    return this.unescapeHtml(satz);
 }
 
 /**
@@ -302,7 +325,7 @@ ZDB._getExpansionFromP3VTX = function () {
  * @param {string} text with html escaped chars
  * @return {string} text with unescaped chars
  */
-ZDB._unescapeHtml = function (text) {
+ZDB.unescapeHtml = function (text) {
     var map = {
         '&amp;': '&',
         '&lt;': '<',
@@ -325,14 +348,14 @@ ZDB._unescapeHtml = function (text) {
  *
  * @throws {Error} Alerts the user if the provided format is invalid.
  */
-ZDB._getRecord = function (format, extmode) {
-    var scr = this._checkScreen(['7A', '8A'], '_getRecord');
+ZDB.getRecord = function (format, extmode) {
+    var scr = this.checkScreen(['7A', '8A'], '_getRecord');
     if (!scr) return false;
     var satz = null;
 
-    this._format(format);
+    this.format(format);
     if (extmode) {
-        satz = this._getExpansionFromP3VTX();
+        satz = this.getExpansionFromP3VTX();
     } else {
         satz = activeWindow.copyTitle();
         //satz = satz.replace(/\r/g,'');
@@ -341,7 +364,7 @@ ZDB._getRecord = function (format, extmode) {
         activeWindow.simulateIBWKey('FE');
     else
         if (format == 'P')
-            this._format('D');
+            this.format('D');
     satz = satz + "\n";
     return satz;
 }
@@ -353,7 +376,7 @@ ZDB._getRecord = function (format, extmode) {
  * @param {Array} arr - The array to filter for unique values.
  * @returns {Array} A new array with duplicate values removed.
  */
-ZDB._arrayUnique = function (arr) {
+ZDB.arrayUnique = function (arr) {
     var r = [];
     o: for (var i = 0, n = arr.length; i < n; i++) {
         for (var x = 0, y = r.length; x < y; x++) {
@@ -372,7 +395,7 @@ ZDB._arrayUnique = function (arr) {
  * @param {Array} a2 - The array containing elements to remove from `a1`.
  * @returns {Array} The modified `a1` array with elements removed.
  */
-ZDB._arrayDiff = function (a1, a2) {
+ZDB.arrayDiff = function (a1, a2) {
     for (var i = 0; i < a2.length; i++) {
         for (var y = 0; y < a1.length; y++) {
             if (a2[i] === a1[y]) {
@@ -387,7 +410,7 @@ ZDB._arrayDiff = function (a1, a2) {
 * Check if subfield exists with specific content
 * @return {bool}
 */
-ZDB._checkSF = function (kat, sf, I, C) {
+ZDB.checkSF = function (kat, sf, I, C) {
     var i = I || 0;
     var c = C || false;
 
@@ -397,7 +420,7 @@ ZDB._checkSF = function (kat, sf, I, C) {
     if (c) {
         var x = 0;
         while (x < this._rec[kat][i][sf].length) {
-            if (this._rec[kat][i][sf][x] == c) return true;
+            if (this._rec[kat][i][sf][x] === c) return true;
             x++;
         }
         return false;
@@ -414,7 +437,7 @@ ZDB._checkSF = function (kat, sf, I, C) {
 * @param {string} pos optional: the subfield position 0 ... x
 * @param {string} pos optional: the occurence of a repeatable field 0 ... x
 */
-ZDB._insertSubfield = function (field, subfield, content, pos, occ) {
+ZDB.insertSubfield = function (field, subfield, content, pos, occ) {
     var data = '',
         splitted = [];
     if (typeof occ === 'undefined') {
@@ -446,7 +469,7 @@ ZDB._insertSubfield = function (field, subfield, content, pos, occ) {
 * @param {string} message optional
 * @return {string}|{bool} screen variable or false
 */
-ZDB._checkScreen = function (options, header, message) {
+ZDB.checkScreen = function (options, header, message) {
     var map = {
         '8A': 'Vollanzeige',
         '7A': 'Trefferliste',
@@ -488,10 +511,17 @@ ZDB._checkScreen = function (options, header, message) {
  * @param {string} sfTag - The subfield tag to retrieve (e.g., 'a', 'b').
  * @returns {*} The value of the specified subfield, or undefined if not found.
  */
-ZDB._getSubfield = function (field, sfTag) {
-    var fieldTag = /^(.{3,4})\s/.exec(field);
-    var subfields = this._parseField(field);
-    return subfields[fieldTag][sfTag];
+ZDB.getSubfield = function (field, sfTag) {
+    var tagMatch = /^(.{3,4})\s/;
+    if(!tagMatch.test(field)) {
+        field = '000 ' + field; // prepend dummy tag if not present
+    }
+    var m = /^(.{3,4})\s/.exec(field);
+    if (!m) return undefined;
+    var tag = m[1];
+    var subfields = this.parseField(field);
+    if (!subfields || !subfields[tag]) return undefined;
+    return subfields[tag][sfTag];
 }
 
 /**
@@ -499,9 +529,10 @@ ZDB._getSubfield = function (field, sfTag) {
  * @param string content
  * @param function|undefined callback
  */
-ZDB._exemplarErfassen = function (content, callback) {
-    var exNum = this._EXXX();
-    if (!this._checkScreen(['MT', 'IE'])) {
+ZDB.exemplarErfassen = function (content, callback) {
+    var exNum = this.EXXX();
+    //alert("Erfasse Exemplar " + exNum + " mit Inhalt: " + content);
+    if (this.checkScreen(['8A'])) {
         activeWindow.command('e ' + exNum, false);
     }
     // Exemplarsatz anlegen und befüllen
@@ -516,8 +547,8 @@ ZDB._exemplarErfassen = function (content, callback) {
  * Gibt ein Array von genutzten Exemplarnummern zurück
  * @returns array Genutzte Exemplarnummern
  */
-ZDB._exemplarNummern = function () {
-     this._format('D');
+ZDB.exemplarNummern = function () {
+     this.format('D');
     var found = (activeWindow.getVariable('P3CLIP')).match(/\n(E\d\d\d)/g);
     found.sort();
     for (var i = 0; i < found.length; i += 1) {
@@ -530,15 +561,19 @@ ZDB._exemplarNummern = function () {
     return found;
 }
 
-ZDB._EXXX = function () {
+ZDB.EXXX = function () {
     var record,
         num;
-    if (this._checkScreen(['MT'])) {
+    if (this.checkScreen(['MT', 'IT'])) {
         activeWindow.title.selectAll();
         record = activeWindow.title.selection;
         activeWindow.title.selectNone();
+        activeWindow.endOfBuffer(false);
     } else {
         record = activeWindow.getVariable('P3CLIP');
+        if(!record) {
+            record = ZDB.getExpansionFromP3VTX();
+        }
     }
     for (var i = 1; i <= 999; i += 1) {
         num = "E" + ("000" + i).slice(-3);
@@ -552,5 +587,14 @@ ZDB._EXXX = function () {
             }
         }
     }
+}
+
+ZDB.getExpansionFromP3VTX = function () {
+    return activeWindow.getVariable('P3VTX')
+        .replace(/<ISBD><TABLE>|<\/TABLE>/g, '')
+        .replace(/\u001b[IN]/g, '')
+        .replace(/<BR>/g, '\n')
+        .replace(/<\/?a[^>]*>/gm, '')
+        .replace(/^Eingabe:.*$|^$/gm, '');
 }
 
