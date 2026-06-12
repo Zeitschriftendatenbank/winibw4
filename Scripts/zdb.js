@@ -68,12 +68,16 @@ ZDB.getZDB = function (idn) {
         zdbid = (strScreen === 'MT' || strScreen === 'IT')
             ? activeWindow.title.findTag(cat, 0, false, false, true)
             : __Trim(activeWindow.findTagContent(cat, 0, false));
-    } else {
+    } else if (format === 'D' || format === 'DA') {
         var field = (strScreen === 'MT' || strScreen === 'IT')
             ? this.parseField(activeWindow.title.findTag(cat, 0, true, false, true))
             : this.parseField(activeWindow.findTagContent(cat, 0, true));
         zdbid = field[cat][0][0];
+    } else {
+        Notify.error('Unsupported format: ' + format);
+        return false;
     }
+        return false;
 
     if (idn) {
         activateWindow(myWindowId);
@@ -345,11 +349,9 @@ ZDB.unescapeHtml = function (text) {
  *                            otherwise, retrieves the title directly.
  * @returns {string|boolean} The retrieved record as a string with a newline appended, or `false` 
  *                           if an error occurs or the screen check fails.
- *
- * @throws {Error} Alerts the user if the provided format is invalid.
  */
 ZDB.getRecord = function (format, extmode) {
-    var scr = this.checkScreen(['7A', '8A'], '_getRecord');
+    var scr = this.checkScreen(['7A', '8A'], 'getRecord');
     if (!scr) return false;
     var satz = null;
 
@@ -497,7 +499,7 @@ ZDB.checkScreen = function (options, header, message) {
         var list = arr.join(', ');
         if (typeof header !== 'undefined') {
             message = message || 'Die Funktion kann nur aus ' + list + ' aufgerufen werden.';
-            messageBox(header, message, 'error-icon');
+            Notify.error(message);
         }
         return false;
     }
