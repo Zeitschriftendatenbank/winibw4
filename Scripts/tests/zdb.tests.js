@@ -1,6 +1,7 @@
 // requires: test_harness.js and zdb.js loaded before this file
 
 TestRunner.add("parseField_simple", function() {
+  MISC.format('D');
   var out = ZDB.parseField("039E $bf$aFortsetzung von$9942987667$8--Cbvz");
   TestRunner.assert(out["039E"]["b"][0] == "f", "b subfield mismatch");
   TestRunner.assert(out["039E"]["a"][0] == "Fortsetzung von", "a subfield mismatch");
@@ -23,7 +24,7 @@ TestRunner.add("arrayUnique_and_diff", function() {
 });
 
 TestRunner.add("unescapeHtml", function() {
-  var s = ZDB.unescapeHtml("&amp;&lt;&gt;&quot;&#039;&nbsp;");
+  var s = MISC.unescapeHtml("&amp;&lt;&gt;&quot;&#039;&nbsp;");
   TestRunner.assert(s == "&<>\"' ", "unescapeHtml mismatch");
 });
 
@@ -40,4 +41,18 @@ TestRunner.add("getSubfield_basic", function() {
   TestRunner.assert(val && val[0] == 'One', 'getSubfield a failed');
   var val9 = ZDB.getSubfield(f, '9');
   TestRunner.assert(val9 && val9[0].indexOf('12345') !== -1, 'getSubfield 9 failed');
+});
+
+
+/* Test for ZDB.getZDB
+ * - run under user 6098 (prompts for confirmation)
+ * - searches for PPN 016569318
+ * - expects ZDB-ID 1127711-7
+ */
+TestRunner.add('ZDB.getZDB PPN 016569318', function () {
+    var ok = TestRunner.runWithKennung('6098', '\\ZOE idn 016569318', 'ZDB getZDB');
+    if (!ok) throw { skip: true };
+
+    var z = ZDB.getZDB();
+    TestRunner.assertEqual(z, '1127711-7', 'ZDB id mismatch for PPN 016569318');
 });
