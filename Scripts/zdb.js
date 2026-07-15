@@ -10,13 +10,14 @@ var ZDB = {
  * @param {array|string} arr - Array or key to access from _rec
  * @param {string} key - Field key to retrieve
  * @return {*} First value or null if not found
- */
+
 ZDB.first = function (arr, key) {
     if ('string' === typeof arr) {
         arr = this._rec[arr];
     }
     return (arr && arr[0] && arr[0][key]) ? arr[0][key][0] : null;
 }
+*/
 
 /**
  * Checks if a field exists in an array
@@ -60,10 +61,10 @@ ZDB.getZDB = function (idn) {
     idn = idn || false;
     if (idn) {
         var myWindowId = activeWindow.windowID;
-        activeWindow.commandLine('\\ZOE idn ' + idn);
+        MISC.wait('\\ZOE idn ' + idn, true);
     }
 
-    var strScreen = this.checkScreen(['8A', 'MT', 'IT'], 'getZDB');
+    var strScreen = MISC.checkScreen(['8A', 'MT', 'IT'], 'getZDB');
     if (!strScreen) return false;
 
     var format = MISC.format();
@@ -107,152 +108,16 @@ ZDB.expansionToText = function (e) {
     return text += '$t' + e.tit;
 }
 
-/**
- * Retrieves and parses a ZDB record in JSON format based on the given IDN.
- *
- * @param {string|boolean} idn - The IDN of the ZDB record to retrieve. If `false`, retrieves the current record.
- * @returns {Object} An object representing the parsed ZDB record, where each key corresponds to a category
- *                   and its value is an array of parsed field data. Includes a `katToString` method for
- *                   converting a category to a formatted string.
- *
- * @property {Function} katToString - A method to convert a specific category (`kat`) into a formatted string.
- *                                    The string includes all subfields and their values, separated by a delimiter.
- */
-ZDB.JSON = function (idn) {
-    this._rec = {};
-    idn = idn || false;
-
-    // save format
-    var format = MISC.format();
-
-    var myWindowId = activeWindow.windowID;
-
-    if (idn) // get zdb id of a different title in a work window
-    {
-        activeWindow.command('f idn ' + idn, true);
-    }
-
-    if ('P' != format) MISC.format('P');
-
-    var rec = this.getExpansionFromP3VTX();
-    // get array of lines
-    var arrLines = rec.match(/(.+)/gm);
-    // for each line
-    var i = 0;
-    while (i < arrLines.length) {
-        var _line = this.parseField(arrLines[i]);
-        // key is the category
-        for (var key in _line) {
-            if (_line.hasOwnProperty(key)) {
-                // if key already exists
-                if (this._rec.hasOwnProperty(key)) {
-                    this._rec[key].push(_line[key]);
-                } else { // key does not exist
-                    // always create an array
-                    this._rec[key] = [_line[key]];
-                }
-            }
-        }
-        i++;
-    }
-
-    /*this._rec.katToString = function (kat) {
-        var string = '',
-            i;
-        for (i = 0; i < this[kat].length; i++) {
-            string += "\n" + kat + ' ';
-            for (var sub in this[kat][i]) {
-                for (var x = 0; x < this[kat][i][sub].length; x++) {
-                    string += this.delimiter + sub + this[kat][i][sub][x];
-                }
-            }
-        }
-        return string;
-    };*/
-        // capture delimiter for closure use
-    var delim = this.delimiter;
-    this._rec.katToString = (function (r, d) {
-        return function (kat) {
-            var string = '',
-                i, sub, x;
-            for (i = 0; i < r[kat].length; i++) {
-                string += "\n" + kat + ' ';
-                for (sub in r[kat][i]) {
-                    if (!r[kat][i].hasOwnProperty(sub)) continue;
-                    for (x = 0; x < r[kat][i][sub].length; x++) {
-                        string += d + sub + r[kat][i][sub][x];
-                    }
-                }
-            }
-            return string;
-        };
-    })(this._rec, delim);
-
-    // back to source format
-    if ('P' != format) MISC.format(format);
-
-    if (activeWindow.windowID != myWindowId) {
-        activateWindow(myWindowId);
-    }
-    return this._rec;
+ZDB.checkScreen = function (options, header, message) {
+    return MISC.checkScreen(options, header, message);
 }
 
-/**
-* Liest ein Feldinhalt in ein Object
-* Bsp.:
-* 039E $bf$aFortsetzung von$9942987667$8--Cbvz--Deutsche Zentralbücherei für Blinde zu Leipzig: DZB-Nachrichten
-* wird zu
-* {
-*   "039E":
-*   {
-*      "b": ["f"],
-*      "a": ["Fortsetzung von"],
-*      "9": ["942987667"],
-*      "8": ["--Cbvz--Deutsche Zentralbücherei für Blinde zu Leipzig: DZB-Nachrichten"]
-*   }
-* }
-*
-* Zugriff: obj['039E'][9][0] --> "942987667"
-* Zugriff: obj['039E']['b'][0] --> "f"
-*
-* 017A $aee$amg$anw wird zu
-* {
-*   "017A":
-*   {
-*       "a": ["ee","mg","nw"]
-*   }
-* }
-* Zugriff: obj['017A']['a'][0] --> "ee"
-* Zugriff: obj['017A']['a'][1] --> "mg"
-*/
+ZDB.JSON = function (idn) {
+    return JSON.create(idn);
+}
+
 ZDB.parseField = function (field) {
-    var _field = {};
-    var arr = field.match(/^([^\s]+)\s(.+)/);
-    if (!arr || arr.length < 3) {
-        // Return empty object or handle error gracefully
-        return {};
-    }
-    var del = ('P' == MISC.format()) ? this.delimiter : '$';
-    var split = arr[2].split(del);
-    var subfield = {};
-    var x = 1;
-    while (x < split.length) {
-        if (!split[x] || split[x].length === 0) {
-            x++;
-            continue;
-        }
-        // In JScript, use .charAt(0) instead of [0] for first character
-        var sfTag = split[x].charAt(0);
-        var sfValue = split[x].slice(1);
-        if (typeof subfield[sfTag] !== 'undefined') {
-            subfield[sfTag].push(sfValue);
-        } else {
-            subfield[sfTag] = [sfValue];
-        }
-        x++;
-    }
-    _field[arr[1]] = subfield;
-    return _field;
+    return JSON.parseField(field);
 }
 
 /**
@@ -310,26 +175,9 @@ ZDB.parseExpansion = function (exp) {
     return _exp;
 }
 
-/**
- * Extracts and processes the expansion data from the 'P3VTX' variable in the active application window.
- * The function performs a series of string replacements and cleanups to format the data.
- *
- * @returns {string} The processed and unescaped expansion data.
- */
+
 ZDB.getExpansionFromP3VTX = function () {
-    var satz = activeWindow.getVariable('P3VTX')
-        .replace('<ISBD><TABLE>', '')
-        .replace('<\/TABLE>', '')
-        .replace(/<BR>/g, "\n")
-        .replace(/^$/gm, '')
-        .replace(/^Eingabe:.*$/gm, '')
-        .replace(/^Mailbox:.*$/gm, '')
-        .replace(/<a[^<]*>/g, '')
-        .replace(/<\/a>/g, '')
-        .replace(/\r/g, "\n")
-        .replace(/\u001b./g, ''); // replace /n (Zeilenumbruch) entfernt,
-    // weil hier die $8 Expansion durch Zeilenbruch abgetrennt wurde
-    return MISC.unescapeHtml(satz);
+    return MISC.getExpansionFromP3VTX();
 }
 
 /**
@@ -370,33 +218,7 @@ ZDB.getRecord = function (format, extmode) {
  * @returns {Array} A new array with duplicate values removed.
  */
 ZDB.arrayUnique = function (arr) {
-    var r = [];
-    o: for (var i = 0, n = arr.length; i < n; i++) {
-        for (var x = 0, y = r.length; x < y; x++) {
-            if (r[x] == arr[i]) continue o;
-        }
-        r[r.length] = arr[i];
-    }
-    return r;
-}
-
-/**
- * Removes all elements from the first array (`a1`) that are present in the second array (`a2`).
- * Modifies the original `a1` array and returns it.
- *
- * @param {Array} a1 - The array to remove elements from.
- * @param {Array} a2 - The array containing elements to remove from `a1`.
- * @returns {Array} The modified `a1` array with elements removed.
- */
-ZDB.arrayDiff = function (a1, a2) {
-    for (var i = 0; i < a2.length; i++) {
-        for (var y = 0; y < a1.length; y++) {
-            if (a2[i] === a1[y]) {
-                a1.splice(y, 1);
-            }
-        }
-    }
-    return a1;
+    return arr.unique();
 }
 
 /**
@@ -424,13 +246,16 @@ ZDB.checkSF = function (kat, sf, I, C) {
 /**
 * Inserts a subfield with content
 *
-* @param {string} field the field for the subfield
+* Script must be in a title or edit window with a record loaded.
+*
+* @param {string} field the field tag
 * @param {string} subfield the subfield tag
 * @param {string} content the content of the subfield
 * @param {string} pos optional: the subfield position 0 ... x
 * @param {string} pos optional: the occurence of a repeatable field 0 ... x
 */
 ZDB.insertSubfield = function (field, subfield, content, pos, occ) {
+    MISC.checkScreen(['MT', 'IT', 'IE'], 'insertSubfield');
     var data = '',
         splitted = [];
     if (typeof occ === 'undefined') {
@@ -453,59 +278,19 @@ ZDB.insertSubfield = function (field, subfield, content, pos, occ) {
     activeWindow.title.insertText(splitted.join('$'));
 }
 
-/**
-* Checks weather screen variable is one of options
-* pops up alert with message if not
-*
-* @param {array} options possible screen variables
-* @param {string} header of popup
-* @param {string} message optional
-* @return {string}|{bool} screen variable or false
-*/
 ZDB.checkScreen = function (options, header, message) {
-    var map = {
-        '8A': 'Vollanzeige',
-        '7A': 'Trefferliste',
-        'MT': 'Editiermodus',
-        'IT': 'Titelneuaufnahme',
-        'IE': 'Exemplarneuaufnahme',
-        '00': 'Loginmaske',
-        'GN': 'Setansicht',
-        'SC': 'Indexansicht',
-        'FI': 'Datenbankinfo',
-        'FS': 'Bestandsauswahl',
-        'MI': 'Norm-Korrekturmodus'
-    };
-    var strScreen = activeWindow.getVariable('scr');
-    if(!strScreen) {
-        strScreen = 'XX'; // assume login screen if scr is empty
-    }
-    var opt = options.join('#');
-    if (opt.indexOf(strScreen) < 0) {
-        var arr = [];
-        for (var e in map) {
-            if (!map.hasOwnProperty(e)) { continue; }
-            if (opt.indexOf(e) > -1) arr.push(map[e]);
-        }
-        var list = arr.join(', ');
-        if (typeof header !== 'undefined') {
-            message = message || 'Die Funktion kann nur aus ' + list + ' aufgerufen werden.';
-            Notify.error(message);
-        }
-        return false;
-    }
-    return strScreen;
+    MISC.checkScreen(options, header, message);
 }
 
 /**
  * Retrieves the value of a specific subfield from a MARC field string.
  *
- * @param {string} field - The MARC field string to parse.
+ * @param {string} field - The field string to parse.
  * @param {string} sfTag - The subfield tag to retrieve (e.g., 'a', 'b').
  * @returns {*} The value of the specified subfield, or undefined if not found.
  */
 ZDB.getSubfield = function (field, sfTag) {
-    var tagMatch = /^(.{3,4})\s/;
+    var tagMatch = /^(.{3,4})\s.+/;
     if(!tagMatch.test(field)) {
         field = '000 ' + field; // prepend dummy tag if not present
     }
