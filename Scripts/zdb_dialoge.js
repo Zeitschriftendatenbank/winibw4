@@ -81,7 +81,7 @@ function __zdbGetFileContent(o) {
 }
 
 function zdb_Erscheinungsverlauf() {
-    if (false === ZDB.checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
+    if (false === MISC.checkScreen(['MT', 'IT', 'IE'], 'Erscheinungsverlauf')) return false;
     try {
         showDialog('ProfD\\Dialogs_zdb\\ZDB_dialogErscheinungsverlauf.html', 200, 200, 500, 400);
     } catch (error) {
@@ -90,13 +90,7 @@ function zdb_Erscheinungsverlauf() {
 }
 
 function __zdbGet4024() {
-    var strScreen = ZDB.checkScreen(['MT', 'IT'], '__zdbGet4024');
-    if (!strScreen) {
-        utility.sentDataToDialog(false);
-    } else {
-        var f4024 = activeWindow.title.findTag('4024', 0, false, true, false);
-        utility.sentDataToDialog(f4024);
-    }
+    utility.sentDataToDialog(activeWindow.title.findTag('4024', 0, false, true, false));
 }
 
 function __zdb_paste4024(o) {
