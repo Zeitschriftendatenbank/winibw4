@@ -65,33 +65,28 @@ ZDB.getZDB = function (idn) {
     }
 
     var strScreen = MISC.checkScreen(['8A', 'MT', 'IT'], 'getZDB');
-    if (!strScreen) return false;
+    if (!strScreen) { return false; }
 
     var format = MISC.format();
     var cat = { D: '2110', DA: '2110', P: '006Z' };
     var zdbid;
 
-    if (format === 'P') {
+    if (format === 'P')
         // P-format: ZDB id stored in tag defined by `cat` (006Z)
         zdbid = (strScreen === 'MT' || strScreen === 'IT')
             ? ZDB.getSubfield(activeWindow.title.findTag(cat['P'], 0, false, true, false), 'a')
             : ZDB.getSubfield(__Trim(activeWindow.findTagContent(cat['P'], 0, true)), 'a');
-    } else if (format === 'D' || format === 'DA') {
+    else if (format === 'D' || format === 'DA')
         // D/DA formats: need to parse the field
         zdbid = (strScreen === 'MT' || strScreen === 'IT')
             ? activeWindow.title.findTag(cat['D'], 0, false, true, false)
             : activeWindow.findTagContent(cat['D'], 0, false);
-    } else {
-        Notify.error('Unsupported format: ' + format);
-        if (idn) activateWindow(myWindowId);
-        return false;
-    }
+    else
+        return (Notify.error('Unsupported format: ' + format), idn && activateWindow(myWindowId), false);
 
-    if (idn) {
-        activateWindow(myWindowId);
-    }
+    if (idn) { activateWindow(myWindowId); }
 
-    if (!zdbid) return false;
+    if (!zdbid) { return false; }
     return zdbid.replace(/\s+/g, '');
 }
 
@@ -102,9 +97,7 @@ ZDB.getZDB = function (idn) {
 */
 ZDB.expansionToText = function (e) {
     var text = '';
-    if (e.norm) {
-        text = '$l' + e.norm.a;
-    }
+    if (e.norm) text = '$l' + e.norm.a;
     return text += '$t' + e.tit;
 }
 
@@ -153,23 +146,34 @@ ZDB.parseExpansion = function (exp) {
     var matches = re.exec(exp);
     if (matches) {
         // Titel nach :\s
-        if (matches[2]) {
-            _exp.tit = matches[2];
-        } else {
-            _exp.tit = matches[3];
-        }
-        //Normdaten
+        if (matches[2]) _exp.tit = matches[2]; else _exp.tit = matches[3];
+        // Normdaten (robust parsing)
         if (matches[1]) {
             _exp.norm = {};
             split = matches[1].split('$');
             for (var i = 0; i < split.length; i++) {
-                if (0 == i) {
-                    _exp.norm.a = split[i];
-                }
-                else {
-                    _exp.norm[split[i][0]] = split[i].slice(1);
+                var seg = split[i];
+                if (typeof seg === 'undefined' || seg === null) continue;
+                seg = seg.trim();
+                if (i === 0) {
+                    if (seg.length) _exp.norm.a = seg;
+                } else {
+                    if (seg.length === 0) continue;
+                    // find the first non-space character as the subfield code
+                    var m = seg.match(/^\s*([^\s])/);
+                    if (!m) continue;
+                    var code = m[1];
+                    var idx = seg.indexOf(code);
+                    var val = seg.slice(idx + 1).trim();
+                    _exp.norm[code] = val;
                 }
             }
+            // if norm has no own properties, delete it (avoid Object.keys for ES3)
+            var _hasProp = false;
+            for (var _p in _exp.norm) {
+                if (Object.prototype.hasOwnProperty && Object.prototype.hasOwnProperty.call(_exp.norm, _p)) { _hasProp = true; break; }
+            }
+            if (!_hasProp) delete _exp.norm;
         }
     }
     return _exp;
@@ -195,17 +199,12 @@ ZDB.getRecord = function (format, extmode) {
     var satz = null;
 
     MISC.format(format);
-    if (extmode) {
-        satz = this.getExpansionFromP3VTX();
-    } else {
+    if (extmode) satz = this.getExpansionFromP3VTX(); 
+    else {
         satz = activeWindow.copyTitle();
-        //satz = satz.replace(/\r/g,'');
-    }
-    if (scr == '7A')
         activeWindow.simulateIBWKey('FE');
-    else
-        if (format == 'P')
-            MISC.format('D');
+    }
+    if (format == 'P') MISC.format('D');
     satz = satz + "\n";
     return satz;
 }
@@ -258,12 +257,8 @@ ZDB.insertSubfield = function (field, subfield, content, pos, occ) {
     MISC.checkScreen(['MT', 'IT', 'IE'], 'insertSubfield');
     var data = '',
         splitted = [];
-    if (typeof occ === 'undefined') {
-        occ = 0;
-    }
-    if ('' == (data = activeWindow.title.findTag(field, occ, false, true, false))) {
-        return false;
-    }
+    if (typeof occ === 'undefined') occ = 0;
+    if ('' == (data = activeWindow.title.findTag(field, occ, false, true, false))) return false;
     splitted = data.split('$');
     if (typeof pos === 'undefined') {
         splitted.push(subfield + content);
@@ -349,20 +344,14 @@ ZDB.EXXX = function () {
         activeWindow.endOfBuffer(false);
     } else {
         record = activeWindow.getVariable('P3CLIP');
-        if(!record) {
-            record = ZDB.getExpansionFromP3VTX();
-        }
+        if (!record) record = ZDB.getExpansionFromP3VTX();
     }
     for (var i = 1; i <= 999; i += 1) {
         num = "E" + ("000" + i).slice(-3);
         if ('' != record) {
-            if (record.indexOf(num) == -1) {
-                return num;
-            }
+            if (record.indexOf(num) == -1) return num;
         } else {
-            if (!activeWindow.title.find("\n" + num, true, false, true)) {
-                return num;
-            }
+            if (!activeWindow.title.find("\n" + num, true, false, true)) return num;
         }
     }
 }
