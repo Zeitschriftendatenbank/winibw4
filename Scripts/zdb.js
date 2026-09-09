@@ -106,11 +106,11 @@ ZDB.checkScreen = function (options, header, message) {
 }
 
 ZDB.JSON = function (idn) {
-    return JSON.create(idn);
+    return O.create(idn);
 }
 
 ZDB.parseField = function (field) {
-    return JSON.parseField(field);
+    return O.parseField(field);
 }
 
 /**
