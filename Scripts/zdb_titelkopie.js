@@ -20,7 +20,6 @@ function __zdbNormdatenKopie() {
 }
 
 function __zdbTiteldatenKopie() {
-
     ZDB._rec = ZDB.JSON();
 
     // Überschrift und IDN einfügeng
@@ -28,7 +27,7 @@ function __zdbTiteldatenKopie() {
     var idn = activeWindow.getVariable('P3GPP');
     activeWindow.command('show d', false);
     // Titelkopie auf zdb_titeldatenkopie.ttl setzen
-    activeWindow.titleCopyFile = '%APPDATA%\\OCLC\\WinIBW4\\ttlFiles_zdb\\zdb_titeldatenkopie.ttl';
+    activeWindow.titleCopyFile = getProfileString('prefs', 'titleCopyFile', '%APPDATA%\\OCLC\\WinIBW4\\ttlFiles_zdb\\zdb_titeldatenkopie.ttl');
     activeWindow.copyTitle();
     activeWindow.command('ein t', false);
     activeWindow.title.insertText(" *** Titeldatenkopie *** \n");
@@ -122,7 +121,7 @@ function __zdbMediatype() {
 }
 
 function zdb_Datensatzkopie() {
-    if (false == ZDB.checkScreen(['8A'], 'Datensatzkopie')) return false;
+    if (false == MISC.checkScreen(['8A'], 'Datensatzkopie')) return false;
     //Persönliche Einstellung des Titelkopie-Pfades ermitteln
     var titlecopyfileStandard = getProfileString('prefs', 'titleCopyFile', '');
     if (activeWindow.materialCode.charAt(0) == 'T') {
