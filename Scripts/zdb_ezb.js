@@ -31,12 +31,12 @@ function __zdbDruckausgabe(dppn) {
         activeWindow.title.insertText('4243 Erscheint auch als$nOnline-Ausgabe!' + eppn + "!\n");
 
         activeWindow.simulateIBWKey('FR');
-        if (activeWindow.getVariable('scr') != '8A') {
+        /*if (activeWindow.getVariable('scr') != '8A') {
             Notify.error('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen Sie dies direkt über die WinIBW nach.');
             return false;
-        }
+        }*/
     } else {
-        messageBox('Test', 'Die Verknüpfung zur Internetausgabe im Feld 4243 ist schon vorhanden.', 'alert-icon');
+        Notify.popup('Die Verknüpfung zur Internetausgabe im Feld 4243 ist schon vorhanden.', 'zdbDruckausgabe', 'info', 1);
     }
     return true;
 }
@@ -218,8 +218,6 @@ function zdb_EZB() {
                 return false;
             }
         }
-
-        __zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')
         activateWindow(windowId);
     } else {
         if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
@@ -256,9 +254,10 @@ function zdb_EZB() {
         activeWindow.title.insertText(ZDB._rec['006Z'][0][0][0].substr(0, ZDB._rec['006Z'][0][0][0].length - 2));
         activeWindow.title.insertText('=x F');
         activeWindow.simulateIBWKey('FR');
-        if (activeWindow.getVariable('scr') != '8A') {
+        /*if (activeWindow.getVariable('scr') != '8A') {
             Notify.error('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen Sie dies direkt über die WInIBW nach.');
             return false;
         }
+        */
     }
 }
