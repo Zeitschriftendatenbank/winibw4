@@ -6,6 +6,18 @@ function zdb_ILTISseiten(){
     shellExecute ('https://wiki.dnb.de/display/ILTIS/ILTIS-Handbuch', 'open', '');
 }
 
+function zdb_openKatalog(){
+    shellExecute('https://zdb-katalog.de/index.xhtml', 'open', '');
+}
+
+function zdb_openZDBWebsite(){
+    shellExecute('https://zeitschriftendatenbank.de', 'open', '');
+}
+
+function zdb_openGithubScripte(){
+    shellExecute('https://zeitschriftendatenbank.github.io/WinIBW4-Scripte/index.html', 'open', '');
+}
+
 function zdb_openWinibwInfo() {
     shellExecute("http://www.zeitschriftendatenbank.de/erschliessung/winibw", "open", "");
 }
