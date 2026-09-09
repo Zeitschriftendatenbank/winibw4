@@ -1,3 +1,4 @@
+var MISC, O, Notify;
 function __zdbDruckausgabe(dppn) {
     var eppn = activeWindow.getVariable('P3GPP');
     var arr = [];
@@ -8,13 +9,13 @@ function __zdbDruckausgabe(dppn) {
     activeWindow.command('f idn ' + dppn, true);
 
     if (activeWindow.status != 'OK') {
-        alert('Die über 4243 verlinkte Druckausgabe existiert nicht.');
+        Notify.error('Die über 4243 verlinkte Druckausgabe existiert nicht.');
         return false;
     }
 
     DocType = activeWindow.materialCode.charAt(0);
     if (DocType != 'A') {
-        alert('Record der "Druckausgabe" hat Materialcode ' + activeWindow.materialCode);
+        Notify.error('Record der "Druckausgabe" hat Materialcode ' + activeWindow.materialCode);
         return false;
     }
 
@@ -31,7 +32,7 @@ function __zdbDruckausgabe(dppn) {
 
         activeWindow.simulateIBWKey('FR');
         if (activeWindow.getVariable('scr') != '8A') {
-            alert('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen Sie dies direkt über die WinIBW nach.');
+            Notify.error('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen Sie dies direkt über die WinIBW nach.');
             return false;
         }
     } else {
@@ -80,11 +81,9 @@ function zdb_EZB() {
     var bibid = '';
     var first_volume, first_date, first_issue, idx, EZB_satz;
     var L, i, s, u, p, x, d;
-    var dbformUrl, frontDoor;
-
-    if (!ZDB.checkScreen(['7A', '8A'], 'EZB')) return false;
+    if (!MISC.checkScreen(['7A', '8A'], 'EZB')) return false;
     if ('O' != activeWindow.getVariable('P3VMC').substr(0, 1)) {
-        alert('Das Skript darf nur bei O-Aufnahmen aufgerufen werden.');
+        Notify.error('Das Skript darf nur bei O-Aufnahmen aufgerufen werden.');
         return false;
     }
 
@@ -94,17 +93,17 @@ function zdb_EZB() {
     }
 
     if(!bibid) {
-        alert('Sie müssen ein gültiges EZB-BibID angeben.');
+        Notify.error('Sie müssen ein gültiges EZB-BibID angeben.');
         return false;
     }
 
     L = new LANG();
 
-    dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
-    frontDoor = 'https://ezb.ur.de/?';
+    var dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
+    var frontDoor = 'https://ezb.ur.de/?';
 
-    ZDB._rec = ZDB.JSON();
-
+    ZDB._rec = O.create();
+//__zeigeEigenschaften(ZDB._rec);
     title = ZDB._rec['021A'][0]['a'][0];
     idx = title.indexOf(' @');
     if (idx === 0) {
@@ -160,7 +159,7 @@ function zdb_EZB() {
         }
         url = urls.join("\n");
     } else {
-        alert('Die URL (4085) fehlt.');
+        Notify.error('Die URL (4085) fehlt.');
         return false;
     }
 
@@ -258,7 +257,7 @@ function zdb_EZB() {
         activeWindow.title.insertText('=x F');
         activeWindow.simulateIBWKey('FR');
         if (activeWindow.getVariable('scr') != '8A') {
-            alert('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen Sie dies direkt über die WInIBW nach.');
+            Notify.error('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen Sie dies direkt über die WInIBW nach.');
             return false;
         }
     }
